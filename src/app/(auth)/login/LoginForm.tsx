@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { Loader2, Mail, Lock } from "lucide-react"
 import { createBrowserSupabase } from "@/server/supabase/browser"
 
 const inputClass =
-  "w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
+  "w-full rounded-xl border border-white/10 bg-white/5 px-4 py-2.5 pl-10 text-sm text-white placeholder-gray-500 transition-all focus:border-brand-500/50 focus:bg-white/8 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
 
 export function LoginForm() {
   const router = useRouter()
@@ -38,43 +39,61 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
+        <div className="flex items-start gap-3 rounded-xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+          <span className="mt-0.5 shrink-0">⚠</span>
           {error}
         </div>
       )}
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700">Email address</label>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          autoComplete="email"
-          placeholder="you@example.com"
-          className={inputClass}
-        />
+        <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide">
+          Email address
+        </label>
+        <div className="relative">
+          <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            autoComplete="email"
+            placeholder="you@academy.com"
+            className={inputClass}
+          />
+        </div>
       </div>
 
       <div className="space-y-1.5">
-        <label className="block text-sm font-medium text-gray-700">Password</label>
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          autoComplete="current-password"
-          placeholder="••••••••"
-          className={inputClass}
-        />
+        <label className="block text-xs font-medium text-gray-400 uppercase tracking-wide">
+          Password
+        </label>
+        <div className="relative">
+          <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            autoComplete="current-password"
+            placeholder="••••••••••"
+            className={inputClass}
+          />
+        </div>
       </div>
 
       <button
         type="submit"
         disabled={pending}
-        className="mt-2 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors disabled:opacity-60"
+        className="mt-2 flex w-full items-center justify-center gap-2 rounded-xl bg-brand-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-brand-500/25 transition-all hover:bg-brand-400 hover:shadow-brand-500/35 disabled:opacity-60 disabled:cursor-not-allowed"
       >
-        {pending ? "Signing in…" : "Sign in"}
+        {pending ? (
+          <>
+            <Loader2 className="h-4 w-4 animate-spin" />
+            Signing in…
+          </>
+        ) : (
+          "Sign in to your academy"
+        )}
       </button>
     </form>
   )

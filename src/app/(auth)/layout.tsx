@@ -2,22 +2,26 @@ import Link from "next/link"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      {/* Minimal nav */}
-      <header className="flex h-14 items-center border-b border-gray-200 bg-white px-6">
-        <Link href="/" className="text-sm font-semibold text-gray-900 hover:text-gray-700 transition-colors">
-          BJJFlow
+    <div className="relative min-h-screen overflow-hidden bg-gray-950">
+      {/* Background orbs */}
+      <div aria-hidden className="pointer-events-none absolute left-1/4 top-0 h-[500px] w-[500px] -translate-y-1/2 rounded-full bg-brand-600/10 blur-[100px]" />
+      <div aria-hidden className="pointer-events-none absolute right-1/4 bottom-0 h-[400px] w-[400px] translate-y-1/2 rounded-full bg-cyan-500/6 blur-[80px]" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-grid-dark" />
+
+      {/* Nav */}
+      <header className="relative flex h-14 items-center border-b border-white/8 px-6">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-brand-500 shadow-md shadow-brand-500/30">
+            <span className="text-[10px] font-black text-white">BF</span>
+          </div>
+          <span className="text-sm font-semibold text-white">BJJFlow</span>
         </Link>
       </header>
 
       {/* Centered content */}
-      <main className="flex flex-1 items-center justify-center px-4 py-12">
+      <main className="relative flex min-h-[calc(100vh-3.5rem)] items-center justify-center px-4 py-12">
         {children}
       </main>
-
-      <footer className="py-6 text-center text-xs text-gray-400">
-        © {new Date().getFullYear()} BJJFlow
-      </footer>
     </div>
   )
 }

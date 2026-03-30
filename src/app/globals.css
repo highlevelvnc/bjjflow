@@ -1,5 +1,100 @@
 @import "tailwindcss";
 
+/* ─── Font ──────────────────────────────────────────────────────────────────── */
 @theme {
-  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, "Cascadia Code", monospace;
+
+  /* ─── Brand palette — electric indigo/violet ──────────────────────────────── */
+  --color-brand-50:  oklch(97%  0.02  264);
+  --color-brand-100: oklch(94%  0.05  264);
+  --color-brand-200: oklch(87%  0.09  264);
+  --color-brand-300: oklch(78%  0.15  264);
+  --color-brand-400: oklch(70%  0.21  264);
+  --color-brand-500: oklch(62%  0.27  264);
+  --color-brand-600: oklch(53%  0.26  264);
+  --color-brand-700: oklch(44%  0.22  264);
+  --color-brand-800: oklch(36%  0.17  264);
+  --color-brand-900: oklch(27%  0.12  264);
+  --color-brand-950: oklch(16%  0.07  264);
+
+  /* ─── Cyano accent ───────────────────────────────────────────────────────── */
+  --color-cyan-brand: oklch(78%  0.15  200);
+
+  /* ─── Animation ──────────────────────────────────────────────────────────── */
+  --animate-fade-up:   fade-up   0.5s ease-out both;
+  --animate-fade-in:   fade-in   0.4s ease-out both;
+  --animate-pulse-slow: pulse    3s   cubic-bezier(0.4,0,0.6,1) infinite;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ─── Custom utilities ───────────────────────────────────────────────────────── */
+@utility bg-grid-dark {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility bg-grid-light {
+  background-image:
+    linear-gradient(to right, rgb(0 0 0 / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(0 0 0 / 0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@utility gradient-text {
+  background: linear-gradient(135deg, #a78bfa 0%, #818cf8 40%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility gradient-text-brand {
+  background: linear-gradient(135deg, #c4b5fd 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility glow-brand {
+  box-shadow: 0 0 48px -8px oklch(62% 0.27 264 / 0.45);
+}
+
+@utility glow-brand-sm {
+  box-shadow: 0 0 24px -4px oklch(62% 0.27 264 / 0.35);
+}
+
+@utility glass-dark {
+  background: rgb(255 255 255 / 0.04);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.08);
+}
+
+@utility glass-dark-hover {
+  background: rgb(255 255 255 / 0.07);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+/* ─── Base ───────────────────────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

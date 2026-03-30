@@ -13,10 +13,10 @@ export const metadata: Metadata = {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  scheduled: "bg-blue-50 text-blue-700",
-  in_progress: "bg-yellow-50 text-yellow-700",
-  completed: "bg-green-50 text-green-700",
-  cancelled: "bg-gray-100 text-gray-500",
+  scheduled: "bg-blue-500/15 text-blue-400",
+  in_progress: "bg-yellow-500/15 text-yellow-400",
+  completed: "bg-emerald-500/15 text-emerald-400",
+  cancelled: "bg-white/6 text-gray-500",
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -85,15 +85,15 @@ export default async function AttendancePage({ params }: Props) {
   return (
     <div className="mx-auto max-w-2xl space-y-4">
       <div>
-        <Link href="/app/sessions" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/sessions" className="text-sm text-gray-500 hover:text-gray-300">
           ← Sessions
         </Link>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white px-5 py-4">
+      <div className="rounded-xl border border-white/8 bg-gray-900 px-5 py-4">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
-            <h1 className="text-lg font-semibold text-gray-900">
+            <h1 className="text-lg font-semibold text-gray-100">
               {session.class?.name ?? "Session"}
             </h1>
             <p className="mt-0.5 text-sm text-gray-500">
@@ -103,7 +103,7 @@ export default async function AttendancePage({ params }: Props) {
               )}
             </p>
           </div>
-          <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[session.status] ?? "bg-gray-100 text-gray-500"}`}>
+          <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[session.status] ?? "bg-white/6 text-gray-500"}`}>
             {STATUS_LABELS[session.status] ?? session.status}
           </span>
         </div>

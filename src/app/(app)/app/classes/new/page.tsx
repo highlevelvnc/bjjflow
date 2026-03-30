@@ -23,16 +23,16 @@ export default async function NewClassPage() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div>
-        <Link href="/app/classes" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/classes" className="text-sm text-gray-500 hover:text-gray-300">
           ← Classes
         </Link>
-        <h1 className="mt-2 text-xl font-semibold text-gray-900">New Class</h1>
+        <h1 className="mt-2 text-xl font-semibold text-gray-100">New Class</h1>
         <p className="mt-0.5 text-sm text-gray-500">
           Create a class template. Generate sessions from it to schedule classes.
         </p>
       </div>
 
-      <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
         <CreateClassForm instructors={instructors} />
       </div>
     </div>

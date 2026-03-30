@@ -48,10 +48,10 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-950">
       <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <main className="flex-1 px-8 py-6">{children}</main>
+        <main className="flex-1 px-8 py-6 text-gray-100">{children}</main>
       </div>
     </div>
   )

@@ -105,7 +105,7 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
       {error && (
-        <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-md border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">{error}</div>
       )}
 
       <Field label="Class Name" required>
@@ -258,11 +258,11 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
         <button
           type="submit"
           disabled={createClass.isPending}
-          className="rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+          className="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400 disabled:opacity-50"
         >
           {createClass.isPending ? "Creating..." : "Create Class"}
         </button>
-        <a href="/app/classes" className="text-sm text-gray-500 hover:text-gray-700">
+        <a href="/app/classes" className="text-sm text-gray-500 hover:text-gray-300">
           Cancel
         </a>
       </div>
@@ -271,7 +271,7 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
 }
 
 const inputClass =
-  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+  "w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 focus:border-brand-500/50 focus:bg-white/8 focus:outline-none focus:ring-2 focus:ring-brand-500/20"
 
 function Field({
   label,
@@ -284,7 +284,7 @@ function Field({
 }) {
   return (
     <div className="space-y-1">
-      <label className="block text-sm font-medium text-gray-700">
+      <label className="block text-sm font-medium text-gray-300">
         {label}
         {required && <span className="ml-0.5 text-red-500">*</span>}
       </label>

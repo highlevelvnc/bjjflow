@@ -18,7 +18,7 @@ export default async function MembersPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">Members</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Members</h1>
           <p className="mt-0.5 text-sm text-gray-500">
             {members.length} active member{members.length !== 1 ? "s" : ""}
           </p>
@@ -26,13 +26,13 @@ export default async function MembersPage() {
         <div className="flex gap-2">
           <Link
             href="/app/members/invite"
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-md border border-white/12 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100"
           >
             Invite Instructor
           </Link>
           <Link
             href="/app/members/new"
-            className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
+            className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
           >
             Add Member
           </Link>
@@ -46,17 +46,17 @@ export default async function MembersPage() {
           action={
             <Link
               href="/app/members/new"
-              className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
+              className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
             >
               Add Member
             </Link>
           }
         />
       ) : (
-        <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-hidden rounded-xl border border-white/8 bg-gray-900">
+          <table className="min-w-full divide-y divide-white/8">
             <thead>
-              <tr className="bg-gray-50">
+              <tr className="bg-gray-800/50">
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Name</th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Role</th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Belt</th>
@@ -64,13 +64,13 @@ export default async function MembersPage() {
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Joined</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-white/6">
               {members.map((member) => (
-                <tr key={member.id} className="hover:bg-gray-50">
+                <tr key={member.id} className="hover:bg-white/4">
                   <td className="px-4 py-3">
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{member.full_name}</p>
-                      {member.email && <p className="text-xs text-gray-400">{member.email}</p>}
+                      <p className="text-sm font-medium text-gray-100">{member.full_name}</p>
+                      {member.email && <p className="text-xs text-gray-600">{member.email}</p>}
                     </div>
                   </td>
                   <td className="px-4 py-3">
@@ -81,11 +81,11 @@ export default async function MembersPage() {
                   </td>
                   <td className="px-4 py-3">
                     {member.has_portal_access ? (
-                      <span className="inline-flex items-center rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                      <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-medium text-emerald-400">
                         Active
                       </span>
                     ) : (
-                      <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+                      <span className="inline-flex items-center rounded-full bg-white/8 px-2 py-0.5 text-xs font-medium text-gray-500">
                         Managed
                       </span>
                     )}

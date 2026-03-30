@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 }
 
 const STATUS_STYLES: Record<string, string> = {
-  scheduled: "bg-blue-50 text-blue-700",
-  in_progress: "bg-yellow-50 text-yellow-700",
-  completed: "bg-green-50 text-green-700",
-  cancelled: "bg-gray-100 text-gray-400",
+  scheduled: "bg-blue-500/15 text-blue-400",
+  in_progress: "bg-yellow-500/15 text-yellow-400",
+  completed: "bg-emerald-500/15 text-emerald-400",
+  cancelled: "bg-white/6 text-gray-500",
 }
 
 const STATUS_LABELS: Record<string, string> = {
@@ -51,7 +51,7 @@ export default async function SessionsPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-900">Sessions</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Sessions</h1>
           <p className="mt-0.5 text-sm text-gray-500">
             {upcoming.length} upcoming · {past.length} past
           </p>
@@ -59,15 +59,15 @@ export default async function SessionsPage() {
       </div>
 
       {classes.length > 0 && (
-        <div className="rounded-lg border border-gray-200 bg-white p-4">
-          <h2 className="mb-3 text-sm font-medium text-gray-700">Generate upcoming sessions</h2>
+        <div className="rounded-xl border border-white/8 bg-gray-900 p-4">
+          <h2 className="mb-3 text-sm font-medium text-gray-300">Generate upcoming sessions</h2>
           <div className="space-y-2">
             {classes.map((cls) => (
               <div key={cls.id} className="flex items-center justify-between">
                 <div>
-                  <span className="text-sm text-gray-900">{cls.name}</span>
+                  <span className="text-sm text-gray-100">{cls.name}</span>
                   {cls.day_of_week !== null && (
-                    <span className="ml-2 text-xs text-gray-400">
+                    <span className="ml-2 text-xs text-gray-600">
                       {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][cls.day_of_week]}s · {formatTime(cls.start_time)}
                     </span>
                   )}
@@ -75,7 +75,7 @@ export default async function SessionsPage() {
                 {cls.day_of_week !== null ? (
                   <GenerateSessionsButton classId={cls.id} />
                 ) : (
-                  <span className="text-xs text-gray-400">No day set</span>
+                  <span className="text-xs text-gray-600">No day set</span>
                 )}
               </div>
             ))}
@@ -95,7 +95,7 @@ export default async function SessionsPage() {
             classes.length === 0 ? (
               <Link
                 href="/app/classes/new"
-                className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
+                className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
               >
                 Create a Class
               </Link>
@@ -119,13 +119,13 @@ type SessionWithMeta = Awaited<
 function SessionTable({ title, sessions, muted }: { title: string; sessions: SessionWithMeta[]; muted?: boolean }) {
   return (
     <div>
-      <h2 className={`mb-2 text-xs font-medium uppercase tracking-wide ${muted ? "text-gray-400" : "text-gray-500"}`}>
+      <h2 className={`mb-2 text-xs font-medium uppercase tracking-wide ${muted ? "text-gray-600" : "text-gray-500"}`}>
         {title}
       </h2>
-      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className="overflow-hidden rounded-xl border border-white/8 bg-gray-900">
+        <table className="min-w-full divide-y divide-white/8">
           <thead>
-            <tr className="bg-gray-50">
+            <tr className="bg-gray-800/50">
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Date</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Instructor</th>
@@ -134,19 +134,19 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
               <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-white/6">
             {sessions.map((session) => (
-              <tr key={session.id} className={muted ? "opacity-70" : ""}>
+              <tr key={session.id} className={muted ? "opacity-50" : ""}>
                 <td className="px-4 py-3">
-                  <p className="text-sm font-medium text-gray-900">{formatDate(session.date)}</p>
-                  <p className="text-xs text-gray-400">{formatTime(session.start_time)}–{formatTime(session.end_time)}</p>
+                  <p className="text-sm font-medium text-gray-100">{formatDate(session.date)}</p>
+                  <p className="text-xs text-gray-600">{formatTime(session.start_time)}–{formatTime(session.end_time)}</p>
                 </td>
                 <td className="px-4 py-3">
-                  <p className="text-sm text-gray-900">{session.class?.name ?? "—"}</p>
-                  {session.class?.gi_type && <p className="text-xs text-gray-400 capitalize">{session.class.gi_type}</p>}
+                  <p className="text-sm text-gray-100">{session.class?.name ?? "—"}</p>
+                  {session.class?.gi_type && <p className="text-xs text-gray-600 capitalize">{session.class.gi_type}</p>}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">
-                  {session.instructor?.full_name ?? <span className="text-gray-400">—</span>}
+                <td className="px-4 py-3 text-sm text-gray-400">
+                  {session.instructor?.full_name ?? <span className="text-gray-600">—</span>}
                 </td>
                 <td className="px-4 py-3">
                   <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[session.status] ?? ""}`}>
@@ -155,9 +155,9 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-500">
                   {session.status === "cancelled" ? (
-                    <span className="text-gray-300">—</span>
+                    <span className="text-gray-700">—</span>
                   ) : (
-                    <Link href={`/app/sessions/${session.id}/attendance`} className="hover:underline">
+                    <Link href={`/app/sessions/${session.id}/attendance`} className="text-gray-400 hover:underline">
                       {session.attendance_count} present
                     </Link>
                   )}

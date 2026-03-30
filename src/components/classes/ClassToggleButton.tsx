@@ -23,11 +23,11 @@ export function ClassToggleButton({ classId, isActive }: ClassToggleButtonProps)
 
   return (
     <div className="flex flex-col items-end gap-0.5">
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
       <button
         onClick={() => toggle.mutate({ id: classId, is_active: !isActive })}
         disabled={toggle.isPending}
-        className="text-sm text-gray-500 hover:text-gray-900 disabled:opacity-40"
+        className="text-sm text-gray-500 hover:text-gray-100 disabled:opacity-40"
       >
         {toggle.isPending ? "..." : isActive ? "Deactivate" : "Activate"}
       </button>

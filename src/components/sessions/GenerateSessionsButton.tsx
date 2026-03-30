@@ -25,13 +25,13 @@ export function GenerateSessionsButton({ classId }: GenerateSessionsButtonProps)
       <button
         onClick={() => generate.mutate({ classId, weeksAhead: 4 })}
         disabled={generate.isPending}
-        className="rounded border border-gray-300 px-2.5 py-1 text-xs font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+        className="rounded border border-white/12 px-2.5 py-1 text-xs font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100 disabled:opacity-40"
       >
         {generate.isPending ? "Generating…" : "Generate 4 weeks"}
       </button>
-      {result && <span className="text-xs text-green-600">{result}</span>}
+      {result && <span className="text-xs text-emerald-400">{result}</span>}
       {generate.error && (
-        <span className="text-xs text-red-500">{generate.error.message}</span>
+        <span className="text-xs text-red-400">{generate.error.message}</span>
       )}
     </div>
   )

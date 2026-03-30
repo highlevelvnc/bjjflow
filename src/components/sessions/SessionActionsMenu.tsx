@@ -36,13 +36,13 @@ export function SessionActionsMenu({ sessionId, status }: SessionActionsMenuProp
 
   if (status === "cancelled" || status === "completed") {
     return (
-      <span className="text-xs capitalize text-gray-400">{status}</span>
+      <span className="text-xs capitalize text-gray-600">{status}</span>
     )
   }
 
   return (
     <div className="flex flex-col items-end gap-1">
-      {error && <p className="text-xs text-red-500">{error}</p>}
+      {error && <p className="text-xs text-red-400">{error}</p>}
       <div className="flex items-center gap-2">
         {showCancelPrompt ? (
           <div className="flex items-center gap-2">
@@ -51,18 +51,18 @@ export function SessionActionsMenu({ sessionId, status }: SessionActionsMenuProp
               value={cancelReason}
               onChange={(e) => setCancelReason(e.target.value)}
               placeholder="Reason (optional)"
-              className="w-40 rounded border border-gray-300 px-2 py-1 text-xs"
+              className="w-40 rounded border border-white/12 bg-white/6 px-2 py-1 text-xs text-gray-100 placeholder-gray-600"
             />
             <button
               onClick={() => cancel.mutate({ id: sessionId, cancel_reason: cancelReason || undefined })}
               disabled={cancel.isPending}
-              className="text-xs text-red-600 hover:text-red-800 disabled:opacity-40"
+              className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
             >
               {cancel.isPending ? "…" : "Confirm"}
             </button>
             <button
               onClick={() => setShowCancelPrompt(false)}
-              className="text-xs text-gray-400 hover:text-gray-700"
+              className="text-xs text-gray-600 hover:text-gray-300"
             >
               ✕
             </button>
@@ -72,14 +72,14 @@ export function SessionActionsMenu({ sessionId, status }: SessionActionsMenuProp
             <button
               onClick={() => complete.mutate({ id: sessionId })}
               disabled={complete.isPending}
-              className="text-xs text-green-700 hover:text-green-900 disabled:opacity-40"
+              className="text-xs text-emerald-400 hover:text-emerald-300 disabled:opacity-40"
             >
               {complete.isPending ? "…" : "Complete"}
             </button>
-            <span className="text-gray-300">·</span>
+            <span className="text-gray-700">·</span>
             <button
               onClick={() => setShowCancelPrompt(true)}
-              className="text-xs text-red-500 hover:text-red-700"
+              className="text-xs text-red-400 hover:text-red-300"
             >
               Cancel
             </button>
