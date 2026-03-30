@@ -24,8 +24,7 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 function formatDate(d: string) {
-  const date = new Date(d + "T00:00:00")
-  return date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+  return new Date(d + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
 }
 
 function formatTime(t: string) {
@@ -59,7 +58,6 @@ export default async function SessionsPage() {
         </div>
       </div>
 
-      {/* Generate sessions per class */}
       {classes.length > 0 && (
         <div className="rounded-lg border border-gray-200 bg-white p-4">
           <h2 className="mb-3 text-sm font-medium text-gray-700">Generate upcoming sessions</h2>
@@ -96,7 +94,7 @@ export default async function SessionsPage() {
           action={
             classes.length === 0 ? (
               <Link
-                href="/classes/new"
+                href="/app/classes/new"
                 className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
               >
                 Create a Class
@@ -106,12 +104,8 @@ export default async function SessionsPage() {
         />
       ) : (
         <div className="space-y-6">
-          {upcoming.length > 0 && (
-            <SessionTable title="Upcoming" sessions={upcoming} />
-          )}
-          {past.length > 0 && (
-            <SessionTable title="Past" sessions={past} muted />
-          )}
+          {upcoming.length > 0 && <SessionTable title="Upcoming" sessions={upcoming} />}
+          {past.length > 0 && <SessionTable title="Past" sessions={past} muted />}
         </div>
       )}
     </div>
@@ -122,15 +116,7 @@ type SessionWithMeta = Awaited<
   ReturnType<Awaited<ReturnType<typeof createServerCaller>>["session"]["list"]>
 >[number]
 
-function SessionTable({
-  title,
-  sessions,
-  muted,
-}: {
-  title: string
-  sessions: SessionWithMeta[]
-  muted?: boolean
-}) {
+function SessionTable({ title, sessions, muted }: { title: string; sessions: SessionWithMeta[]; muted?: boolean }) {
   return (
     <div>
       <h2 className={`mb-2 text-xs font-medium uppercase tracking-wide ${muted ? "text-gray-400" : "text-gray-500"}`}>
@@ -140,24 +126,12 @@ function SessionTable({
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Date
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Class
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Instructor
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Status
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Attendance
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
-                Actions
-              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Date</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Instructor</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Status</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Attendance</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -165,23 +139,17 @@ function SessionTable({
               <tr key={session.id} className={muted ? "opacity-70" : ""}>
                 <td className="px-4 py-3">
                   <p className="text-sm font-medium text-gray-900">{formatDate(session.date)}</p>
-                  <p className="text-xs text-gray-400">
-                    {formatTime(session.start_time)}–{formatTime(session.end_time)}
-                  </p>
+                  <p className="text-xs text-gray-400">{formatTime(session.start_time)}–{formatTime(session.end_time)}</p>
                 </td>
                 <td className="px-4 py-3">
                   <p className="text-sm text-gray-900">{session.class?.name ?? "—"}</p>
-                  {session.class?.gi_type && (
-                    <p className="text-xs text-gray-400 capitalize">{session.class.gi_type}</p>
-                  )}
+                  {session.class?.gi_type && <p className="text-xs text-gray-400 capitalize">{session.class.gi_type}</p>}
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
                   {session.instructor?.full_name ?? <span className="text-gray-400">—</span>}
                 </td>
                 <td className="px-4 py-3">
-                  <span
-                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[session.status] ?? ""}`}
-                  >
+                  <span className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ${STATUS_STYLES[session.status] ?? ""}`}>
                     {STATUS_LABELS[session.status] ?? session.status}
                   </span>
                 </td>
@@ -189,10 +157,7 @@ function SessionTable({
                   {session.status === "cancelled" ? (
                     <span className="text-gray-300">—</span>
                   ) : (
-                    <Link
-                      href={`/sessions/${session.id}/attendance`}
-                      className="hover:underline"
-                    >
+                    <Link href={`/app/sessions/${session.id}/attendance`} className="hover:underline">
                       {session.attendance_count} present
                     </Link>
                   )}

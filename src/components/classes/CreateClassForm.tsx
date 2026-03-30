@@ -62,7 +62,7 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
 
   const createClass = trpc.class.create.useMutation({
     onSuccess: () => {
-      router.push("/classes")
+      router.push("/app/classes")
       router.refresh()
     },
     onError: (err) => setError(err.message),
@@ -262,7 +262,7 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
         >
           {createClass.isPending ? "Creating..." : "Create Class"}
         </button>
-        <a href="/classes" className="text-sm text-gray-500 hover:text-gray-700">
+        <a href="/app/classes" className="text-sm text-gray-500 hover:text-gray-700">
           Cancel
         </a>
       </div>

@@ -66,7 +66,6 @@ export default async function AttendancePage({ params }: Props) {
 
   const { session, members, attendance } = data
 
-  // Typed props for the client component — explicit, no tRPC type leakage
   const trackerMembers: AttendanceMember[] = members.map((m) => ({
     id: m.id,
     full_name: m.full_name,
@@ -85,14 +84,12 @@ export default async function AttendancePage({ params }: Props) {
 
   return (
     <div className="mx-auto max-w-2xl space-y-4">
-      {/* Breadcrumb */}
       <div>
-        <Link href="/sessions" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/sessions" className="text-sm text-gray-500 hover:text-gray-700">
           ← Sessions
         </Link>
       </div>
 
-      {/* Session header */}
       <div className="rounded-lg border border-gray-200 bg-white px-5 py-4">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
@@ -106,17 +103,12 @@ export default async function AttendancePage({ params }: Props) {
               )}
             </p>
           </div>
-          <span
-            className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${
-              STATUS_STYLES[session.status] ?? "bg-gray-100 text-gray-500"
-            }`}
-          >
+          <span className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-medium ${STATUS_STYLES[session.status] ?? "bg-gray-100 text-gray-500"}`}>
             {STATUS_LABELS[session.status] ?? session.status}
           </span>
         </div>
       </div>
 
-      {/* Attendance tracker (client component) */}
       <AttendanceTracker
         sessionId={id}
         sessionStatus={session.status}

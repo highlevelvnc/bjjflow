@@ -16,7 +16,6 @@ export default async function MembersPage() {
 
   return (
     <div className="space-y-4">
-      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-xl font-semibold text-gray-900">Members</h1>
@@ -26,13 +25,13 @@ export default async function MembersPage() {
         </div>
         <div className="flex gap-2">
           <Link
-            href="/members/invite"
+            href="/app/members/invite"
             className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Invite Instructor
           </Link>
           <Link
-            href="/members/new"
+            href="/app/members/new"
             className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
           >
             Add Member
@@ -40,14 +39,13 @@ export default async function MembersPage() {
         </div>
       </div>
 
-      {/* Member list */}
       {members.length === 0 ? (
         <EmptyState
           title="No members yet"
           description="Add your first student or invite an instructor to get started."
           action={
             <Link
-              href="/members/new"
+              href="/app/members/new"
               className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
             >
               Add Member
@@ -59,21 +57,11 @@ export default async function MembersPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead>
               <tr className="bg-gray-50">
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Name
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Role
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Belt
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Portal
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Joined
-                </th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Name</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Role</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Belt</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Portal</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Joined</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
@@ -82,9 +70,7 @@ export default async function MembersPage() {
                   <td className="px-4 py-3">
                     <div>
                       <p className="text-sm font-medium text-gray-900">{member.full_name}</p>
-                      {member.email && (
-                        <p className="text-xs text-gray-400">{member.email}</p>
-                      )}
+                      {member.email && <p className="text-xs text-gray-400">{member.email}</p>}
                     </div>
                   </td>
                   <td className="px-4 py-3">

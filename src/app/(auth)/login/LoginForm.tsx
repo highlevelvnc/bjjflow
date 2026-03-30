@@ -5,12 +5,12 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { createBrowserSupabase } from "@/server/supabase/browser"
 
 const inputClass =
-  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 placeholder-gray-400 focus:border-gray-500 focus:outline-none focus:ring-1 focus:ring-gray-500"
+  "w-full rounded-lg border border-gray-300 bg-white px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-400 shadow-sm transition-colors focus:border-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500/20"
 
 export function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get("redirectTo") ?? "/"
+  const redirectTo = searchParams.get("redirectTo") ?? "/app"
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -26,13 +26,11 @@ export function LoginForm() {
     const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
     if (authError) {
-      // Supabase returns technical messages — surface a single user-friendly string
       setError("Invalid email or password. Please try again.")
       setPending(false)
       return
     }
 
-    // router.refresh() re-runs the layout session check with the new cookie
     router.push(redirectTo)
     router.refresh()
   }
@@ -40,13 +38,13 @@ export function LoginForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       {error && (
-        <div className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>
+        <div className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700 ring-1 ring-red-200">
+          {error}
+        </div>
       )}
 
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Email
-        </label>
+      <div className="space-y-1.5">
+        <label className="block text-sm font-medium text-gray-700">Email address</label>
         <input
           type="email"
           value={email}
@@ -58,10 +56,8 @@ export function LoginForm() {
         />
       </div>
 
-      <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">
-          Password
-        </label>
+      <div className="space-y-1.5">
+        <label className="block text-sm font-medium text-gray-700">Password</label>
         <input
           type="password"
           value={password}
@@ -76,7 +72,7 @@ export function LoginForm() {
       <button
         type="submit"
         disabled={pending}
-        className="w-full rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-700 disabled:opacity-50"
+        className="mt-2 w-full rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 transition-colors disabled:opacity-60"
       >
         {pending ? "Signing in…" : "Sign in"}
       </button>

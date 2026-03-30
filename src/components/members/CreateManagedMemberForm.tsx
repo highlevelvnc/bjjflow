@@ -27,7 +27,7 @@ export function CreateManagedMemberForm() {
 
   const createMember = trpc.member.createManaged.useMutation({
     onSuccess: () => {
-      router.push("/members")
+      router.push("/app/members")
       router.refresh()
     },
     onError: (err) => {
@@ -185,7 +185,7 @@ export function CreateManagedMemberForm() {
         >
           {createMember.isPending ? "Creating..." : "Create Member"}
         </button>
-        <a href="/members" className="text-sm text-gray-500 hover:text-gray-700">
+        <a href="/app/members" className="text-sm text-gray-500 hover:text-gray-700">
           Cancel
         </a>
       </div>

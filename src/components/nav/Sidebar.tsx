@@ -12,10 +12,10 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard", href: "/" },
-  { label: "Members", href: "/members" },
-  { label: "Classes", href: "/classes" },
-  { label: "Sessions", href: "/sessions" },
+  { label: "Dashboard", href: "/app" },
+  { label: "Members", href: "/app/members" },
+  { label: "Classes", href: "/app/classes" },
+  { label: "Sessions", href: "/app/sessions" },
 ]
 
 interface SidebarProps {
@@ -39,7 +39,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
         <ul className="space-y-0.5">
           {NAV_ITEMS.map((item) => {
             const isActive =
-              item.href === "/" ? pathname === "/" : pathname.startsWith(item.href)
+              item.href === "/app" ? pathname === "/app" : pathname.startsWith(item.href)
             return (
               <li key={item.href}>
                 <Link

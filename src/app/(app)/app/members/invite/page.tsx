@@ -28,9 +28,8 @@ export default async function InvitePage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-6">
-      {/* Header */}
       <div>
-        <Link href="/members" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/members" className="text-sm text-gray-500 hover:text-gray-700">
           ← Members
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-900">Invite Instructor</h1>
@@ -40,13 +39,11 @@ export default async function InvitePage() {
         </p>
       </div>
 
-      {/* Invite form */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <h2 className="mb-4 text-sm font-medium text-gray-900">New Invite</h2>
         <InviteForm />
       </div>
 
-      {/* Pending invites */}
       {pendingInvites.length > 0 && (
         <div className="rounded-lg border border-gray-200 bg-white">
           <div className="border-b border-gray-200 px-5 py-3">
@@ -57,7 +54,6 @@ export default async function InvitePage() {
           <ul className="divide-y divide-gray-100">
             {pendingInvites.map((invite) => {
               const status = inviteStatus(invite)
-              const expiresAt = new Date(invite.expires_at)
               return (
                 <li key={invite.id} className="flex items-center gap-4 px-5 py-3">
                   <div className="min-w-0 flex-1">
@@ -66,12 +62,10 @@ export default async function InvitePage() {
                       {invite.token}
                     </p>
                     <p className="mt-0.5 text-xs text-gray-400">
-                      Expires {expiresAt.toLocaleDateString()}
+                      Expires {new Date(invite.expires_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}
-                  >
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}>
                     {status.label}
                   </span>
                 </li>
@@ -81,7 +75,6 @@ export default async function InvitePage() {
         </div>
       )}
 
-      {/* Past invites */}
       {pastInvites.length > 0 && (
         <div className="rounded-lg border border-gray-200 bg-white">
           <div className="border-b border-gray-200 px-5 py-3">
@@ -98,9 +91,7 @@ export default async function InvitePage() {
                       Created {new Date(invite.created_at).toLocaleDateString()}
                     </p>
                   </div>
-                  <span
-                    className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}
-                  >
+                  <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}>
                     {status.label}
                   </span>
                 </li>

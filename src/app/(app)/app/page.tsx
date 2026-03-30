@@ -18,12 +18,10 @@ function formatTime(t: string) {
 export default async function DashboardPage() {
   const trpc = await createServerCaller()
 
-  // All fetches in one parallel batch — single tRPC context, no waterfall.
   const [academy, counts, upcoming, atRisk] = await Promise.all([
     trpc.academy.getCurrent(),
     trpc.member.getCounts(),
     trpc.session.listUpcoming({ limit: 5 }),
-    // getAtRisk is a soft widget — degrade gracefully rather than 500-ing the whole page
     trpc.member.getAtRisk().catch(() => [] as Awaited<ReturnType<typeof trpc.member.getAtRisk>>),
   ])
 
@@ -39,10 +37,10 @@ export default async function DashboardPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Total Members" value={counts.total} href="/members" />
-        <StatCard label="Active Students" value={counts.students} href="/members" />
-        <StatCard label="Instructors" value={counts.instructors} href="/members" />
-        <StatCard label="Admins" value={counts.admins} href="/members" />
+        <StatCard label="Total Members" value={counts.total} href="/app/members" />
+        <StatCard label="Active Students" value={counts.students} href="/app/members" />
+        <StatCard label="Instructors" value={counts.instructors} href="/app/members" />
+        <StatCard label="Admins" value={counts.admins} href="/app/members" />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-2">
@@ -50,7 +48,7 @@ export default async function DashboardPage() {
         <section className="rounded-lg border border-gray-200 bg-white">
           <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3">
             <h2 className="text-sm font-medium text-gray-900">Upcoming Sessions</h2>
-            <Link href="/sessions" className="text-xs text-gray-500 hover:text-gray-700">
+            <Link href="/app/sessions" className="text-xs text-gray-500 hover:text-gray-700">
               View all →
             </Link>
           </div>
@@ -59,7 +57,7 @@ export default async function DashboardPage() {
             <div className="px-5 py-8 text-center">
               <p className="text-sm text-gray-500">No upcoming sessions.</p>
               <Link
-                href="/sessions"
+                href="/app/sessions"
                 className="mt-2 inline-block text-sm text-gray-900 underline hover:no-underline"
               >
                 Generate sessions
@@ -70,10 +68,9 @@ export default async function DashboardPage() {
               {upcoming.map((session) => (
                 <li key={session.id}>
                   <Link
-                    href={`/sessions/${session.id}/attendance`}
+                    href={`/app/sessions/${session.id}/attendance`}
                     className="flex items-center gap-4 px-5 py-3 hover:bg-gray-50"
                   >
-                    {/* Date chip */}
                     <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-gray-100 text-center">
                       <span className="text-[10px] font-medium uppercase leading-none text-gray-500">
                         {new Date(session.date + "T00:00:00").toLocaleDateString("en-US", {
@@ -116,16 +113,14 @@ export default async function DashboardPage() {
         <section className="rounded-lg border border-gray-200 bg-white">
           <div className="flex items-center justify-between border-b border-gray-200 px-5 py-3">
             <h2 className="text-sm font-medium text-gray-900">At-Risk Students</h2>
-            <Link href="/members" className="text-xs text-gray-500 hover:text-gray-700">
+            <Link href="/app/members" className="text-xs text-gray-500 hover:text-gray-700">
               View all →
             </Link>
           </div>
 
           {atRisk.length === 0 ? (
             <div className="px-5 py-8 text-center">
-              <p className="text-sm text-gray-500">
-                No at-risk students detected.
-              </p>
+              <p className="text-sm text-gray-500">No at-risk students detected.</p>
               <p className="mt-1 text-xs text-gray-400">
                 Requires ≥ 4 completed sessions in the last 30 days.
               </p>
@@ -134,14 +129,12 @@ export default async function DashboardPage() {
             <ul className="divide-y divide-gray-100">
               {atRisk.map((student) => (
                 <li key={student.id} className="flex items-center gap-3 px-5 py-3">
-                  {/* Risk indicator */}
                   <div
                     className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-red-100 text-xs font-bold text-red-700"
                     title={`${student.rate}% attendance`}
                   >
                     {student.rate}%
                   </div>
-
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900">
                       {student.full_name}
@@ -163,25 +156,25 @@ export default async function DashboardPage() {
         <h2 className="text-sm font-medium text-gray-900">Quick Actions</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link
-            href="/members/new"
+            href="/app/members/new"
             className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
           >
             Add Member
           </Link>
           <Link
-            href="/classes/new"
+            href="/app/classes/new"
             className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             New Class
           </Link>
           <Link
-            href="/sessions"
+            href="/app/sessions"
             className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Sessions
           </Link>
           <Link
-            href="/members/invite"
+            href="/app/members/invite"
             className="rounded-md border border-gray-300 px-3 py-1.5 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
             Invite Instructor
@@ -192,15 +185,7 @@ export default async function DashboardPage() {
   )
 }
 
-function StatCard({
-  label,
-  value,
-  href,
-}: {
-  label: string
-  value: number
-  href: string
-}) {
+function StatCard({ label, value, href }: { label: string; value: number; href: string }) {
   return (
     <Link
       href={href}

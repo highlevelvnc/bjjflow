@@ -48,7 +48,7 @@ export default async function ClassesPage() {
           <p className="mt-0.5 text-sm text-gray-500">{active.length} active class{active.length !== 1 ? "es" : ""}</p>
         </div>
         <Link
-          href="/classes/new"
+          href="/app/classes/new"
           className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
         >
           New Class
@@ -61,7 +61,7 @@ export default async function ClassesPage() {
           description="Create your first class template to start scheduling sessions."
           action={
             <Link
-              href="/classes/new"
+              href="/app/classes/new"
               className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
             >
               New Class
@@ -70,12 +70,8 @@ export default async function ClassesPage() {
         />
       ) : (
         <div className="space-y-6">
-          {active.length > 0 && (
-            <ClassGroup title="Active" classes={active} />
-          )}
-          {inactive.length > 0 && (
-            <ClassGroup title="Inactive" classes={inactive} muted />
-          )}
+          {active.length > 0 && <ClassGroup title="Active" classes={active} />}
+          {inactive.length > 0 && <ClassGroup title="Inactive" classes={inactive} muted />}
         </div>
       )}
     </div>
@@ -84,15 +80,7 @@ export default async function ClassesPage() {
 
 type ClassRow = Awaited<ReturnType<Awaited<ReturnType<typeof createServerCaller>>["class"]["list"]>>[number]
 
-function ClassGroup({
-  title,
-  classes,
-  muted,
-}: {
-  title: string
-  classes: ClassRow[]
-  muted?: boolean
-}) {
+function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRow[]; muted?: boolean }) {
   return (
     <div>
       <h2 className={`mb-2 text-xs font-medium uppercase tracking-wide ${muted ? "text-gray-400" : "text-gray-500"}`}>
@@ -102,21 +90,11 @@ function ClassGroup({
         <table className="min-w-full divide-y divide-gray-200">
           <thead>
             <tr className="bg-gray-50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Class
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Schedule
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Type
-              </th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                Capacity
-              </th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
-                Actions
-              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Schedule</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Type</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Capacity</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
@@ -128,29 +106,18 @@ function ClassGroup({
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-600">
                   {cls.day_of_week !== null ? (
-                    <span>
-                      {DAY_LABELS[cls.day_of_week]} · {formatTime(cls.start_time)}–{formatTime(cls.end_time)}
-                    </span>
+                    <span>{DAY_LABELS[cls.day_of_week]} · {formatTime(cls.start_time)}–{formatTime(cls.end_time)}</span>
                   ) : (
                     <span className="text-gray-400">No schedule</span>
                   )}
                 </td>
                 <td className="px-4 py-3">
-                  <span className="text-sm text-gray-600">
-                    {CLASS_TYPE_LABELS[cls.class_type] ?? cls.class_type}
-                  </span>
-                  <span className="ml-1 text-xs text-gray-400">
-                    · {GI_TYPE_LABELS[cls.gi_type] ?? cls.gi_type}
-                  </span>
+                  <span className="text-sm text-gray-600">{CLASS_TYPE_LABELS[cls.class_type] ?? cls.class_type}</span>
+                  <span className="ml-1 text-xs text-gray-400">· {GI_TYPE_LABELS[cls.gi_type] ?? cls.gi_type}</span>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-500">
-                  {cls.max_students ?? "Unlimited"}
-                </td>
+                <td className="px-4 py-3 text-sm text-gray-500">{cls.max_students ?? "Unlimited"}</td>
                 <td className="px-4 py-3 text-right">
-                  <ClassToggleButton
-                    classId={cls.id}
-                    isActive={cls.is_active}
-                  />
+                  <ClassToggleButton classId={cls.id} isActive={cls.is_active} />
                 </td>
               </tr>
             ))}

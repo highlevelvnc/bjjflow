@@ -9,9 +9,8 @@ export const metadata: Metadata = {
 export default function NewMemberPage() {
   return (
     <div className="mx-auto max-w-lg space-y-6">
-      {/* Header */}
       <div>
-        <Link href="/members" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/members" className="text-sm text-gray-500 hover:text-gray-700">
           ← Members
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-900">Add Member</h1>
@@ -20,7 +19,6 @@ export default function NewMemberPage() {
         </p>
       </div>
 
-      {/* Form */}
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <CreateManagedMemberForm />
       </div>

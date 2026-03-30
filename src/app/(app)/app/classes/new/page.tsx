@@ -10,7 +10,6 @@ export const metadata: Metadata = {
 export default async function NewClassPage() {
   const trpc = await createServerCaller()
 
-  // Fetch instructors and admins in parallel for the instructor selector
   const [instructorMembers, adminMembers] = await Promise.all([
     trpc.member.list({ role: "instructor" }),
     trpc.member.list({ role: "admin" }),
@@ -24,7 +23,7 @@ export default async function NewClassPage() {
   return (
     <div className="mx-auto max-w-xl space-y-6">
       <div>
-        <Link href="/classes" className="text-sm text-gray-500 hover:text-gray-700">
+        <Link href="/app/classes" className="text-sm text-gray-500 hover:text-gray-700">
           ← Classes
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-900">New Class</h1>
