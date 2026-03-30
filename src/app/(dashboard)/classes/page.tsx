@@ -1,0 +1,162 @@
+import type { Metadata } from "next"
+import Link from "next/link"
+import { createServerCaller } from "@/lib/trpc/server"
+import { EmptyState } from "@/components/ui/EmptyState"
+import { ClassToggleButton } from "@/components/classes/ClassToggleButton"
+
+export const metadata: Metadata = {
+  title: "Classes",
+}
+
+const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+const CLASS_TYPE_LABELS: Record<string, string> = {
+  regular: "Regular",
+  open_mat: "Open Mat",
+  competition_prep: "Comp Prep",
+  private: "Private",
+  seminar: "Seminar",
+  kids: "Kids",
+}
+
+const GI_TYPE_LABELS: Record<string, string> = {
+  gi: "Gi",
+  nogi: "No-Gi",
+  both: "Gi + No-Gi",
+}
+
+function formatTime(t: string) {
+  const [h, m] = t.split(":").map(Number)
+  if (h === undefined || m === undefined) return t
+  const ampm = h >= 12 ? "PM" : "AM"
+  const hour = h % 12 || 12
+  return `${hour}:${String(m).padStart(2, "0")} ${ampm}`
+}
+
+export default async function ClassesPage() {
+  const trpc = await createServerCaller()
+  const classes = await trpc.class.list({ activeOnly: false })
+
+  const active = classes.filter((c) => c.is_active)
+  const inactive = classes.filter((c) => !c.is_active)
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-xl font-semibold text-gray-900">Classes</h1>
+          <p className="mt-0.5 text-sm text-gray-500">{active.length} active class{active.length !== 1 ? "es" : ""}</p>
+        </div>
+        <Link
+          href="/classes/new"
+          className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
+        >
+          New Class
+        </Link>
+      </div>
+
+      {classes.length === 0 ? (
+        <EmptyState
+          title="No classes yet"
+          description="Create your first class template to start scheduling sessions."
+          action={
+            <Link
+              href="/classes/new"
+              className="rounded-md bg-gray-900 px-3 py-1.5 text-sm font-medium text-white hover:bg-gray-700"
+            >
+              New Class
+            </Link>
+          }
+        />
+      ) : (
+        <div className="space-y-6">
+          {active.length > 0 && (
+            <ClassGroup title="Active" classes={active} />
+          )}
+          {inactive.length > 0 && (
+            <ClassGroup title="Inactive" classes={inactive} muted />
+          )}
+        </div>
+      )}
+    </div>
+  )
+}
+
+type ClassRow = Awaited<ReturnType<Awaited<ReturnType<typeof createServerCaller>>["class"]["list"]>>[number]
+
+function ClassGroup({
+  title,
+  classes,
+  muted,
+}: {
+  title: string
+  classes: ClassRow[]
+  muted?: boolean
+}) {
+  return (
+    <div>
+      <h2 className={`mb-2 text-xs font-medium uppercase tracking-wide ${muted ? "text-gray-400" : "text-gray-500"}`}>
+        {title}
+      </h2>
+      <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead>
+            <tr className="bg-gray-50">
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                Class
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                Schedule
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                Type
+              </th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
+                Capacity
+              </th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-100">
+            {classes.map((cls) => (
+              <tr key={cls.id} className={muted ? "opacity-60" : ""}>
+                <td className="px-4 py-3">
+                  <p className="text-sm font-medium text-gray-900">{cls.name}</p>
+                  {cls.room && <p className="text-xs text-gray-400">{cls.room}</p>}
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-600">
+                  {cls.day_of_week !== null ? (
+                    <span>
+                      {DAY_LABELS[cls.day_of_week]} · {formatTime(cls.start_time)}–{formatTime(cls.end_time)}
+                    </span>
+                  ) : (
+                    <span className="text-gray-400">No schedule</span>
+                  )}
+                </td>
+                <td className="px-4 py-3">
+                  <span className="text-sm text-gray-600">
+                    {CLASS_TYPE_LABELS[cls.class_type] ?? cls.class_type}
+                  </span>
+                  <span className="ml-1 text-xs text-gray-400">
+                    · {GI_TYPE_LABELS[cls.gi_type] ?? cls.gi_type}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-sm text-gray-500">
+                  {cls.max_students ?? "Unlimited"}
+                </td>
+                <td className="px-4 py-3 text-right">
+                  <ClassToggleButton
+                    classId={cls.id}
+                    isActive={cls.is_active}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  )
+}
