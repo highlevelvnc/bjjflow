@@ -7,7 +7,7 @@ import { createMiddlewareSupabase } from "@/server/supabase/middleware"
 // ─────────────────────────────────────────────────────────────────────────────
 
 /** Routes that are always public — no session required. */
-const PUBLIC_ROUTES = ["/", "/pricing", "/features", "/contact"]
+const PUBLIC_ROUTES = ["/pricing", "/features", "/contact"]
 
 /** Auth routes — redirect to /dashboard if already signed in. */
 const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
@@ -74,7 +74,7 @@ export async function middleware(request: NextRequest) {
     if (session) {
       const academyId = session.user.app_metadata?.academy_id as string | undefined
       return NextResponse.redirect(
-        new URL(academyId ? "/dashboard" : "/setup", request.url),
+        new URL(academyId ? "/" : "/setup", request.url),
       )
     }
     return response
