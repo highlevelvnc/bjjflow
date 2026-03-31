@@ -38,10 +38,12 @@ function formatTime(t: string) {
 export default async function SessionsPage() {
   const trpc = await createServerCaller()
 
-  const [sessions, classes] = await Promise.all([
+  const [sessionResult, classResult] = await Promise.all([
     trpc.session.list(),
     trpc.class.list(),
   ])
+  const sessions = sessionResult.items
+  const classes = classResult.items
 
   const today = new Date().toISOString().split("T")[0]!
   const upcoming = sessions.filter((s) => s.date >= today && s.status !== "cancelled")
@@ -114,7 +116,7 @@ export default async function SessionsPage() {
 
 type SessionWithMeta = Awaited<
   ReturnType<Awaited<ReturnType<typeof createServerCaller>>["session"]["list"]>
->[number]
+>["items"][number]
 
 function SessionTable({ title, sessions, muted }: { title: string; sessions: SessionWithMeta[]; muted?: boolean }) {
   return (

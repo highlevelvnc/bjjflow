@@ -35,15 +35,15 @@ export type TRPCContext = {
 export const createTRPCContext = cache(async (): Promise<TRPCContext> => {
   const supabase = await createServerSupabase()
   const {
-    data: { session },
-  } = await supabase.auth.getSession()
+    data: { user },
+  } = await supabase.auth.getUser()
 
-  if (!session) {
+  if (!user) {
     return { userId: null, academyId: null, member: null }
   }
 
   // Academy ID must come from JWT — never trust client-supplied context.
-  const academyId = (session.user.app_metadata?.academy_id as string | undefined) ?? null
+  const academyId = (user.app_metadata?.academy_id as string | undefined) ?? null
 
   let member: MemberRow | null = null
 
@@ -51,7 +51,7 @@ export const createTRPCContext = cache(async (): Promise<TRPCContext> => {
     const { data } = await supabase
       .from("members")
       .select("*")
-      .eq("user_id", session.user.id)
+      .eq("user_id", user.id)
       .eq("academy_id", academyId)
       .eq("status", "active")
       .maybeSingle()
@@ -60,7 +60,7 @@ export const createTRPCContext = cache(async (): Promise<TRPCContext> => {
   }
 
   return {
-    userId: session.user.id,
+    userId: user.id,
     academyId,
     member,
   }

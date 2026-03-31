@@ -34,6 +34,7 @@ export type Database = {
           logo_url: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
+          max_members: number
           allow_student_self_checkin: boolean
           allow_student_portal: boolean
           created_at: string

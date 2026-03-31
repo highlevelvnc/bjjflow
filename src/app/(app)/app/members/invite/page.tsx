@@ -21,7 +21,7 @@ function inviteStatus(invite: {
 
 export default async function InvitePage() {
   const trpc = await createServerCaller()
-  const invites = await trpc.invite.list()
+  const { items: invites } = await trpc.invite.list()
 
   const pendingInvites = invites.filter((i) => !i.accepted_at && !i.revoked_at)
   const pastInvites = invites.filter((i) => i.accepted_at || i.revoked_at)

@@ -47,19 +47,34 @@ export const inviteRouter = router({
     }),
 
   /** Lists all invites for the current academy, newest first. */
-  list: adminProcedure.query(async ({ ctx }) => {
-    const supabase = await createServerSupabase()
+  list: adminProcedure
+    .input(
+      z
+        .object({
+          limit: z.number().int().min(1).max(100).default(50),
+          offset: z.number().int().min(0).default(0),
+        })
+        .optional(),
+    )
+    .query(async ({ ctx, input }) => {
+      const limit = input?.limit ?? 50
+      const offset = input?.offset ?? 0
+      const supabase = await createServerSupabase()
 
-    const { data, error } = await supabase
-      .from("invites")
-      .select("id, email, role, invite_type, token, expires_at, accepted_at, revoked_at, created_at")
-      .eq("academy_id", ctx.academyId!)
-      .order("created_at", { ascending: false })
+      const { data, count, error } = await supabase
+        .from("invites")
+        .select("id, email, role, invite_type, token, expires_at, accepted_at, revoked_at, created_at", {
+          count: "exact",
+          head: false,
+        })
+        .eq("academy_id", ctx.academyId!)
+        .order("created_at", { ascending: false })
+        .range(offset, offset + limit - 1)
 
-    if (error) throw new Error("Failed to fetch invites")
+      if (error) throw new Error("Failed to fetch invites")
 
-    return data ?? []
-  }),
+      return { items: data ?? [], total: count ?? 0, limit, offset }
+    }),
 
   /** Revokes a pending invite. */
   revoke: adminProcedure

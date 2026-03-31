@@ -6,6 +6,8 @@ import { inviteRouter } from "./routers/invite"
 import { classRouter } from "./routers/class"
 import { sessionRouter } from "./routers/session"
 import { attendanceRouter } from "./routers/attendance"
+import { checkinRouter } from "./routers/checkin"
+import { portalRouter } from "./routers/portal"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -14,14 +16,8 @@ export const appRouter = router({
   class: classRouter,
   session: sessionRouter,
   attendance: attendanceRouter,
-  // Implemented in later weeks per MVP_STRATEGY.md:
-  // curriculum: curriculumRouter,
-  // billing: billingRouter,
-  // studentPlan: studentPlanRouter,
-  // notification: notificationRouter,
-  // automation: automationRouter,
-  // insight: insightRouter,
-  // audit: auditRouter,
+  checkin: checkinRouter,
+  portal: portalRouter,
 })
 
 export type AppRouter = typeof appRouter

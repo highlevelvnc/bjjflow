@@ -10,14 +10,14 @@ export const metadata: Metadata = {
 export default async function NewClassPage() {
   const trpc = await createServerCaller()
 
-  const [instructorMembers, adminMembers] = await Promise.all([
+  const [instructorResult, adminResult] = await Promise.all([
     trpc.member.list({ role: "instructor" }),
     trpc.member.list({ role: "admin" }),
   ])
 
   const instructors = [
-    ...adminMembers.map((m) => ({ id: m.id, full_name: m.full_name })),
-    ...instructorMembers.map((m) => ({ id: m.id, full_name: m.full_name })),
+    ...adminResult.items.map((m) => ({ id: m.id, full_name: m.full_name })),
+    ...instructorResult.items.map((m) => ({ id: m.id, full_name: m.full_name })),
   ]
 
   return (

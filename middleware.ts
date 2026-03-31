@@ -13,7 +13,7 @@ import { createMiddlewareSupabase } from "@/server/supabase/middleware"
 const PUBLIC_PREFIXES = ["/", "/pricing", "/features", "/contact"]
 
 /** Auth routes — redirect to /app if already signed in. */
-const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email"]
+const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email", "/callback"]
 
 /** Onboarding — requires session but no academy yet. */
 const ONBOARDING_PREFIX = "/setup"

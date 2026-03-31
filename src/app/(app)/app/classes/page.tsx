@@ -35,7 +35,7 @@ function formatTime(t: string) {
 
 export default async function ClassesPage() {
   const trpc = await createServerCaller()
-  const classes = await trpc.class.list({ activeOnly: false })
+  const { items: classes } = await trpc.class.list({ activeOnly: false })
 
   const active = classes.filter((c) => c.is_active)
   const inactive = classes.filter((c) => !c.is_active)
@@ -78,7 +78,7 @@ export default async function ClassesPage() {
   )
 }
 
-type ClassRow = Awaited<ReturnType<Awaited<ReturnType<typeof createServerCaller>>["class"]["list"]>>[number]
+type ClassRow = Awaited<ReturnType<Awaited<ReturnType<typeof createServerCaller>>["class"]["list"]>>["items"][number]
 
 function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRow[]; muted?: boolean }) {
   return (

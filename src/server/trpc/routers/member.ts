@@ -5,6 +5,19 @@ import { protectedProcedure, instructorProcedure, adminProcedure } from "../proc
 import { createServerSupabase } from "@/server/supabase/server"
 import { BELT_ORDER } from "@/lib/constants/belts"
 
+const UpdateMemberInput = z.object({
+  id: z.string().uuid(),
+  full_name: z.string().min(2).max(100).optional(),
+  email: z.string().email().optional().or(z.literal("")),
+  role: z.enum(["admin", "instructor", "student"]).optional(),
+  belt_rank: z.enum(BELT_ORDER).optional(),
+  stripes: z.number().int().min(0).max(4).optional(),
+  phone: z.string().max(30).optional().or(z.literal("")),
+  birth_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional().or(z.literal("")),
+  notes: z.string().max(1000).optional(),
+  status: z.enum(["active", "inactive", "suspended"]).optional(),
+})
+
 const CreateManagedMemberInput = z.object({
   full_name: z.string().min(2).max(100),
   email: z.string().email().optional().or(z.literal("")),
@@ -51,19 +64,25 @@ export const memberRouter = router({
           role: z.enum(["admin", "instructor", "student"]).optional(),
           status: z.enum(["active", "inactive", "suspended"]).optional(),
           search: z.string().max(100).optional(),
+          limit: z.number().int().min(1).max(100).default(50),
+          offset: z.number().int().min(0).default(0),
         })
         .optional(),
     )
     .query(async ({ ctx, input }) => {
+      const limit = input?.limit ?? 50
+      const offset = input?.offset ?? 0
       const supabase = await createServerSupabase()
 
       let query = supabase
         .from("members")
         .select(
           "id, full_name, email, role, status, belt_rank, stripes, has_portal_access, avatar_url, phone, last_check_in, total_classes, created_at",
+          { count: "exact", head: false },
         )
         .eq("academy_id", ctx.academyId!)
         .order("full_name", { ascending: true })
+        .range(offset, offset + limit - 1)
 
       if (input?.role) {
         query = query.eq("role", input.role)
@@ -76,11 +95,11 @@ export const memberRouter = router({
         query = query.or(`full_name.ilike.%${term}%,email.ilike.%${term}%`)
       }
 
-      const { data, error } = await query
+      const { data, count, error } = await query
 
       if (error) throw new Error("Failed to fetch members")
 
-      return data ?? []
+      return { items: data ?? [], total: count ?? 0, limit, offset }
     }),
 
   /** Returns a single member by ID. */
@@ -208,5 +227,67 @@ export const memberRouter = router({
       }
 
       return data
+    }),
+
+  /** Admin: update an existing member. */
+  update: adminProcedure
+    .input(UpdateMemberInput)
+    .mutation(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+
+      const { id, ...fields } = input
+      const updateObj: Record<string, unknown> = {}
+
+      if (fields.full_name !== undefined) updateObj.full_name = fields.full_name
+      if (fields.email !== undefined) updateObj.email = fields.email || null
+      if (fields.role !== undefined) updateObj.role = fields.role
+      if (fields.belt_rank !== undefined) updateObj.belt_rank = fields.belt_rank
+      if (fields.stripes !== undefined) updateObj.stripes = fields.stripes
+      if (fields.phone !== undefined) updateObj.phone = fields.phone || null
+      if (fields.birth_date !== undefined) updateObj.birth_date = fields.birth_date || null
+      if (fields.notes !== undefined) updateObj.notes = fields.notes || null
+      if (fields.status !== undefined) updateObj.status = fields.status
+
+      if (Object.keys(updateObj).length === 0) {
+        throw new Error("No fields to update")
+      }
+
+      const { data, error } = await supabase
+        .from("members")
+        .update(updateObj)
+        .eq("academy_id", ctx.academyId!)
+        .eq("id", id)
+        .select("*")
+        .single()
+
+      if (error) {
+        if (error.code === "23505") throw new Error("A member with this email already exists")
+        throw new Error("Failed to update member")
+      }
+
+      return data
+    }),
+
+  /** Admin: deactivate a member (set status to inactive). Cannot deactivate yourself. */
+  deactivate: adminProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      if (input.id === ctx.member!.id) {
+        throw new Error("You cannot deactivate yourself")
+      }
+
+      const supabase = await createServerSupabase()
+
+      const { data, error } = await supabase
+        .from("members")
+        .update({ status: "inactive" })
+        .eq("academy_id", ctx.academyId!)
+        .eq("id", input.id)
+        .select("id")
+
+      if (error) throw new Error("Failed to deactivate member")
+      if (!data || data.length === 0) throw new Error("Member not found")
+
+      return { success: true }
     }),
 })

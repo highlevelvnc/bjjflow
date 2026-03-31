@@ -26,6 +26,15 @@ function upcomingDates(dayOfWeek: number, weeksAhead: number): string[] {
   return dates
 }
 
+const UpdateSessionInput = z.object({
+  id: z.string().uuid(),
+  instructor_id: z.string().uuid().nullable().optional(),
+  start_time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+  end_time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+  notes: z.string().max(1000).optional(),
+  topic: z.string().max(200).optional(),
+})
+
 export const sessionRouter = router({
   /**
    * Lists sessions within a date range.
@@ -39,10 +48,14 @@ export const sessionRouter = router({
           to: z.string().optional(),
           classId: z.string().uuid().optional(),
           status: z.enum(["scheduled", "in_progress", "completed", "cancelled"]).optional(),
+          limit: z.number().int().min(1).max(100).default(50),
+          offset: z.number().int().min(0).default(0),
         })
         .optional(),
     )
     .query(async ({ ctx, input }) => {
+      const limit = input?.limit ?? 50
+      const offset = input?.offset ?? 0
       const supabase = await createServerSupabase()
 
       const today = new Date()
@@ -58,21 +71,23 @@ export const sessionRouter = router({
         .from("class_sessions")
         .select(
           "id, academy_id, class_id, date, start_time, end_time, instructor_id, status, attendance_count, notes, topic, cancelled_by, cancel_reason, created_at",
+          { count: "exact", head: false },
         )
         .eq("academy_id", ctx.academyId!)
         .gte("date", fromDate)
         .lte("date", toDate)
         .order("date", { ascending: true })
         .order("start_time", { ascending: true })
+        .range(offset, offset + limit - 1)
 
       if (input?.classId) query = query.eq("class_id", input.classId)
       if (input?.status) query = query.eq("status", input.status)
 
-      const { data: sessions, error } = await query
+      const { data: sessions, count, error } = await query
 
       if (error) throw new Error("Failed to fetch sessions")
 
-      if (!sessions || sessions.length === 0) return []
+      if (!sessions || sessions.length === 0) return { items: [], total: count ?? 0, limit, offset }
 
       // Resolve class names and instructor names in parallel
       const classIds = [...new Set(sessions.map((s) => s.class_id))]
@@ -98,11 +113,13 @@ export const sessionRouter = router({
       const classMap = new Map((classesResult.data ?? []).map((c) => [c.id, c]))
       const instructorMap = new Map((instructorsResult.data ?? []).map((m) => [m.id, m]))
 
-      return sessions.map((s) => ({
+      const items = sessions.map((s) => ({
         ...s,
         class: classMap.get(s.class_id) ?? null,
         instructor: s.instructor_id ? (instructorMap.get(s.instructor_id) ?? null) : null,
       }))
+
+      return { items, total: count ?? 0, limit, offset }
     }),
 
   /** Lists the next N upcoming sessions (for dashboard). */
@@ -282,5 +299,39 @@ export const sessionRouter = router({
       if (!data || data.length === 0) throw new Error("Session cannot be completed — it may already be completed or cancelled")
 
       return { success: true }
+    }),
+
+  /** Instructor: update a scheduled or in-progress session. */
+  update: instructorProcedure
+    .input(UpdateSessionInput)
+    .mutation(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+
+      const { id, ...fields } = input
+      const updateObj: Record<string, unknown> = {}
+
+      if (fields.instructor_id !== undefined) updateObj.instructor_id = fields.instructor_id
+      if (fields.start_time !== undefined) updateObj.start_time = fields.start_time
+      if (fields.end_time !== undefined) updateObj.end_time = fields.end_time
+      if (fields.notes !== undefined) updateObj.notes = fields.notes || null
+      if (fields.topic !== undefined) updateObj.topic = fields.topic || null
+
+      if (Object.keys(updateObj).length === 0) {
+        throw new Error("No fields to update")
+      }
+
+      const { data, error } = await supabase
+        .from("class_sessions")
+        .update(updateObj)
+        .eq("academy_id", ctx.academyId!)
+        .eq("id", id)
+        .in("status", ["scheduled", "in_progress"])
+        .select("*")
+        .single()
+
+      if (error) throw new Error("Failed to update session")
+      if (!data) throw new Error("Session not found or cannot be updated — it may be completed or cancelled")
+
+      return data
     }),
 })

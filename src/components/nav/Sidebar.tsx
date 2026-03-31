@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { LayoutDashboard, Users, Dumbbell, CalendarDays } from "lucide-react"
+import { LayoutDashboard, Users, Dumbbell, CalendarDays, QrCode, BarChart3 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import type { Role } from "@/types/auth"
 import { ROLE_LABELS } from "@/lib/constants/roles"
@@ -18,6 +18,8 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Members",   href: "/app/members",  icon: Users },
   { label: "Classes",   href: "/app/classes",  icon: Dumbbell },
   { label: "Sessions",  href: "/app/sessions", icon: CalendarDays },
+  { label: "Check In",  href: "/app/checkin",  icon: QrCode },
+  { label: "My Progress",href: "/app/portal",  icon: BarChart3 },
 ]
 
 interface SidebarProps {

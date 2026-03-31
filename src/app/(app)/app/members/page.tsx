@@ -4,7 +4,9 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { RoleBadge } from "@/components/ui/RoleBadge"
 import { BeltBadge } from "@/components/ui/BeltBadge"
 import { EmptyState } from "@/components/ui/EmptyState"
+import { CSVImport } from "@/components/members/CSVImport"
 import type { Role } from "@/types/auth"
+import { Pencil } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Members",
@@ -12,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function MembersPage() {
   const trpc = await createServerCaller()
-  const members = await trpc.member.list({ status: "active" })
+  const { items: members } = await trpc.member.list({ status: "active" })
 
   return (
     <div className="space-y-4">
@@ -39,6 +41,12 @@ export default async function MembersPage() {
         </div>
       </div>
 
+      {/* CSV Import section */}
+      <div className="rounded-xl border border-white/8 bg-gray-900 p-4">
+        <h2 className="mb-3 text-sm font-medium text-gray-300">Bulk Import</h2>
+        <CSVImport />
+      </div>
+
       {members.length === 0 ? (
         <EmptyState
           title="No members yet"
@@ -62,6 +70,7 @@ export default async function MembersPage() {
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Belt</th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Portal</th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Joined</th>
+                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/6">
@@ -92,6 +101,15 @@ export default async function MembersPage() {
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500">
                     {new Date(member.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <Link
+                      href={`/app/members/${member.id}/edit`}
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-gray-400 hover:bg-white/6 hover:text-gray-200"
+                    >
+                      <Pencil className="h-3 w-3" />
+                      Edit
+                    </Link>
                   </td>
                 </tr>
               ))}
