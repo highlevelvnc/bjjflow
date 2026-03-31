@@ -1,5 +1,5 @@
 {
-  "name": "bjjflow",
+  "name": "grapplingflow",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -15,16 +15,19 @@
     "supabase:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/database.ts"
   },
   "dependencies": {
+    "@radix-ui/react-slot": "^1.2.4",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.50.0",
     "@tanstack/react-query": "^5.75.2",
     "@trpc/client": "^11.1.2",
     "@trpc/react-query": "^11.1.2",
     "@trpc/server": "^11.1.2",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "date-fns-tz": "^3.2.0",
     "drizzle-orm": "^0.40.1",
+    "framer-motion": "^12.38.0",
     "geist": "^1.7.0",
     "lucide-react": "^1.7.0",
     "next": "^15.3.0",

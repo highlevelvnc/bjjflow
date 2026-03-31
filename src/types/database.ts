@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// BJJFlow — Supabase Database Types
+// GrapplingFlow — Supabase Database Types
 //
 // IMPORTANT: This file is a hand-authored placeholder for the MVP bootstrap.
 // Replace it with the generated version once your Supabase project is live:

@@ -1,7 +1,7 @@
 import "server-only"
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY
-const EMAIL_FROM = process.env.EMAIL_FROM ?? "BJJFlow <noreply@bjjflow.com>"
+const EMAIL_FROM = process.env.EMAIL_FROM ?? "GrapplingFlow <noreply@grapplingflow.com>"
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"
 
 interface SendEmailOptions {
@@ -44,11 +44,11 @@ async function sendEmail({ to, subject, html }: SendEmailOptions): Promise<boole
 export async function sendWelcomeEmail(to: string, academyName: string) {
   return sendEmail({
     to,
-    subject: `Welcome to ${academyName} on BJJFlow`,
+    subject: `Welcome to ${academyName} on GrapplingFlow`,
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
         <h2>Welcome to ${academyName}!</h2>
-        <p>Your academy is set up and ready to go on BJJFlow.</p>
+        <p>Your academy is set up and ready to go on GrapplingFlow.</p>
         <p>Here's what to do next:</p>
         <ol>
           <li>Add your students and instructors</li>
@@ -61,7 +61,7 @@ export async function sendWelcomeEmail(to: string, academyName: string) {
             Go to Dashboard
           </a>
         </p>
-        <p style="color:#888;font-size:13px;">— The BJJFlow Team</p>
+        <p style="color:#888;font-size:13px;">— The GrapplingFlow Team</p>
       </div>
     `,
   })
@@ -86,7 +86,7 @@ export async function sendClassReminderEmail(
             Check In
           </a>
         </p>
-        <p style="color:#888;font-size:13px;">— BJJFlow</p>
+        <p style="color:#888;font-size:13px;">— GrapplingFlow</p>
       </div>
     `,
   })
@@ -100,11 +100,11 @@ export async function sendInviteEmail(
   const inviteUrl = `${APP_URL}/invite?token=${inviteToken}`
   return sendEmail({
     to,
-    subject: `You've been invited to join ${academyName} on BJJFlow`,
+    subject: `You've been invited to join ${academyName} on GrapplingFlow`,
     html: `
       <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
         <h2>You've been invited!</h2>
-        <p><strong>${academyName}</strong> has invited you to join their academy on BJJFlow as an instructor.</p>
+        <p><strong>${academyName}</strong> has invited you to join their academy on GrapplingFlow as an instructor.</p>
         <p>Click below to accept the invitation:</p>
         <p>
           <a href="${inviteUrl}" style="display:inline-block;padding:10px 20px;background:#6366f1;color:#fff;text-decoration:none;border-radius:8px;">
@@ -112,7 +112,7 @@ export async function sendInviteEmail(
           </a>
         </p>
         <p style="color:#888;font-size:13px;">This invite expires in 7 days.</p>
-        <p style="color:#888;font-size:13px;">— BJJFlow</p>
+        <p style="color:#888;font-size:13px;">— GrapplingFlow</p>
       </div>
     `,
   })
@@ -131,13 +131,13 @@ export async function sendBeltPromotionEmail(
         <h2>Belt Promotion!</h2>
         <p>Congratulations, <strong>${memberName}</strong>!</p>
         <p>You've been promoted to <strong style="text-transform:capitalize;">${newBelt} Belt</strong>.</p>
-        <p>Keep training hard and see your progress on BJJFlow:</p>
+        <p>Keep training hard and see your progress on GrapplingFlow:</p>
         <p>
           <a href="${APP_URL}/app/portal" style="display:inline-block;padding:10px 20px;background:#6366f1;color:#fff;text-decoration:none;border-radius:8px;">
             View My Progress
           </a>
         </p>
-        <p style="color:#888;font-size:13px;">— BJJFlow</p>
+        <p style="color:#888;font-size:13px;">— GrapplingFlow</p>
       </div>
     `,
   })

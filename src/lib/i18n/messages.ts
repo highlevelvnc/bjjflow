@@ -2,7 +2,7 @@ import type { Locale } from "./index"
 
 export interface Messages {
   meta: { title: string; description: string }
-  nav: { features: string; pricing: string; signIn: string; getStarted: string }
+  nav: { features: string; pricing: string; academies: string; signIn: string; getStarted: string }
   hero: {
     badge: string
     h1: string
@@ -30,10 +30,12 @@ export interface Messages {
     tag: string
     h2: string
     tagline: string
-    mostPopular: string
-    perAcademy: string
-    features: string[]
-    cta: string
+    plans: Array<{
+      name: string
+      description: string
+      features: string[]
+      cta: string
+    }>
     noCard: string
   }
   cta: {
@@ -67,17 +69,17 @@ export interface Messages {
 
 const en: Messages = {
   meta: {
-    title: "BJJFlow — The Command Center for BJJ Academies",
+    title: "GrapplingFlow — The Command Center for BJJ Academies",
     description:
       "Member management, session scheduling, and attendance analytics — one platform purpose-built for Brazilian Jiu-Jitsu academies.",
   },
-  nav: { features: "Features", pricing: "Pricing", signIn: "Sign in", getStarted: "Get started" },
+  nav: { features: "Features", pricing: "Pricing", academies: "For Academies", signIn: "Sign in", getStarted: "Get started" },
   hero: {
     badge: "Built for the modern BJJ academy",
-    h1: "The command center",
-    h1Gradient: "for BJJ academies",
+    h1: "Less chaos in management",
+    h1Gradient: "More focus on the mats",
     subtitle:
-      "Member management, session scheduling, and attendance analytics — one platform purpose-built for Brazilian Jiu-Jitsu. No spreadsheets. No WhatsApp groups. Just clarity.",
+      "Student management, payments, class scheduling and retention analytics — one platform purpose-built for BJJ academies. No spreadsheets. No WhatsApp groups. Just control.",
     ctaPrimary: "Start free trial",
     ctaSecondary: "Explore features",
     noCard: "No credit card required · 14-day free trial · Setup in under 10 min",
@@ -146,34 +148,59 @@ const en: Messages = {
   },
   testimonial: {
     quote:
-      "We cut our admin time by 80%. Now I spend that time on the mats, not on spreadsheets. BJJFlow is the tool I wished existed when I opened my academy.",
+      "We cut our admin time by 80%. Now I spend that time on the mats, not on spreadsheets. GrapplingFlow is the tool I wished existed when I opened my academy.",
     author: "Professor Marco Lima",
     role: "Alliance São Paulo · 4th degree black belt",
   },
   pricing: {
     tag: "Pricing",
-    h2: "One plan. Everything included.",
-    tagline: "No per-student fees. No seat limits. No surprises.",
-    mostPopular: "Most popular",
-    perAcademy: "per academy · billed monthly",
-    features: [
-      "Unlimited members",
-      "Unlimited sessions & classes",
-      "Live attendance tracking",
-      "At-risk student alerts",
-      "Instructor portal invites",
-      "Multi-device access",
-      "Row-level data security",
-      "Priority support",
+    h2: "Plans that scale with your academy.",
+    tagline: "No per-student fees. No surprises. Cancel anytime.",
+    plans: [
+      {
+        name: "Starter",
+        description: "For small academies getting started.",
+        features: [
+          "Up to 50 members",
+          "Class scheduling",
+          "Attendance tracking",
+          "Basic reports",
+        ],
+        cta: "Start 14-day free trial",
+      },
+      {
+        name: "Growth",
+        description: "For growing academies that need more.",
+        features: [
+          "Up to 200 members",
+          "Everything in Starter",
+          "CSV import",
+          "Student portal",
+          "Self check-in",
+          "Priority support",
+        ],
+        cta: "Start 14-day free trial",
+      },
+      {
+        name: "Pro",
+        description: "For established academies at scale.",
+        features: [
+          "Unlimited members",
+          "Everything in Growth",
+          "Custom branding",
+          "API access",
+          "Dedicated support",
+        ],
+        cta: "Start 14-day free trial",
+      },
     ],
-    cta: "Start 14-day free trial",
     noCard: "No credit card required",
   },
   cta: {
     h2: "Your academy deserves",
     h2Gradient: "better tools",
     subtitle:
-      "Stop managing your team in WhatsApp groups and Google Sheets. BJJFlow is purpose-built for how jiu-jitsu academies actually operate.",
+      "Stop managing your team in WhatsApp groups and Google Sheets. GrapplingFlow is purpose-built for how jiu-jitsu academies actually operate.",
     ctaPrimary: "Get started for free",
     ctaSecondary: "Sign in to your academy",
     setup: "10-min setup",
@@ -183,7 +210,7 @@ const en: Messages = {
   footer: { tagline: "Built for the jiu-jitsu community", signIn: "Sign in →" },
   login: {
     h1: "Welcome back",
-    subtitle: "Sign in to your BJJFlow account",
+    subtitle: "Sign in to your GrapplingFlow account",
     emailLabel: "Email address",
     emailPlaceholder: "professor@youracademy.com",
     passwordLabel: "Password",
@@ -201,22 +228,23 @@ const en: Messages = {
 
 const ptBR: Messages = {
   meta: {
-    title: "BJJFlow — O Centro de Controle para Academias de BJJ",
+    title: "GrapplingFlow — O Centro de Controle para Academias de BJJ",
     description:
       "Gestão de alunos, agendamento de aulas e análise de frequência — uma plataforma criada especialmente para academias de Brazilian Jiu-Jitsu.",
   },
   nav: {
     features: "Funcionalidades",
     pricing: "Preços",
+    academies: "Para academias",
     signIn: "Entrar",
     getStarted: "Começar agora",
   },
   hero: {
     badge: "Feito para a academia de BJJ moderna",
-    h1: "O centro de controle",
-    h1Gradient: "da sua academia de BJJ",
+    h1: "Menos caos na gestão",
+    h1Gradient: "Mais foco no tatame",
     subtitle:
-      "Gestão de alunos, agendamento de aulas e análise de frequência — uma plataforma criada especialmente para o jiu-jitsu. Sem planilhas. Sem grupos de WhatsApp. Só clareza.",
+      "Gestão de alunos, pagamentos, agendamento de aulas e análise de retenção — uma plataforma criada para academias de jiu-jitsu. Sem planilhas. Sem grupos de WhatsApp. Só controle.",
     ctaPrimary: "Iniciar teste grátis",
     ctaSecondary: "Ver funcionalidades",
     noCard: "Sem cartão de crédito · 14 dias grátis · Configuração em menos de 10 min",
@@ -285,34 +313,59 @@ const ptBR: Messages = {
   },
   testimonial: {
     quote:
-      "Reduzimos nosso tempo administrativo em 80%. Agora passo esse tempo no tatame, não em planilhas. BJJFlow é a ferramenta que eu queria quando abri minha academia.",
+      "Reduzimos nosso tempo administrativo em 80%. Agora passo esse tempo no tatame, não em planilhas. GrapplingFlow é a ferramenta que eu queria quando abri minha academia.",
     author: "Professor Marco Lima",
     role: "Alliance São Paulo · Faixa preta 4º grau",
   },
   pricing: {
     tag: "Preços",
-    h2: "Um plano. Tudo incluído.",
-    tagline: "Sem taxas por aluno. Sem limite de vagas. Sem surpresas.",
-    mostPopular: "Mais popular",
-    perAcademy: "por academia · cobrado mensalmente",
-    features: [
-      "Alunos ilimitados",
-      "Sessões e aulas ilimitadas",
-      "Controle de frequência ao vivo",
-      "Alertas de alunos em risco",
-      "Convites para portal de instrutores",
-      "Acesso em múltiplos dispositivos",
-      "Segurança de dados por linha",
-      "Suporte prioritário",
+    h2: "Planos que crescem com sua academia.",
+    tagline: "Sem taxas por aluno. Sem surpresas. Cancele quando quiser.",
+    plans: [
+      {
+        name: "Starter",
+        description: "Para academias pequenas começando.",
+        features: [
+          "Até 50 alunos",
+          "Agendamento de aulas",
+          "Controle de frequência",
+          "Relatórios básicos",
+        ],
+        cta: "Iniciar 14 dias grátis",
+      },
+      {
+        name: "Growth",
+        description: "Para academias em crescimento que precisam de mais.",
+        features: [
+          "Até 200 alunos",
+          "Tudo do Starter",
+          "Importação CSV",
+          "Portal do aluno",
+          "Check-in automático",
+          "Suporte prioritário",
+        ],
+        cta: "Iniciar 14 dias grátis",
+      },
+      {
+        name: "Pro",
+        description: "Para academias estabelecidas em escala.",
+        features: [
+          "Alunos ilimitados",
+          "Tudo do Growth",
+          "Marca personalizada",
+          "Acesso à API",
+          "Suporte dedicado",
+        ],
+        cta: "Iniciar 14 dias grátis",
+      },
     ],
-    cta: "Iniciar 14 dias grátis",
     noCard: "Sem cartão de crédito",
   },
   cta: {
     h2: "Sua academia merece",
     h2Gradient: "ferramentas melhores",
     subtitle:
-      "Pare de gerenciar sua equipe em grupos de WhatsApp e planilhas do Google. O BJJFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
+      "Pare de gerenciar sua equipe em grupos de WhatsApp e planilhas do Google. O GrapplingFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
     ctaPrimary: "Começar gratuitamente",
     ctaSecondary: "Entrar na minha academia",
     setup: "Configuração em 10 min",
@@ -322,7 +375,7 @@ const ptBR: Messages = {
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
   login: {
     h1: "Bem-vindo de volta",
-    subtitle: "Entre na sua conta BJJFlow",
+    subtitle: "Entre na sua conta GrapplingFlow",
     emailLabel: "Endereço de e-mail",
     emailPlaceholder: "professor@suaacademia.com.br",
     passwordLabel: "Senha",
@@ -340,22 +393,23 @@ const ptBR: Messages = {
 
 const ptPT: Messages = {
   meta: {
-    title: "BJJFlow — O Centro de Controlo para Academias de BJJ",
+    title: "GrapplingFlow — O Centro de Controlo para Academias de BJJ",
     description:
       "Gestão de membros, agendamento de aulas e análise de presenças — uma plataforma criada especialmente para academias de Brazilian Jiu-Jitsu.",
   },
   nav: {
     features: "Funcionalidades",
     pricing: "Preços",
+    academies: "Para academias",
     signIn: "Entrar",
     getStarted: "Começar",
   },
   hero: {
     badge: "Feito para a academia de BJJ moderna",
-    h1: "O centro de controlo",
-    h1Gradient: "da sua academia de BJJ",
+    h1: "Menos caos na gestão",
+    h1Gradient: "Mais foco no tatami",
     subtitle:
-      "Gestão de membros, agendamento de aulas e análise de presenças — uma plataforma criada especialmente para o jiu-jitsu. Sem folhas de cálculo. Sem grupos de WhatsApp. Só clareza.",
+      "Gestão de membros, pagamentos, agendamento de aulas e análise de retenção — uma plataforma criada para academias de jiu-jitsu. Sem folhas de cálculo. Sem grupos de WhatsApp. Só controlo.",
     ctaPrimary: "Iniciar período de teste",
     ctaSecondary: "Ver funcionalidades",
     noCard: "Sem cartão de crédito · 14 dias de teste · Configuração em menos de 10 min",
@@ -424,34 +478,59 @@ const ptPT: Messages = {
   },
   testimonial: {
     quote:
-      "Reduzimos o nosso tempo administrativo em 80%. Agora passo esse tempo no tatami, não em folhas de cálculo. BJJFlow é a ferramenta que desejei existisse quando abri a minha academia.",
+      "Reduzimos o nosso tempo administrativo em 80%. Agora passo esse tempo no tatami, não em folhas de cálculo. GrapplingFlow é a ferramenta que desejei existisse quando abri a minha academia.",
     author: "Professor Marco Lima",
     role: "Alliance São Paulo · Faixa preta 4º grau",
   },
   pricing: {
     tag: "Preços",
-    h2: "Um plano. Tudo incluído.",
-    tagline: "Sem taxas por membro. Sem limite de vagas. Sem surpresas.",
-    mostPopular: "Mais popular",
-    perAcademy: "por academia · cobrado mensalmente",
-    features: [
-      "Membros ilimitados",
-      "Sessões e aulas ilimitadas",
-      "Controlo de presenças em tempo real",
-      "Alertas de membros em risco",
-      "Convites para portal de instrutores",
-      "Acesso em múltiplos dispositivos",
-      "Segurança de dados por linha",
-      "Suporte prioritário",
+    h2: "Planos que crescem com a sua academia.",
+    tagline: "Sem taxas por membro. Sem surpresas. Cancele quando quiser.",
+    plans: [
+      {
+        name: "Starter",
+        description: "Para academias pequenas a começar.",
+        features: [
+          "Até 50 membros",
+          "Agendamento de aulas",
+          "Controlo de presenças",
+          "Relatórios básicos",
+        ],
+        cta: "Iniciar 14 dias de teste",
+      },
+      {
+        name: "Growth",
+        description: "Para academias em crescimento que precisam de mais.",
+        features: [
+          "Até 200 membros",
+          "Tudo do Starter",
+          "Importação CSV",
+          "Portal do aluno",
+          "Check-in automático",
+          "Suporte prioritário",
+        ],
+        cta: "Iniciar 14 dias de teste",
+      },
+      {
+        name: "Pro",
+        description: "Para academias estabelecidas em escala.",
+        features: [
+          "Membros ilimitados",
+          "Tudo do Growth",
+          "Marca personalizada",
+          "Acesso à API",
+          "Suporte dedicado",
+        ],
+        cta: "Iniciar 14 dias de teste",
+      },
     ],
-    cta: "Iniciar 14 dias de teste",
     noCard: "Sem cartão de crédito",
   },
   cta: {
     h2: "A sua academia merece",
     h2Gradient: "melhores ferramentas",
     subtitle:
-      "Deixe de gerir a sua equipa em grupos de WhatsApp e folhas de cálculo. O BJJFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
+      "Deixe de gerir a sua equipa em grupos de WhatsApp e folhas de cálculo. O GrapplingFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
     ctaPrimary: "Começar gratuitamente",
     ctaSecondary: "Entrar na minha academia",
     setup: "Configuração em 10 min",
@@ -461,7 +540,7 @@ const ptPT: Messages = {
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
   login: {
     h1: "Bem-vindo de volta",
-    subtitle: "Entre na sua conta BJJFlow",
+    subtitle: "Entre na sua conta GrapplingFlow",
     emailLabel: "Endereço de e-mail",
     emailPlaceholder: "professor@suaacademia.pt",
     passwordLabel: "Palavra-passe",
@@ -479,22 +558,23 @@ const ptPT: Messages = {
 
 const de: Messages = {
   meta: {
-    title: "BJJFlow — Die Kommandozentrale für BJJ-Akademien",
+    title: "GrapplingFlow — Die Kommandozentrale für BJJ-Akademien",
     description:
       "Mitgliederverwaltung, Trainingsplanung und Anwesenheitsanalyse — eine Plattform, speziell entwickelt für Brazilian Jiu-Jitsu Akademien.",
   },
   nav: {
     features: "Funktionen",
     pricing: "Preise",
+    academies: "Für Akademien",
     signIn: "Anmelden",
     getStarted: "Loslegen",
   },
   hero: {
     badge: "Entwickelt für die moderne BJJ-Akademie",
-    h1: "Die Kommandozentrale",
-    h1Gradient: "für BJJ-Akademien",
+    h1: "Weniger Chaos in der Verwaltung",
+    h1Gradient: "Mehr Fokus auf der Matte",
     subtitle:
-      "Mitgliederverwaltung, Trainingsplanung und Anwesenheitsanalyse — eine Plattform, speziell für Brazilian Jiu-Jitsu entwickelt. Keine Tabellen. Keine WhatsApp-Gruppen. Nur Klarheit.",
+      "Mitgliederverwaltung, Zahlungen, Trainingsplanung und Retentionsanalyse — eine Plattform, speziell für BJJ-Akademien. Keine Tabellen. Keine WhatsApp-Gruppen. Nur Kontrolle.",
     ctaPrimary: "Kostenlos testen",
     ctaSecondary: "Funktionen entdecken",
     noCard: "Keine Kreditkarte · 14 Tage kostenlos · Einrichtung in unter 10 Min.",
@@ -563,34 +643,59 @@ const de: Messages = {
   },
   testimonial: {
     quote:
-      "Wir haben unsere Verwaltungszeit um 80 % reduziert. Jetzt verbringe ich diese Zeit auf der Matte, nicht mit Tabellen. BJJFlow ist das Tool, das ich mir gewünscht hätte, als ich meine Akademie eröffnete.",
+      "Wir haben unsere Verwaltungszeit um 80 % reduziert. Jetzt verbringe ich diese Zeit auf der Matte, nicht mit Tabellen. GrapplingFlow ist das Tool, das ich mir gewünscht hätte, als ich meine Akademie eröffnete.",
     author: "Professor Marco Lima",
     role: "Alliance São Paulo · Schwarzgurt 4. Grad",
   },
   pricing: {
     tag: "Preise",
-    h2: "Ein Plan. Alles inklusive.",
-    tagline: "Keine Kosten pro Schüler. Keine Platzlimits. Keine Überraschungen.",
-    mostPopular: "Beliebteste",
-    perAcademy: "pro Akademie · monatlich abgerechnet",
-    features: [
-      "Unbegrenzte Mitglieder",
-      "Unbegrenzte Einheiten & Kurse",
-      "Live-Anwesenheitsverfolgung",
-      "Warnungen für gefährdete Schüler",
-      "Instruktoren-Portal-Einladungen",
-      "Zugriff von mehreren Geräten",
-      "Datensicherheit auf Zeilenebene",
-      "Prioritätssupport",
+    h2: "Pläne, die mit Ihrer Akademie wachsen.",
+    tagline: "Keine Kosten pro Schüler. Keine Überraschungen. Jederzeit kündbar.",
+    plans: [
+      {
+        name: "Starter",
+        description: "Für kleine Akademien am Anfang.",
+        features: [
+          "Bis zu 50 Mitglieder",
+          "Trainingsplanung",
+          "Anwesenheitsverfolgung",
+          "Grundlegende Berichte",
+        ],
+        cta: "14-tägige Testversion starten",
+      },
+      {
+        name: "Growth",
+        description: "Für wachsende Akademien, die mehr brauchen.",
+        features: [
+          "Bis zu 200 Mitglieder",
+          "Alles aus Starter",
+          "CSV-Import",
+          "Schülerportal",
+          "Selbst-Check-in",
+          "Prioritätssupport",
+        ],
+        cta: "14-tägige Testversion starten",
+      },
+      {
+        name: "Pro",
+        description: "Für etablierte Akademien im großen Maßstab.",
+        features: [
+          "Unbegrenzte Mitglieder",
+          "Alles aus Growth",
+          "Eigenes Branding",
+          "API-Zugang",
+          "Dedizierter Support",
+        ],
+        cta: "14-tägige Testversion starten",
+      },
     ],
-    cta: "14-tägige Testversion starten",
     noCard: "Keine Kreditkarte erforderlich",
   },
   cta: {
     h2: "Ihre Akademie verdient",
     h2Gradient: "bessere Tools",
     subtitle:
-      "Hören Sie auf, Ihr Team in WhatsApp-Gruppen und Google Sheets zu verwalten. BJJFlow wurde genau dafür entwickelt, wie Jiu-Jitsu-Akademien wirklich arbeiten.",
+      "Hören Sie auf, Ihr Team in WhatsApp-Gruppen und Google Sheets zu verwalten. GrapplingFlow wurde genau dafür entwickelt, wie Jiu-Jitsu-Akademien wirklich arbeiten.",
     ctaPrimary: "Kostenlos starten",
     ctaSecondary: "Bei meiner Akademie anmelden",
     setup: "10-Min-Einrichtung",
@@ -600,7 +705,7 @@ const de: Messages = {
   footer: { tagline: "Für die Jiu-Jitsu-Gemeinschaft", signIn: "Anmelden →" },
   login: {
     h1: "Willkommen zurück",
-    subtitle: "Bei Ihrem BJJFlow-Konto anmelden",
+    subtitle: "Bei Ihrem GrapplingFlow-Konto anmelden",
     emailLabel: "E-Mail-Adresse",
     emailPlaceholder: "professor@ihreakademie.de",
     passwordLabel: "Passwort",
@@ -618,22 +723,23 @@ const de: Messages = {
 
 const fr: Messages = {
   meta: {
-    title: "BJJFlow — Le Centre de Commandement pour les Académies BJJ",
+    title: "GrapplingFlow — Le Centre de Commandement pour les Académies BJJ",
     description:
       "Gestion des membres, planification des séances et analyse des présences — une plateforme conçue spécialement pour les académies de Brazilian Jiu-Jitsu.",
   },
   nav: {
     features: "Fonctionnalités",
     pricing: "Tarifs",
+    academies: "Pour les académies",
     signIn: "Connexion",
     getStarted: "Commencer",
   },
   hero: {
     badge: "Conçu pour l'académie BJJ moderne",
-    h1: "Le centre de commandement",
-    h1Gradient: "pour les académies BJJ",
+    h1: "Moins de chaos dans la gestion",
+    h1Gradient: "Plus de focus sur le tatami",
     subtitle:
-      "Gestion des membres, planification des séances et analyse des présences — une plateforme conçue pour le jiu-jitsu. Sans tableurs. Sans groupes WhatsApp. Juste de la clarté.",
+      "Gestion des membres, paiements, planification des cours et analyse de rétention — une plateforme conçue pour les académies BJJ. Sans tableurs. Sans groupes WhatsApp. Juste du contrôle.",
     ctaPrimary: "Démarrer l'essai gratuit",
     ctaSecondary: "Découvrir les fonctionnalités",
     noCard: "Sans carte bancaire · 14 jours gratuits · Installation en moins de 10 min",
@@ -702,34 +808,59 @@ const fr: Messages = {
   },
   testimonial: {
     quote:
-      "Nous avons réduit notre temps administratif de 80 %. Maintenant je passe ce temps sur le tatami, pas sur des tableurs. BJJFlow est l'outil que j'aurais voulu avoir quand j'ai ouvert mon académie.",
+      "Nous avons réduit notre temps administratif de 80 %. Maintenant je passe ce temps sur le tatami, pas sur des tableurs. GrapplingFlow est l'outil que j'aurais voulu avoir quand j'ai ouvert mon académie.",
     author: "Professeur Marco Lima",
     role: "Alliance São Paulo · Ceinture noire 4e degré",
   },
   pricing: {
     tag: "Tarifs",
-    h2: "Un forfait. Tout inclus.",
-    tagline: "Pas de frais par élève. Pas de limites de places. Pas de surprises.",
-    mostPopular: "Plus populaire",
-    perAcademy: "par académie · facturé mensuellement",
-    features: [
-      "Membres illimités",
-      "Séances et cours illimités",
-      "Suivi des présences en direct",
-      "Alertes élèves à risque",
-      "Invitations portail instructeurs",
-      "Accès multi-appareils",
-      "Sécurité des données par ligne",
-      "Support prioritaire",
+    h2: "Des forfaits qui évoluent avec votre académie.",
+    tagline: "Pas de frais par élève. Pas de surprises. Annulez à tout moment.",
+    plans: [
+      {
+        name: "Starter",
+        description: "Pour les petites académies qui démarrent.",
+        features: [
+          "Jusqu'à 50 membres",
+          "Planification des cours",
+          "Suivi des présences",
+          "Rapports de base",
+        ],
+        cta: "Commencer l'essai de 14 jours",
+      },
+      {
+        name: "Growth",
+        description: "Pour les académies en croissance qui ont besoin de plus.",
+        features: [
+          "Jusqu'à 200 membres",
+          "Tout du Starter",
+          "Import CSV",
+          "Portail élève",
+          "Auto check-in",
+          "Support prioritaire",
+        ],
+        cta: "Commencer l'essai de 14 jours",
+      },
+      {
+        name: "Pro",
+        description: "Pour les académies établies à grande échelle.",
+        features: [
+          "Membres illimités",
+          "Tout du Growth",
+          "Marque personnalisée",
+          "Accès API",
+          "Support dédié",
+        ],
+        cta: "Commencer l'essai de 14 jours",
+      },
     ],
-    cta: "Commencer l'essai de 14 jours",
     noCard: "Aucune carte bancaire requise",
   },
   cta: {
     h2: "Votre académie mérite",
     h2Gradient: "de meilleurs outils",
     subtitle:
-      "Arrêtez de gérer votre équipe dans des groupes WhatsApp et des feuilles Google. BJJFlow est conçu pour la façon dont les académies de jiu-jitsu fonctionnent réellement.",
+      "Arrêtez de gérer votre équipe dans des groupes WhatsApp et des feuilles Google. GrapplingFlow est conçu pour la façon dont les académies de jiu-jitsu fonctionnent réellement.",
     ctaPrimary: "Commencer gratuitement",
     ctaSecondary: "Accéder à mon académie",
     setup: "Installation en 10 min",
@@ -739,7 +870,7 @@ const fr: Messages = {
   footer: { tagline: "Pour la communauté du jiu-jitsu", signIn: "Connexion →" },
   login: {
     h1: "Bon retour",
-    subtitle: "Connectez-vous à votre compte BJJFlow",
+    subtitle: "Connectez-vous à votre compte GrapplingFlow",
     emailLabel: "Adresse e-mail",
     emailPlaceholder: "professeur@votreacademie.fr",
     passwordLabel: "Mot de passe",

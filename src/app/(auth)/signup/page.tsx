@@ -5,7 +5,7 @@ import { Shield } from "lucide-react"
 import { SignupForm } from "./SignupForm"
 
 export const metadata: Metadata = {
-  title: "Create Account — BJJFlow",
+  title: "Create Account — GrapplingFlow",
 }
 
 export default function SignupPage() {
@@ -14,7 +14,7 @@ export default function SignupPage() {
       {/* Header */}
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-          <span className="text-lg font-black text-white">BF</span>
+          <span className="text-lg font-black text-white">GF</span>
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">
           Create your account

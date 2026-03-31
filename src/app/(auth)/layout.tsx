@@ -12,9 +12,9 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       <header className="relative flex h-14 items-center border-b border-white/8 px-6">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-brand-500 shadow-md shadow-brand-500/30">
-            <span className="text-[10px] font-black text-white">BF</span>
+            <span className="text-[10px] font-black text-white">GF</span>
           </div>
-          <span className="text-sm font-semibold text-white">BJJFlow</span>
+          <span className="text-sm font-semibold text-white">GrapplingFlow</span>
         </Link>
       </header>
 

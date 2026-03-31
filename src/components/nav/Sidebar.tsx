@@ -36,7 +36,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
       {/* Brand */}
       <div className="flex h-14 items-center gap-2.5 border-b border-white/8 px-4">
         <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-500 shadow-md shadow-brand-500/30">
-          <span className="text-[11px] font-black text-white">BF</span>
+          <span className="text-[11px] font-black text-white">GF</span>
         </div>
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-white">{academyName}</p>

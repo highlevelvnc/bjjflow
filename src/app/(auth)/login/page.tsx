@@ -9,7 +9,7 @@ import { getMessages } from "@/lib/i18n/messages"
 export async function generateMetadata(): Promise<Metadata> {
   const locale = await getLocale()
   const t = getMessages(locale)
-  return { title: `${t.login.cta} — BJJFlow` }
+  return { title: `${t.login.cta} — GrapplingFlow` }
 }
 
 export default async function LoginPage() {
@@ -22,7 +22,7 @@ export default async function LoginPage() {
       {/* Header */}
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-          <span className="text-lg font-black text-white">BF</span>
+          <span className="text-lg font-black text-white">GF</span>
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">{l.h1}</h1>
         <p className="mt-2 text-sm text-gray-500">{l.subtitle}</p>

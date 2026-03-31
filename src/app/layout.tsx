@@ -6,11 +6,11 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | BJJFlow",
-    default: "BJJFlow — Jiu-Jitsu Academy Management",
+    template: "%s | GrapplingFlow",
+    default: "GrapplingFlow — Jiu-Jitsu Academy Management",
   },
   description:
-    "The command center for Brazilian Jiu-Jitsu academies. Member management, session scheduling, and attendance analytics in one platform.",
+    "Less chaos in management. More focus on the mats. Student management, payments, class scheduling and retention analytics for BJJ academies.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000"),
 }
 
