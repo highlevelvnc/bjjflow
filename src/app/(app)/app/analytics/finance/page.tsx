@@ -3,7 +3,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { FinanceClient } from "./FinanceClient"
 
 export const metadata: Metadata = {
-  title: "Financial Analytics",
+  title: "Financeiro",
 }
 
 export default async function FinancePage() {

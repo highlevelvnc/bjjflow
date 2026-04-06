@@ -6,7 +6,7 @@ import { ClassToggleButton } from "@/components/classes/ClassToggleButton"
 import { Pencil } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Classes",
+  title: "Turmas",
 }
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]

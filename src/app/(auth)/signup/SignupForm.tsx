@@ -13,7 +13,7 @@ export function SignupForm() {
 
   const [fullName, setFullName] = useState("")
   const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
+  const [password, setSenha] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -24,7 +24,7 @@ export function SignupForm() {
     setPending(true)
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters.")
+      setError("A senha deve ter pelo menos 8 caracteres.")
       setPending(false)
       return
     }
@@ -58,16 +58,16 @@ export function SignupForm() {
         <div>
           <h2 className="text-lg font-semibold text-white">Check your email</h2>
           <p className="mt-2 text-sm text-gray-400">
-            We sent a verification link to{" "}
+            Enviamos um link de verificação para{" "}
             <span className="font-medium text-white">{email}</span>. Click the
-            link to activate your account.
+            link para ativar sua conta.
           </p>
         </div>
         <button
           onClick={() => router.push("/login")}
           className="mt-2 text-sm font-medium text-brand-400 transition-colors hover:text-brand-300"
         >
-          Back to login
+          Voltar ao login
         </button>
       </div>
     )
@@ -104,10 +104,10 @@ export function SignupForm() {
         </div>
       )}
 
-      {/* Full Name */}
+      {/* Nome Completo */}
       <div className="space-y-1.5">
         <label className="block text-xs font-medium uppercase tracking-wide text-gray-400">
-          Full Name
+          Nome Completo
         </label>
         <div className="relative">
           <User className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
@@ -117,7 +117,7 @@ export function SignupForm() {
             onChange={(e) => setFullName(e.target.value)}
             required
             autoComplete="name"
-            placeholder="Your full name"
+            placeholder="Seu nome completo"
             className={inputClass}
           />
         </div>
@@ -142,21 +142,21 @@ export function SignupForm() {
         </div>
       </div>
 
-      {/* Password */}
+      {/* Senha */}
       <div className="space-y-1.5">
         <label className="block text-xs font-medium uppercase tracking-wide text-gray-400">
-          Password
+          Senha
         </label>
         <div className="relative">
           <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => setSenha(e.target.value)}
             required
             minLength={8}
             autoComplete="new-password"
-            placeholder="Min. 8 characters"
+            placeholder="Mín. 8 caracteres"
             className={inputClass}
           />
         </div>
@@ -170,10 +170,10 @@ export function SignupForm() {
         {pending ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" />
-            Creating account...
+            Criando conta...
           </>
         ) : (
-          "Create Account"
+          "Criar Conta"
         )}
       </button>
     </form>

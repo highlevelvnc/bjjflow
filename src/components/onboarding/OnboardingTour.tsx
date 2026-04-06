@@ -3,13 +3,13 @@ import { useState, useEffect } from "react"
 import { X, ArrowRight, ArrowLeft, Sparkles } from "lucide-react"
 
 const STEPS = [
-  { title: "Welcome to Kumo!", desc: "Let's take a quick tour of your academy management platform.", target: null },
-  { title: "Dashboard", desc: "Your command center — stats, upcoming sessions, at-risk students, and announcements.", target: null },
-  { title: "Members", desc: "Add students and instructors. Bulk import via CSV. Track belts and attendance.", target: null },
-  { title: "Classes & Sessions", desc: "Create class templates, generate weekly sessions, and track attendance.", target: null },
-  { title: "Check In", desc: "Students can self-check-in via QR code. Or mark attendance manually.", target: null },
-  { title: "Student Billing", desc: "Create plans, generate PIX payments, track who's paid and who's overdue.", target: null },
-  { title: "You're all set!", desc: "Start by adding your first members and creating class templates. Oss! 🤙", target: null },
+  { title: "Bem-vindo ao Kumo!", desc: "Vamos fazer um tour rápido pela sua plataforma de gestão de academia.", target: null },
+  { title: "Painel", desc: "Seu centro de comando — estatísticas, próximas aulas, alunos em risco e avisos.", target: null },
+  { title: "Alunos", desc: "Adicione alunos e instrutores. Importação em massa via CSV. Acompanhe faixas e frequência.", target: null },
+  { title: "Turmas & Aulas", desc: "Crie modelos de turmas, gere aulas semanais e controle a frequência.", target: null },
+  { title: "Check-in", desc: "Alunos fazem check-in via QR code. Ou marque a presença manualmente.", target: null },
+  { title: "Mensalidades", desc: "Crie planos, gere cobranças PIX, veja quem pagou e quem está em atraso.", target: null },
+  { title: "Tudo pronto!", desc: "Comece adicionando seus alunos e criando as turmas. Oss! 🤙", target: null },
 ]
 
 export function OnboardingTour() {
@@ -52,16 +52,16 @@ export function OnboardingTour() {
         <div className="mt-6 flex items-center justify-between">
           {!isFirst ? (
             <button onClick={() => setStep(step - 1)} className="flex items-center gap-1 text-sm text-gray-400 hover:text-gray-200">
-              <ArrowLeft className="h-3.5 w-3.5" /> Back
+              <ArrowLeft className="h-3.5 w-3.5" /> Voltar
             </button>
           ) : <div />}
           {isLast ? (
             <button onClick={finish} className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400">
-              Let&apos;s go!
+              Vamos lá!
             </button>
           ) : (
             <button onClick={() => setStep(step + 1)} className="flex items-center gap-1 rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400">
-              Next <ArrowRight className="h-3.5 w-3.5" />
+              Próximo <ArrowRight className="h-3.5 w-3.5" />
             </button>
           )}
         </div>

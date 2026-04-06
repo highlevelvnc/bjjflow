@@ -4,7 +4,7 @@ import { KeyRound } from "lucide-react"
 import { ResetPasswordForm } from "./ResetPasswordForm"
 
 export const metadata: Metadata = {
-  title: "Reset Password — Kumo",
+  title: "Redefinir Senha — Kumo",
 }
 
 export default function ResetPasswordPage() {

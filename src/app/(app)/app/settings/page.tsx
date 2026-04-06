@@ -5,7 +5,7 @@ import { SettingsForm } from "./SettingsForm"
 import { EmbedCode } from "./EmbedCode"
 
 export const metadata: Metadata = {
-  title: "Settings",
+  title: "Configurações",
 }
 
 export default async function SettingsPage() {

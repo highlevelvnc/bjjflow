@@ -3,9 +3,11 @@ import Link from "next/link"
 import { createServerCaller } from "@/lib/trpc/server"
 import { BeltBadge } from "@/components/ui/BeltBadge"
 import { AttendanceChart } from "@/components/dashboard/AttendanceChart"
+import { getLocale } from "@/lib/i18n"
+import { getAppMessagesSync } from "@/lib/i18n/app-messages"
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Painel",
 }
 
 function timeAgoShort(dateStr: string): string {
@@ -13,26 +15,26 @@ function timeAgoShort(dateStr: string): string {
   const then = new Date(dateStr).getTime()
   const diff = now - then
   const seconds = Math.floor(diff / 1000)
-  if (seconds < 60) return "just now"
+  if (seconds < 60) return "agora"
   const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes}m ago`
+  if (minutes < 60) return `${minutes}min`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return `${hours}h`
   const days = Math.floor(hours / 24)
-  if (days === 1) return "yesterday"
-  if (days < 30) return `${days}d ago`
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  if (days === 1) return "ontem"
+  if (days < 30) return `${days}d`
+  return new Date(dateStr).toLocaleDateString("pt-BR", { month: "short", day: "numeric" })
 }
 
 function formatTime(t: string) {
   const [h, m] = t.split(":").map(Number)
   if (h === undefined || m === undefined) return t
-  const ampm = h >= 12 ? "PM" : "AM"
-  const hour = h % 12 || 12
-  return `${hour}:${String(m).padStart(2, "0")} ${ampm}`
+  return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}`
 }
 
 export default async function DashboardPage() {
+  const locale = await getLocale()
+  const t = getAppMessagesSync(locale)
   const trpc = await createServerCaller()
 
   const [academy, counts, upcoming, atRisk, attendanceTrend, recentAnnouncements, overdueSummary] = await Promise.all([
@@ -57,10 +59,10 @@ export default async function DashboardPage() {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label="Total Members" value={counts.total} href="/app/members" />
-        <StatCard label="Active Students" value={counts.students} href="/app/members" />
-        <StatCard label="Instructors" value={counts.instructors} href="/app/members" />
-        <StatCard label="Admins" value={counts.admins} href="/app/members" />
+        <StatCard label={t.dashboard.totalMembers ?? "Total"} value={counts.total} href="/app/members" />
+        <StatCard label={t.dashboard.activeStudents ?? "Alunos"} value={counts.students} href="/app/members" />
+        <StatCard label={t.dashboard.instructors ?? "Instrutores"} value={counts.instructors} href="/app/members" />
+        <StatCard label={t.dashboard.admins ?? "Admins"} value={counts.admins} href="/app/members" />
       </div>
 
       {/* Overdue payments alert (admin only) */}
@@ -86,13 +88,13 @@ export default async function DashboardPage() {
           </div>
           <div className="min-w-0 flex-1">
             <p className="text-sm font-semibold text-red-400">
-              {overdueSummary.count} payment{overdueSummary.count !== 1 ? "s" : ""} overdue
+              {overdueSummary.count} pagamento{overdueSummary.count !== 1 ? "s" : ""} em atraso
             </p>
             <p className="mt-0.5 text-xs text-gray-400">
               Totaling R${overdueSummary.totalAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
             </p>
           </div>
-          <span className="shrink-0 text-xs text-gray-500">View details →</span>
+          <span className="shrink-0 text-xs text-gray-500">Ver detalhes →</span>
         </Link>
       )}
 
@@ -100,20 +102,20 @@ export default async function DashboardPage() {
         {/* Upcoming sessions */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">Upcoming Sessions</h2>
+            <h2 className="text-sm font-medium text-gray-100">{t.dashboard.upcomingSessions ?? "Próximas Aulas"}</h2>
             <Link href="/app/sessions" className="text-xs text-gray-500 hover:text-gray-300">
-              View all →
+              Ver tudo →
             </Link>
           </div>
 
           {upcoming.length === 0 ? (
             <div className="px-5 py-8 text-center">
-              <p className="text-sm text-gray-500">No upcoming sessions.</p>
+              <p className="text-sm text-gray-500">Nenhuma aula agendada.</p>
               <Link
                 href="/app/sessions"
                 className="mt-2 inline-block text-sm text-gray-100 underline hover:no-underline"
               >
-                Generate sessions
+                Gerar aulas
               </Link>
             </div>
           ) : (
@@ -126,7 +128,7 @@ export default async function DashboardPage() {
                   >
                     <div className="flex h-12 w-12 shrink-0 flex-col items-center justify-center rounded-lg bg-white/8 text-center">
                       <span className="text-[10px] font-medium uppercase leading-none text-gray-500">
-                        {new Date(session.date + "T00:00:00").toLocaleDateString("en-US", {
+                        {new Date(session.date + "T00:00:00").toLocaleDateString("pt-BR", {
                           weekday: "short",
                         })}
                       </span>
@@ -153,7 +155,7 @@ export default async function DashboardPage() {
                       <span className="text-sm font-medium text-gray-100">
                         {session.attendance_count}
                       </span>
-                      <p className="text-xs text-gray-600">present</p>
+                      <p className="text-xs text-gray-600">presentes</p>
                     </div>
                   </Link>
                 </li>
@@ -165,17 +167,17 @@ export default async function DashboardPage() {
         {/* At-risk students */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">At-Risk Students</h2>
+            <h2 className="text-sm font-medium text-gray-100">{t.dashboard.atRiskStudents ?? "Alunos em Risco"}</h2>
             <Link href="/app/members" className="text-xs text-gray-500 hover:text-gray-300">
-              View all →
+              Ver tudo →
             </Link>
           </div>
 
           {atRisk.length === 0 ? (
             <div className="px-5 py-8 text-center">
-              <p className="text-sm text-gray-500">No at-risk students detected.</p>
+              <p className="text-sm text-gray-500">Nenhum aluno em risco detectado.</p>
               <p className="mt-1 text-xs text-gray-600">
-                Requires ≥ 4 completed sessions in the last 30 days.
+                Requer ≥ 4 aulas nos últimos 30 dias.
               </p>
             </div>
           ) : (
@@ -207,7 +209,7 @@ export default async function DashboardPage() {
       {/* Attendance trend */}
       {attendanceTrend.length > 0 && (
         <section className="rounded-xl border border-white/8 bg-gray-900 p-5">
-          <h2 className="mb-4 text-sm font-medium text-gray-100">Attendance Trend (Last 4 Weeks)</h2>
+          <h2 className="mb-4 text-sm font-medium text-gray-100">Frequência (Últimas 4 Semanas)</h2>
           <AttendanceChart weeks={attendanceTrend} />
         </section>
       )}
@@ -216,9 +218,9 @@ export default async function DashboardPage() {
       {recentAnnouncements.items.length > 0 && (
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">Recent Announcements</h2>
+            <h2 className="text-sm font-medium text-gray-100">Avisos Recentes</h2>
             <Link href="/app/announcements" className="text-xs text-gray-500 hover:text-gray-300">
-              View all →
+              Ver tudo →
             </Link>
           </div>
           <ul className="divide-y divide-white/6">
@@ -253,31 +255,31 @@ export default async function DashboardPage() {
 
       {/* Quick actions */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-        <h2 className="text-sm font-medium text-gray-100">Quick Actions</h2>
+        <h2 className="text-sm font-medium text-gray-100">{t.dashboard.quickActions ?? "Ações Rápidas"}</h2>
         <div className="mt-3 flex flex-wrap gap-2">
           <Link
             href="/app/members/new"
             className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
           >
-            Add Member
+            {t.dashboard.addMember ?? "Adicionar Aluno"}
           </Link>
           <Link
             href="/app/classes/new"
             className="rounded-md border border-white/12 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100"
           >
-            New Class
+            {t.dashboard.newClass ?? "Nova Turma"}
           </Link>
           <Link
             href="/app/sessions"
             className="rounded-md border border-white/12 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100"
           >
-            Sessions
+            {t.dashboard.viewSessions ?? "Ver Aulas"}
           </Link>
           <Link
             href="/app/members/invite"
             className="rounded-md border border-white/12 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100"
           >
-            Invite Instructor
+            {t.dashboard.inviteInstructor ?? "Convidar Instrutor"}
           </Link>
         </div>
       </div>

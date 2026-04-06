@@ -8,7 +8,7 @@ import { GenerateSessionsButton } from "@/components/sessions/GenerateSessionsBu
 import { CalendarSubscription } from "@/components/sessions/CalendarSubscription"
 
 export const metadata: Metadata = {
-  title: "Sessions",
+  title: "Aulas",
 }
 
 const STATUS_STYLES: Record<string, string> = {

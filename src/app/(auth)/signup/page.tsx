@@ -6,7 +6,7 @@ import { Shield } from "lucide-react"
 import { SignupForm } from "./SignupForm"
 
 export const metadata: Metadata = {
-  title: "Create Account — Kumo",
+  title: "Criar Conta — Kumo",
 }
 
 export default function SignupPage() {
@@ -18,10 +18,10 @@ export default function SignupPage() {
           <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">
-          Create your account
+          Crie sua conta
         </h1>
         <p className="mt-2 text-sm text-gray-500">
-          Start managing your academy in minutes
+          Comece a gerenciar sua academia em minutos
         </p>
       </div>
 
@@ -35,17 +35,17 @@ export default function SignupPage() {
       {/* Trust signal */}
       <div className="flex items-center justify-center gap-1.5 text-xs text-gray-600">
         <Shield className="h-3.5 w-3.5" />
-        256-bit TLS encryption
+        Criptografia TLS 256-bit
       </div>
 
       {/* Footer link */}
       <p className="text-center text-sm text-gray-600">
-        Already have an account?{" "}
+        Já tem uma conta?{" "}
         <Link
           href="/login"
           className="font-medium text-brand-400 transition-colors hover:text-brand-300"
         >
-          Sign in →
+          Entrar →
         </Link>
       </p>
     </div>

@@ -12,8 +12,8 @@ export const ROLE_ORDER: Role[] = ["student", "instructor", "admin"]
 /** Human-readable labels. */
 export const ROLE_LABELS: Record<Role, string> = {
   admin: "Admin",
-  instructor: "Instructor",
-  student: "Student",
+  instructor: "Instrutor",
+  student: "Aluno",
 }
 
 /**

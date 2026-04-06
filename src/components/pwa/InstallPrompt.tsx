@@ -22,9 +22,9 @@ export function InstallPrompt() {
       <div className="flex items-start gap-3">
         <Download className="mt-0.5 h-5 w-5 shrink-0 text-brand-400" />
         <div className="flex-1">
-          <p className="text-sm font-medium text-gray-100">Install Kumo</p>
-          <p className="mt-0.5 text-xs text-gray-500">Quick access from your home screen</p>
-          <button onClick={async () => { await deferredPrompt?.prompt(); setShow(false) }} className="mt-2 rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-400">Install</button>
+          <p className="text-sm font-medium text-gray-100">Instalar Kumo</p>
+          <p className="mt-0.5 text-xs text-gray-500">Acesso rápido pela tela inicial</p>
+          <button onClick={async () => { await deferredPrompt?.prompt(); setShow(false) }} className="mt-2 rounded-lg bg-brand-500 px-3 py-1.5 text-xs font-medium text-white hover:bg-brand-400">Instalar</button>
         </div>
         <button onClick={() => { setShow(false); localStorage.setItem("gf-install-dismissed", "1") }} className="text-gray-500 hover:text-gray-300"><X className="h-4 w-4" /></button>
       </div>

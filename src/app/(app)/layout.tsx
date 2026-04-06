@@ -6,6 +6,7 @@ import { Sidebar } from "@/components/nav/Sidebar"
 import { TrialBanner } from "@/components/ui/TrialBanner"
 import { OnboardingTour } from "@/components/onboarding/OnboardingTour"
 import type { Role } from "@/types/auth"
+import { getLocale } from "@/lib/i18n"
 
 export const metadata: Metadata = {
   title: {
@@ -29,6 +30,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     redirect("/setup")
   }
 
+  const locale = await getLocale()
   const trpc = await createServerCaller()
 
   let academyName = "My Academy"
@@ -53,7 +55,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="flex min-h-screen bg-gray-950">
-      <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} />
+      <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} locale={locale} />
       <div className="flex min-w-0 flex-1 flex-col">
         {academyStatus === "trialing" && <TrialBanner />}
         <main className="flex-1 px-8 py-6 pt-20 text-gray-100 md:pt-6">{children}</main>

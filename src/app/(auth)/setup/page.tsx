@@ -3,7 +3,7 @@ import type { Metadata } from "next"
 import { SetupForm } from "./SetupForm"
 
 export const metadata: Metadata = {
-  title: "Set Up Your Academy — Kumo",
+  title: "Configurar Academia — Kumo",
 }
 
 export default function SetupPage() {

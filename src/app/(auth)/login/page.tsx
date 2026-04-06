@@ -50,7 +50,7 @@ export default async function LoginPage() {
           href="/forgot-password"
           className="text-sm text-brand-400 transition-colors hover:text-brand-300"
         >
-          Forgot your password?
+          Esqueceu sua senha?
         </Link>
       </div>
 

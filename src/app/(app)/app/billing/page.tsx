@@ -4,7 +4,7 @@ import { LOCALE_CURRENCY, type Locale } from "@/lib/i18n/config"
 import { BillingClient } from "./BillingClient"
 
 export const metadata: Metadata = {
-  title: "Billing",
+  title: "Planos",
 }
 
 /** Map academy currency code to the matching locale for pricing display. */

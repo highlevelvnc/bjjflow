@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { StudentBillingClient } from "./StudentBillingClient"
 
 export const metadata: Metadata = {
-  title: "Student Billing",
+  title: "Mensalidades",
 }
 
 export default function StudentBillingPage() {

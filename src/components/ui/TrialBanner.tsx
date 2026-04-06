@@ -13,7 +13,7 @@ export function TrialBanner({ trialEndsAt }: TrialBannerProps) {
 
   if (dismissed) return null
 
-  let message = "You're on a free trial. Upgrade to keep your academy running."
+  let message = "Você está no período de teste gratuito. Faça upgrade para manter sua academia ativa."
 
   if (trialEndsAt) {
     const now = new Date()
@@ -22,11 +22,11 @@ export function TrialBanner({ trialEndsAt }: TrialBannerProps) {
     const diffDays = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)))
 
     if (diffDays === 0) {
-      message = "Your trial ends today. Upgrade now to avoid interruption."
+      message = "Seu teste expira hoje. Faça upgrade agora."
     } else if (diffDays === 1) {
-      message = "Your trial ends tomorrow. Upgrade now to avoid interruption."
+      message = "Seu teste expira amanhã. Faça upgrade agora."
     } else {
-      message = `Your trial ends in ${diffDays} days. Upgrade now.`
+      message = `Seu teste expira em ${diffDays} dias. Faça upgrade agora.`
     }
   }
 
@@ -56,7 +56,7 @@ export function TrialBanner({ trialEndsAt }: TrialBannerProps) {
           href="/app/billing"
           className="rounded-md bg-amber-500 px-3 py-1 text-xs font-semibold text-black hover:bg-amber-400"
         >
-          Upgrade
+          Assinar
         </Link>
         <button
           onClick={() => setDismissed(true)}

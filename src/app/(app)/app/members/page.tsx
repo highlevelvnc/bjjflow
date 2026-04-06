@@ -10,7 +10,7 @@ import type { Role } from "@/types/auth"
 import { Pencil } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Members",
+  title: "Alunos",
 }
 
 export default async function MembersPage({

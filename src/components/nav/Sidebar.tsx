@@ -15,44 +15,47 @@ import type { Role } from "@/types/auth"
 import { ROLE_LABELS } from "@/lib/constants/roles"
 import { createBrowserSupabase } from "@/server/supabase/browser"
 import { ThemeToggle } from "@/components/ui/ThemeToggle"
+import { getAppMessagesSync } from "@/lib/i18n/app-messages"
 
-interface NavItem {
-  label: string
+interface NavDef {
+  key: string
   href: string
   icon: React.ElementType
 }
 
-const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard",    href: "/app",              icon: LayoutDashboard },
-  { label: "Members",      href: "/app/members",      icon: Users },
-  { label: "Classes",      href: "/app/classes",       icon: Dumbbell },
-  { label: "Sessions",     href: "/app/sessions",      icon: CalendarDays },
-  { label: "Techniques",   href: "/app/techniques",    icon: BookOpen },
-  { label: "Contracts",    href: "/app/contracts",      icon: FileSignature },
-  { label: "Events",       href: "/app/events",         icon: CalendarHeart },
-  { label: "Feed",         href: "/app/announcements",  icon: MessageSquare },
-  { label: "Inventory",    href: "/app/inventory",      icon: ShoppingBag },
-  { label: "Check In",     href: "/app/checkin",        icon: QrCode },
-  { label: "My Progress",  href: "/app/portal",         icon: BarChart3 },
-  { label: "Leaderboard",  href: "/app/leaderboard",    icon: Trophy },
-  { label: "Student Billing",href: "/app/student-billing",icon: Receipt },
-  { label: "Analytics",    href: "/app/analytics",      icon: BarChart2 },
-  { label: "Audit Log",    href: "/app/audit",          icon: ScrollText },
-  { label: "Billing",      href: "/app/billing",        icon: CreditCard },
-  { label: "Settings",     href: "/app/settings",       icon: Settings },
+const NAV_DEFS: NavDef[] = [
+  { key: "dashboard",      href: "/app",                icon: LayoutDashboard },
+  { key: "members",        href: "/app/members",        icon: Users },
+  { key: "classes",        href: "/app/classes",         icon: Dumbbell },
+  { key: "sessions",       href: "/app/sessions",        icon: CalendarDays },
+  { key: "techniques",     href: "/app/techniques",      icon: BookOpen },
+  { key: "contracts",      href: "/app/contracts",        icon: FileSignature },
+  { key: "events",         href: "/app/events",           icon: CalendarHeart },
+  { key: "feed",           href: "/app/announcements",    icon: MessageSquare },
+  { key: "inventory",      href: "/app/inventory",        icon: ShoppingBag },
+  { key: "checkin",        href: "/app/checkin",          icon: QrCode },
+  { key: "portal",         href: "/app/portal",           icon: BarChart3 },
+  { key: "leaderboard",    href: "/app/leaderboard",      icon: Trophy },
+  { key: "studentBilling", href: "/app/student-billing",  icon: Receipt },
+  { key: "analytics",      href: "/app/analytics",        icon: BarChart2 },
+  { key: "auditLog",       href: "/app/audit",            icon: ScrollText },
+  { key: "billing",        href: "/app/billing",          icon: CreditCard },
+  { key: "settings",       href: "/app/settings",         icon: Settings },
 ]
 
 interface SidebarProps {
   academyName: string
   memberName: string
   memberRole: Role
+  locale: string
 }
 
-export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
+export function Sidebar({ academyName, memberName, memberRole, locale }: SidebarProps) {
   const pathname = usePathname()
   const router = useRouter()
   const [open, setOpen] = useState(false)
   const [loggingOut, setLoggingOut] = useState(false)
+  const t = getAppMessagesSync(locale)
 
   async function handleLogout() {
     setLoggingOut(true)
@@ -79,12 +82,13 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         <ul className="space-y-0.5">
-          {NAV_ITEMS.map((item) => {
+          {NAV_DEFS.map((item) => {
             const isActive =
               item.href === "/app"
                 ? pathname === "/app"
                 : pathname.startsWith(item.href)
             const Icon = item.icon
+            const label = t.nav[item.key] ?? item.key
 
             return (
               <li key={item.href}>
@@ -99,7 +103,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
                   )}
                 >
                   <Icon className={cn("h-4 w-4 shrink-0", isActive ? "text-brand-400" : "text-gray-500")} />
-                  {item.label}
+                  {label}
                   {isActive && <span className="ml-auto h-1.5 w-1.5 rounded-full bg-brand-400" />}
                 </Link>
               </li>

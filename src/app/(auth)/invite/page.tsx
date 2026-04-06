@@ -17,7 +17,7 @@ import { AcceptInviteButton } from "./AcceptInviteButton"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Accept Invite — Kumo",
+  title: "Aceitar Convite — Kumo",
 }
 
 interface InvitePageProps {
