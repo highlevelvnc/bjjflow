@@ -9,7 +9,7 @@ const en: AppMessages = {
     dashboard: "Dashboard", members: "Members", classes: "Classes", sessions: "Sessions",
     techniques: "Techniques", contracts: "Contracts", events: "Events", feed: "Feed",
     inventory: "Inventory", checkin: "Check In", portal: "My Progress", billing: "Billing",
-    settings: "Settings", analytics: "Analytics", leaderboard: "Leaderboard",
+    settings: "Settings", analytics: "Analytics", titles: "Titles", leaderboard: "Leaderboard",
     studentBilling: "Student Billing", auditLog: "Audit Log",
   },
   common: {
@@ -32,7 +32,7 @@ const ptBR: AppMessages = {
     dashboard: "Painel", members: "Alunos", classes: "Turmas", sessions: "Aulas",
     techniques: "Técnicas", contracts: "Contratos", events: "Eventos", feed: "Mural",
     inventory: "Estoque", checkin: "Check-in", portal: "Meu Progresso", billing: "Planos",
-    settings: "Config.", analytics: "Analytics", leaderboard: "Ranking",
+    settings: "Config.", analytics: "Analytics", titles: "Títulos", leaderboard: "Ranking",
     studentBilling: "Mensalidades", auditLog: "Auditoria",
   },
   common: {

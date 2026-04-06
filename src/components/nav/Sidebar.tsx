@@ -7,7 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
   BookOpen, FileSignature, CalendarHeart, MessageSquare, ShoppingBag,
-  QrCode, BarChart3, BarChart2, Receipt, Trophy, ScrollText, CreditCard, Settings,
+  QrCode, BarChart3, BarChart2, Receipt, Trophy, Medal, ScrollText, CreditCard, Settings,
   LogOut, Menu, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
@@ -35,6 +35,7 @@ const NAV_DEFS: NavDef[] = [
   { key: "inventory",      href: "/app/inventory",        icon: ShoppingBag },
   { key: "checkin",        href: "/app/checkin",          icon: QrCode },
   { key: "portal",         href: "/app/portal",           icon: BarChart3 },
+  { key: "titles",          href: "/app/titles",             icon: Medal },
   { key: "leaderboard",    href: "/app/leaderboard",      icon: Trophy },
   { key: "studentBilling", href: "/app/student-billing",  icon: Receipt },
   { key: "analytics",      href: "/app/analytics",        icon: BarChart2 },

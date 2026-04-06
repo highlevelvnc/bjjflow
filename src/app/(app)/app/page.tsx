@@ -37,7 +37,7 @@ export default async function DashboardPage() {
   const t = getAppMessagesSync(locale)
   const trpc = await createServerCaller()
 
-  const [academy, counts, upcoming, atRisk, attendanceTrend, recentAnnouncements, overdueSummary] = await Promise.all([
+  const [academy, counts, upcoming, atRisk, attendanceTrend, recentAnnouncements, overdueSummary, birthdays, weeklyTraining, recentTitles] = await Promise.all([
     trpc.academy.getCurrent(),
     trpc.member.getCounts(),
     trpc.session.listUpcoming({ limit: 5 }),
@@ -45,6 +45,9 @@ export default async function DashboardPage() {
     trpc.member.getAttendanceTrend().catch(() => [] as { label: string; count: number }[]),
     trpc.announcement.list({ limit: 3, offset: 0 }).catch(() => ({ items: [] as { id: string; title: string; content: string; priority: string; published_at: string | null }[], total: 0 })),
     trpc.finance.overdueSummary().catch(() => ({ count: 0, totalAmount: 0 })),
+    trpc.member.getBirthdays().catch(() => [] as { id: string; full_name: string; belt_rank: string; stripes: number; birth_date: string | null; avatar_url: string | null; day: number }[]),
+    trpc.member.getWeeklyTraining().catch(() => [] as { id: string; full_name: string; belt_rank: string; stripes: number; count: number }[]),
+    trpc.title.recent().catch(() => [] as { id: string; member_name: string; member_belt: string; title: string; competition: string; placement: string; date: string }[]),
   ])
 
   return (
@@ -252,6 +255,108 @@ export default async function DashboardPage() {
           </ul>
         </section>
       )}
+
+      {/* 3 new sections: Birthdays, Titles, Weekly Training */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        {/* Aniversariantes do mês */}
+        <section className="rounded-xl border border-white/8 bg-gray-900">
+          <div className="border-b border-white/8 px-5 py-3">
+            <h2 className="flex items-center gap-2 text-sm font-medium text-gray-100">
+              🎂 Aniversariantes do Mês
+            </h2>
+          </div>
+          {birthdays.length === 0 ? (
+            <div className="px-5 py-6 text-center">
+              <p className="text-sm text-gray-500">Nenhum aniversariante este mês.</p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-white/6">
+              {birthdays.slice(0, 6).map((m) => (
+                <li key={m.id} className="flex items-center gap-3 px-5 py-2.5">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-pink-500/15 text-xs font-bold text-pink-400">
+                    {m.day}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-100">{m.full_name}</p>
+                    <p className="text-xs text-gray-500 capitalize">{m.belt_rank} · {m.stripes} grau{m.stripes !== 1 ? "s" : ""}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+
+        {/* Títulos / Conquistas */}
+        <section className="rounded-xl border border-white/8 bg-gray-900">
+          <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
+            <h2 className="flex items-center gap-2 text-sm font-medium text-gray-100">
+              🏆 Títulos
+            </h2>
+            <Link href="/app/titles" className="text-xs text-gray-500 hover:text-gray-300">
+              Ver tudo →
+            </Link>
+          </div>
+          {recentTitles.length === 0 ? (
+            <div className="px-5 py-6 text-center">
+              <p className="text-sm text-gray-500">Nenhum título registrado.</p>
+              <Link href="/app/titles/new" className="mt-1 inline-block text-sm text-brand-400 hover:text-brand-300">
+                Registrar título →
+              </Link>
+            </div>
+          ) : (
+            <ul className="divide-y divide-white/6">
+              {recentTitles.map((t) => {
+                const medal = t.placement === "gold" ? "🥇" : t.placement === "silver" ? "🥈" : t.placement === "bronze" ? "🥉" : "🏅"
+                return (
+                  <li key={t.id} className="px-5 py-2.5">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{medal}</span>
+                      <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-medium text-gray-100">{t.member_name}</p>
+                        <p className="truncate text-xs text-gray-500">{t.title} · {t.competition}</p>
+                      </div>
+                    </div>
+                  </li>
+                )
+              })}
+            </ul>
+          )}
+        </section>
+
+        {/* Treinos na semana */}
+        <section className="rounded-xl border border-white/8 bg-gray-900">
+          <div className="border-b border-white/8 px-5 py-3">
+            <h2 className="flex items-center gap-2 text-sm font-medium text-gray-100">
+              💪 Treinos na Semana
+            </h2>
+          </div>
+          {weeklyTraining.length === 0 ? (
+            <div className="px-5 py-6 text-center">
+              <p className="text-sm text-gray-500">Nenhum treino registrado esta semana.</p>
+            </div>
+          ) : (
+            <ul className="divide-y divide-white/6">
+              {weeklyTraining.slice(0, 8).map((m) => (
+                <li key={m.id} className="flex items-center gap-3 px-5 py-2.5">
+                  <div className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                    m.count >= 4 ? "bg-emerald-500/15 text-emerald-400"
+                      : m.count >= 2 ? "bg-amber-500/15 text-amber-400"
+                        : m.count > 0 ? "bg-blue-500/15 text-blue-400"
+                          : "bg-white/8 text-gray-500"
+                  }`}>
+                    {m.count}
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-100">{m.full_name}</p>
+                    <p className="text-xs text-gray-500 capitalize">{m.belt_rank}</p>
+                  </div>
+                  <span className="text-xs text-gray-600">{m.count} {m.count === 1 ? "treino" : "treinos"}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      </div>
 
       {/* Quick actions */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">

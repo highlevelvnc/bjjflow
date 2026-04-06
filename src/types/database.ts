@@ -1305,6 +1305,48 @@ export type Database = {
           created_at?: string
         }
       }
+      member_titles: {
+        Row: {
+          id: string
+          academy_id: string
+          member_id: string
+          title: string
+          competition: string
+          category: string | null
+          weight_class: string | null
+          placement: "gold" | "silver" | "bronze" | "other"
+          date: string
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          member_id: string
+          title: string
+          competition: string
+          category?: string | null
+          weight_class?: string | null
+          placement?: "gold" | "silver" | "bronze" | "other"
+          date: string
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          member_id?: string
+          title?: string
+          competition?: string
+          category?: string | null
+          weight_class?: string | null
+          placement?: "gold" | "silver" | "bronze" | "other"
+          date?: string
+          notes?: string | null
+          created_at?: string
+        }
+      }
     }
     Views: {
       academy_public: {

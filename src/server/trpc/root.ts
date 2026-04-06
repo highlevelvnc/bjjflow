@@ -21,6 +21,7 @@ import { webhookRouter } from "./routers/webhook"
 import { studentPlanRouter } from "./routers/studentPlan"
 import { auditRouter } from "./routers/audit"
 import { gamificationRouter } from "./routers/gamification"
+import { titleRouter } from "./routers/title"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -44,6 +45,7 @@ export const appRouter = router({
   studentPlan: studentPlanRouter,
   audit: auditRouter,
   gamification: gamificationRouter,
+  title: titleRouter,
 })
 
 export type AppRouter = typeof appRouter

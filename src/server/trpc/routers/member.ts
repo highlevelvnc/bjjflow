@@ -320,4 +320,67 @@ export const memberRouter = router({
 
     return weeks
   }),
+
+  /**
+   * Members whose birthday falls in the current month.
+   */
+  getBirthdays: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const month = String(new Date().getMonth() + 1).padStart(2, "0")
+
+    const { data } = await supabase
+      .from("members")
+      .select("id, full_name, belt_rank, stripes, birth_date, avatar_url")
+      .eq("academy_id", ctx.academyId!)
+      .eq("status", "active")
+      .not("birth_date", "is", null)
+
+    if (!data) return []
+
+    return data
+      .filter((m) => m.birth_date && m.birth_date.substring(5, 7) === month)
+      .map((m) => {
+        const day = parseInt(m.birth_date!.substring(8, 10), 10)
+        return { ...m, day }
+      })
+      .sort((a, b) => a.day - b.day)
+  }),
+
+  /**
+   * Weekly training count — how many sessions each active student attended this week.
+   */
+  getWeeklyTraining: instructorProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+
+    const now = new Date()
+    const dayOfWeek = now.getDay()
+    const mondayOffset = dayOfWeek === 0 ? -6 : 1 - dayOfWeek
+    const weekStart = new Date(now)
+    weekStart.setDate(now.getDate() + mondayOffset)
+    weekStart.setHours(0, 0, 0, 0)
+
+    const [membersResult, attendanceResult] = await Promise.all([
+      supabase
+        .from("members")
+        .select("id, full_name, belt_rank, stripes")
+        .eq("academy_id", ctx.academyId!)
+        .eq("role", "student")
+        .eq("status", "active"),
+      supabase
+        .from("attendance")
+        .select("member_id")
+        .eq("academy_id", ctx.academyId!)
+        .gte("checked_in_at", weekStart.toISOString()),
+    ])
+
+    const counts = new Map<string, number>()
+    for (const a of attendanceResult.data ?? []) {
+      counts.set(a.member_id, (counts.get(a.member_id) ?? 0) + 1)
+    }
+
+    return (membersResult.data ?? [])
+      .map((m) => ({ ...m, count: counts.get(m.id) ?? 0 }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 15)
+  }),
 })
