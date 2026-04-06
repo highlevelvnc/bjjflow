@@ -1,4 +1,4 @@
-const CACHE_NAME = "grapplingflow-v1"
+const CACHE_NAME = "kumo-v1"
 self.addEventListener("install", (event) => {
   self.skipWaiting()
 })
@@ -12,6 +12,6 @@ self.addEventListener("activate", (event) => {
 })
 self.addEventListener("fetch", (event) => {
   if (event.request.mode === "navigate") {
-    event.respondWith(fetch(event.request).catch(() => new Response("<h1>Offline</h1><p>Connect to continue using GrapplingFlow.</p>", { headers: { "Content-Type": "text/html" } })))
+    event.respondWith(fetch(event.request).catch(() => new Response("<h1>Offline</h1><p>Connect to continue using Kumo.</p>", { headers: { "Content-Type": "text/html" } })))
   }
 })

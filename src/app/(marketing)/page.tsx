@@ -36,7 +36,7 @@ export default async function LandingPage() {
     stats: t.stats,
     features: t.features,
     howItWorks: t.howItWorks,
-    testimonial: t.testimonial,
+    testimonials: t.testimonials,
     pricing: {
       tag: t.pricing.tag,
       h2: t.pricing.h2,

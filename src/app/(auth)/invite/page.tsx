@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { createClient } from "@supabase/supabase-js"
@@ -16,7 +17,7 @@ import { AcceptInviteButton } from "./AcceptInviteButton"
 export const dynamic = "force-dynamic"
 
 export const metadata: Metadata = {
-  title: "Accept Invite — GrapplingFlow",
+  title: "Accept Invite — Kumo",
 }
 
 interface InvitePageProps {
@@ -118,7 +119,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
         <div className="rounded-2xl border border-white/8 bg-white/4 p-7 shadow-2xl backdrop-blur-xl">
           <div className="text-center">
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-              <span className="text-lg font-black text-white">GF</span>
+              <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
             </div>
             <h1 className="text-xl font-bold text-white">You&apos;re Invited!</h1>
             <p className="mt-2 text-sm text-gray-400">
@@ -157,7 +158,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
       <div className="rounded-2xl border border-white/8 bg-white/4 p-7 shadow-2xl backdrop-blur-xl">
         <div className="text-center">
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-            <span className="text-lg font-black text-white">GF</span>
+            <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
           </div>
           <h1 className="text-xl font-bold text-white">Accept Invite</h1>
           <p className="mt-2 text-sm text-gray-400">

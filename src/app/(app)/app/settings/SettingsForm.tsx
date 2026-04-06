@@ -252,7 +252,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
 
 function PublicScheduleSection({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false)
-  const scheduleUrl = `${typeof window !== "undefined" ? window.location.origin : "https://grapplingflow.com"}/schedule?academy=${slug}`
+  const scheduleUrl = `${typeof window !== "undefined" ? window.location.origin : "https://kumo.com"}/schedule?academy=${slug}`
 
   async function handleCopy() {
     try {

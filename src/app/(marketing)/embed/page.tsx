@@ -371,12 +371,12 @@ export default async function EmbedPage({ searchParams }: Props) {
         <p className={`text-[10px] ${t.footerText}`}>
           Powered by{" "}
           <a
-            href="https://grapplingflow.com"
+            href="https://kumo.com"
             target="_blank"
             rel="noopener noreferrer"
             className={`transition-colors ${t.footerLink}`}
           >
-            GrapplingFlow
+            Kumo
           </a>
         </p>
       </div>

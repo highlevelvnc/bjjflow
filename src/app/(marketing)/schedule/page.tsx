@@ -100,7 +100,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 
   if (!slug) {
     return {
-      title: "Class Schedule — GrapplingFlow",
+      title: "Class Schedule — Kumo",
       description: "View weekly BJJ class schedules. Find your academy and see class times, types, and more.",
     }
   }
@@ -109,7 +109,7 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
   const { data } = await admin.from("academies").select("name").eq("slug", slug).single()
 
   return {
-    title: `${data?.name ?? "Academy"} — Class Schedule | GrapplingFlow`,
+    title: `${data?.name ?? "Academy"} — Class Schedule | Kumo`,
     description: `View the weekly BJJ class schedule for ${data?.name ?? "this academy"}. Brazilian Jiu-Jitsu classes, times, and instructors.`,
   }
 }
@@ -176,7 +176,7 @@ export default async function SchedulePage({ searchParams }: Props) {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
               GF
             </div>
-            <span className="text-base font-semibold text-gray-100">GrapplingFlow</span>
+            <span className="text-base font-semibold text-gray-100">Kumo</span>
           </Link>
           <Link
             href="/login"
@@ -343,7 +343,7 @@ export default async function SchedulePage({ searchParams }: Props) {
             <p className="text-center text-xs text-gray-700">
               Powered by{" "}
               <Link href="/" className="text-gray-500 transition-colors hover:text-brand-400">
-                GrapplingFlow
+                Kumo
               </Link>
             </p>
           </div>
@@ -405,7 +405,7 @@ function NoAcademyView() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
               GF
             </div>
-            <span className="text-base font-semibold text-gray-100">GrapplingFlow</span>
+            <span className="text-base font-semibold text-gray-100">Kumo</span>
           </Link>
           <Link
             href="/login"
@@ -434,11 +434,11 @@ function NoAcademyView() {
             </label>
             <div className="flex items-center gap-2">
               <div className="flex-1 rounded-lg border border-white/12 bg-white/6 px-3 py-2.5 text-sm text-gray-500">
-                grapplingflow.com/schedule?academy=<span className="text-gray-400">your-slug</span>
+                kumo.com/schedule?academy=<span className="text-gray-400">your-slug</span>
               </div>
             </div>
             <p className="mt-3 text-xs text-gray-600">
-              Ask your academy for their GrapplingFlow schedule link.
+              Ask your academy for their Kumo schedule link.
             </p>
           </div>
 
@@ -447,7 +447,7 @@ function NoAcademyView() {
               href="/"
               className="text-sm font-medium text-brand-400 transition-colors hover:text-brand-300"
             >
-              Learn more about GrapplingFlow &rarr;
+              Learn more about Kumo &rarr;
             </Link>
           </div>
         </div>
@@ -458,7 +458,7 @@ function NoAcademyView() {
           <p className="text-center text-xs text-gray-700">
             Powered by{" "}
             <Link href="/" className="text-gray-500 transition-colors hover:text-brand-400">
-              GrapplingFlow
+              Kumo
             </Link>
           </p>
         </div>
@@ -478,7 +478,7 @@ function NotFoundView() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-500 text-sm font-bold text-white">
               GF
             </div>
-            <span className="text-base font-semibold text-gray-100">GrapplingFlow</span>
+            <span className="text-base font-semibold text-gray-100">Kumo</span>
           </Link>
         </div>
       </header>

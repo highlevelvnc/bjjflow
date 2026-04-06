@@ -94,7 +94,7 @@ export async function GET(
   const lines: string[] = [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//GrapplingFlow//EN",
+    "PRODID:-//Kumo//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:PUBLISH",
     `X-WR-CALNAME:${icsEscape(summary)}`,
@@ -108,7 +108,7 @@ export async function GET(
 
   if (cls?.room) lines.push(`LOCATION:${icsEscape(cls.room)}`)
 
-  lines.push(`UID:session-${session.id}@grapplingflow.com`)
+  lines.push(`UID:session-${session.id}@kumo.com`)
   lines.push(`DTSTAMP:${new Date().toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, "")}`)
   lines.push("END:VEVENT")
   lines.push("END:VCALENDAR")

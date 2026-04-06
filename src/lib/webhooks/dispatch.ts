@@ -65,8 +65,8 @@ export async function dispatchWebhookEvent(
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              "X-GrapplingFlow-Signature": `sha256=${signature}`,
-              "X-GrapplingFlow-Event": event,
+              "X-Kumo-Signature": `sha256=${signature}`,
+              "X-Kumo-Event": event,
             },
             body,
             signal: AbortSignal.timeout(10_000),

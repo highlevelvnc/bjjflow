@@ -9,8 +9,8 @@ import type { Role } from "@/types/auth"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | GrapplingFlow",
-    default: "Dashboard | GrapplingFlow",
+    template: "%s | Kumo",
+    default: "Dashboard | Kumo",
   },
 }
 

@@ -55,7 +55,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ mem
       <div style="padding:12px 24px 24px;text-align:center;">
         <button onclick="window.print()" style="padding:8px 24px;background:#6366f1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px;">Print Card</button>
       </div>
-      <div style="border-top:1px solid #eee;padding:8px;text-align:center;"><span style="font-size:10px;color:#ccc;">GrapplingFlow</span></div>
+      <div style="border-top:1px solid #eee;padding:8px;text-align:center;"><span style="font-size:10px;color:#ccc;">Kumo</span></div>
     </div>
   </body></html>`
 

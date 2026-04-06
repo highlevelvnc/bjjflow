@@ -9,8 +9,8 @@ import "./globals.css"
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | GrapplingFlow",
-    default: "GrapplingFlow — Jiu-Jitsu Academy Management",
+    template: "%s | Kumo",
+    default: "Kumo — Jiu-Jitsu Academy Management",
   },
   description:
     "Less chaos in management. More focus on the mats. Student management, payments, class scheduling and retention analytics for BJJ academies.",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
-    title: "GrapplingFlow",
+    title: "Kumo",
   },
 }
 

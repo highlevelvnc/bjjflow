@@ -2,6 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { motion } from "framer-motion"
 import {
   Users, CalendarDays, CheckSquare,
@@ -44,7 +45,7 @@ export interface LandingMessages {
     tagline: string
     steps: Array<{ title: string; body: string }>
   }
-  testimonial: { quote: string; author: string; role: string }
+  testimonials: Array<{ quote: string; author: string; role: string }>
   pricing: {
     tag: string
     h2: string
@@ -115,10 +116,8 @@ function Nav({ t, locale }: { t: LandingMessages; locale: Locale }) {
     >
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-6">
         <Link href="/" className="flex items-center gap-2 transition-opacity hover:opacity-80">
-          <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-500 shadow-lg shadow-brand-500/30">
-            <span className="text-[11px] font-black text-white">GF</span>
-          </div>
-          <span className="text-sm font-semibold text-white">GrapplingFlow</span>
+          <Image src="/kumologo.png" alt="Kumo" width={28} height={28} className="rounded-lg" />
+          <span className="text-sm font-semibold text-white">Kumo</span>
         </Link>
 
         <nav className="flex items-center gap-1">
@@ -450,26 +449,31 @@ function HowItWorks({ t }: { t: LandingMessages }) {
 function Testimonial({ t }: { t: LandingMessages }) {
   return (
     <section className="border-y border-white/8 bg-gray-900/40 px-6 py-20">
-      <motion.div
-        className="mx-auto max-w-3xl text-center"
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-80px" }}
-        variants={fadeUp}
-      >
-        <div className="mb-6 flex justify-center gap-0.5">
-          {[...Array(5)].map((_, i) => (
-            <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
-          ))}
-        </div>
-        <blockquote className="text-xl font-medium leading-relaxed text-white sm:text-2xl">
-          &ldquo;{t.testimonial.quote}&rdquo;
-        </blockquote>
-        <div className="mt-6">
-          <p className="font-semibold text-white">{t.testimonial.author}</p>
-          <p className="text-sm text-gray-500">{t.testimonial.role}</p>
-        </div>
-      </motion.div>
+      <div className="mx-auto grid max-w-5xl gap-8 md:grid-cols-2">
+        {t.testimonials.map((item, idx) => (
+          <motion.div
+            key={idx}
+            className="rounded-2xl border border-white/8 bg-gray-900/60 p-8 text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={fadeUp}
+          >
+            <div className="mb-4 flex justify-center gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+              ))}
+            </div>
+            <blockquote className="text-lg font-medium leading-relaxed text-white">
+              &ldquo;{item.quote}&rdquo;
+            </blockquote>
+            <div className="mt-5">
+              <p className="font-semibold text-white">{item.author}</p>
+              <p className="text-sm text-gray-500">{item.role}</p>
+            </div>
+          </motion.div>
+        ))}
+      </div>
     </section>
   )
 }
@@ -646,13 +650,11 @@ function Footer({ t }: { t: LandingMessages }) {
     <footer className="border-t border-white/8 bg-gray-950 px-6 py-10">
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
         <div className="flex items-center gap-2">
-          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-brand-500">
-            <span className="text-[10px] font-black text-white">GF</span>
-          </div>
-          <span className="text-sm font-semibold text-white">GrapplingFlow</span>
+          <Image src="/kumologo.png" alt="Kumo" width={24} height={24} className="rounded-md" />
+          <span className="text-sm font-semibold text-white">Kumo</span>
         </div>
         <p className="text-sm text-gray-600">
-          &copy; {new Date().getFullYear()} GrapplingFlow &middot; {t.footer.tagline}
+          &copy; {new Date().getFullYear()} Kumo &middot; {t.footer.tagline}
         </p>
         <Link href="/login" className="text-sm text-gray-500 transition-colors hover:text-white">
           {t.footer.signIn}

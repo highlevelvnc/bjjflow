@@ -1,3 +1,4 @@
+import Image from "next/image"
 import type { Metadata } from "next"
 import Link from "next/link"
 import { Suspense } from "react"
@@ -5,7 +6,7 @@ import { Shield } from "lucide-react"
 import { SignupForm } from "./SignupForm"
 
 export const metadata: Metadata = {
-  title: "Create Account — GrapplingFlow",
+  title: "Create Account — Kumo",
 }
 
 export default function SignupPage() {
@@ -14,7 +15,7 @@ export default function SignupPage() {
       {/* Header */}
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-          <span className="text-lg font-black text-white">GF</span>
+          <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">
           Create your account

@@ -4,7 +4,7 @@ import { KeyRound } from "lucide-react"
 import { ForgotPasswordForm } from "./ForgotPasswordForm"
 
 export const metadata: Metadata = {
-  title: "Forgot Password — GrapplingFlow",
+  title: "Forgot Password — Kumo",
 }
 
 export default function ForgotPasswordPage() {

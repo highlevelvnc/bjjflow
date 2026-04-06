@@ -3,7 +3,7 @@ import Link from "next/link"
 import { Mail } from "lucide-react"
 
 export const metadata: Metadata = {
-  title: "Verify Email — GrapplingFlow",
+  title: "Verify Email — Kumo",
 }
 
 export default function VerifyEmailPage() {

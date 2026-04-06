@@ -28,5 +28,5 @@ export function overdueMsg(amount: string, days: number) {
   return `⚠️ *Pagamento em Atraso*\n\nSua mensalidade de *${amount}* está *${days} dia(s)* em atraso.\n\nRegularize para manter seu treino ativo.`
 }
 export function welcomeMsg(name: string, academy: string) {
-  return `🥋 Bem-vindo(a) à *${academy}*, ${name}!\n\nAcesse seu portal em grapplingflow.com/app/portal\n\nOss! 🤙`
+  return `🥋 Bem-vindo(a) à *${academy}*, ${name}!\n\nAcesse seu portal em kumo.com/app/portal\n\nOss! 🤙`
 }

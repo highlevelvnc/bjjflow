@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import { X, ArrowRight, ArrowLeft, Sparkles } from "lucide-react"
 
 const STEPS = [
-  { title: "Welcome to GrapplingFlow!", desc: "Let's take a quick tour of your academy management platform.", target: null },
+  { title: "Welcome to Kumo!", desc: "Let's take a quick tour of your academy management platform.", target: null },
   { title: "Dashboard", desc: "Your command center — stats, upcoming sessions, at-risk students, and announcements.", target: null },
   { title: "Members", desc: "Add students and instructors. Bulk import via CSV. Track belts and attendance.", target: null },
   { title: "Classes & Sessions", desc: "Create class templates, generate weekly sessions, and track attendance.", target: null },

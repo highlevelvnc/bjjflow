@@ -292,7 +292,7 @@ export async function GET(
     <div class="logo-section">
       <div class="logo-icon">\u{1F94B}</div>
       <div class="academy-name">${escapeHtml(academyName)}</div>
-      <div class="brand-name">Powered by GrapplingFlow</div>
+      <div class="brand-name">Powered by Kumo</div>
     </div>
 
     <div class="title">Certificate of Graduation</div>
@@ -325,7 +325,7 @@ export async function GET(
       </div>
       <div class="cert-id">
         ${certUuid}<br/>
-        Issued via GrapplingFlow
+        Issued via Kumo
       </div>
     </div>
   </div>

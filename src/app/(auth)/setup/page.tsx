@@ -1,8 +1,9 @@
+import Image from "next/image"
 import type { Metadata } from "next"
 import { SetupForm } from "./SetupForm"
 
 export const metadata: Metadata = {
-  title: "Set Up Your Academy — GrapplingFlow",
+  title: "Set Up Your Academy — Kumo",
 }
 
 export default function SetupPage() {
@@ -11,7 +12,7 @@ export default function SetupPage() {
       {/* Header */}
       <div className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
-          <span className="text-lg font-black text-white">GF</span>
+          <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
         </div>
         <h1 className="text-2xl font-bold tracking-tight text-white">
           Set up your academy

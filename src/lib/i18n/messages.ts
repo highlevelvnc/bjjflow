@@ -25,7 +25,7 @@ export interface Messages {
     tagline: string
     steps: Array<{ title: string; body: string }>
   }
-  testimonial: { quote: string; author: string; role: string }
+  testimonials: Array<{ quote: string; author: string; role: string }>
   pricing: {
     tag: string
     h2: string
@@ -69,7 +69,7 @@ export interface Messages {
 
 const en: Messages = {
   meta: {
-    title: "GrapplingFlow — The Command Center for BJJ Academies",
+    title: "Kumo — The Command Center for BJJ Academies",
     description:
       "Member management, session scheduling, and attendance analytics — one platform purpose-built for Brazilian Jiu-Jitsu academies.",
   },
@@ -146,12 +146,18 @@ const en: Messages = {
       },
     ],
   },
-  testimonial: {
-    quote:
-      "We cut our admin time by 80%. Now I spend that time on the mats, not on spreadsheets. GrapplingFlow is the tool I wished existed when I opened my academy.",
-    author: "Professor Marco Lima",
-    role: "Alliance São Paulo · 4th degree black belt",
-  },
+  testimonials: [
+    {
+      quote: "Kumo transformed how I manage my academy. Everything is organized, attendance is automatic, and I can finally focus on teaching.",
+      author: "Murilo Rocha",
+      role: "Rocha Team Iguaba Grande",
+    },
+    {
+      quote: "Since we started using Kumo, we cut our admin time drastically. The best tool for BJJ academy management, hands down.",
+      author: "Lucas Reis",
+      role: "Iguaba Jiu Jitsu",
+    },
+  ],
   pricing: {
     tag: "Pricing",
     h2: "Plans that scale with your academy.",
@@ -200,7 +206,7 @@ const en: Messages = {
     h2: "Your academy deserves",
     h2Gradient: "better tools",
     subtitle:
-      "Stop managing your team in WhatsApp groups and Google Sheets. GrapplingFlow is purpose-built for how jiu-jitsu academies actually operate.",
+      "Stop managing your team in WhatsApp groups and Google Sheets. Kumo is purpose-built for how jiu-jitsu academies actually operate.",
     ctaPrimary: "Get started for free",
     ctaSecondary: "Sign in to your academy",
     setup: "10-min setup",
@@ -210,7 +216,7 @@ const en: Messages = {
   footer: { tagline: "Built for the jiu-jitsu community", signIn: "Sign in →" },
   login: {
     h1: "Welcome back",
-    subtitle: "Sign in to your GrapplingFlow account",
+    subtitle: "Sign in to your Kumo account",
     emailLabel: "Email address",
     emailPlaceholder: "professor@youracademy.com",
     passwordLabel: "Password",
@@ -228,7 +234,7 @@ const en: Messages = {
 
 const ptBR: Messages = {
   meta: {
-    title: "GrapplingFlow — O Centro de Controle para Academias de BJJ",
+    title: "Kumo — O Centro de Controle para Academias de BJJ",
     description:
       "Gestão de alunos, agendamento de aulas e análise de frequência — uma plataforma criada especialmente para academias de Brazilian Jiu-Jitsu.",
   },
@@ -311,12 +317,18 @@ const ptBR: Messages = {
       },
     ],
   },
-  testimonial: {
-    quote:
-      "Reduzimos nosso tempo administrativo em 80%. Agora passo esse tempo no tatame, não em planilhas. GrapplingFlow é a ferramenta que eu queria quando abri minha academia.",
-    author: "Professor Marco Lima",
-    role: "Alliance São Paulo · Faixa preta 4º grau",
-  },
+  testimonials: [
+    {
+      quote: "O Kumo transformou a forma como eu gerencio minha academia. Tudo organizado, frequência automática, e finalmente consigo focar no ensino.",
+      author: "Murilo Rocha",
+      role: "Rocha Team Iguaba Grande",
+    },
+    {
+      quote: "Desde que começamos a usar o Kumo, reduzimos drasticamente o tempo administrativo. A melhor ferramenta para gestão de academias de BJJ.",
+      author: "Lucas Reis",
+      role: "Iguaba Jiu Jitsu",
+    },
+  ],
   pricing: {
     tag: "Preços",
     h2: "Planos que crescem com sua academia.",
@@ -365,7 +377,7 @@ const ptBR: Messages = {
     h2: "Sua academia merece",
     h2Gradient: "ferramentas melhores",
     subtitle:
-      "Pare de gerenciar sua equipe em grupos de WhatsApp e planilhas do Google. O GrapplingFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
+      "Pare de gerenciar sua equipe em grupos de WhatsApp e planilhas do Google. O Kumo foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
     ctaPrimary: "Começar gratuitamente",
     ctaSecondary: "Entrar na minha academia",
     setup: "Configuração em 10 min",
@@ -375,7 +387,7 @@ const ptBR: Messages = {
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
   login: {
     h1: "Bem-vindo de volta",
-    subtitle: "Entre na sua conta GrapplingFlow",
+    subtitle: "Entre na sua conta Kumo",
     emailLabel: "Endereço de e-mail",
     emailPlaceholder: "professor@suaacademia.com.br",
     passwordLabel: "Senha",
@@ -393,7 +405,7 @@ const ptBR: Messages = {
 
 const ptPT: Messages = {
   meta: {
-    title: "GrapplingFlow — O Centro de Controlo para Academias de BJJ",
+    title: "Kumo — O Centro de Controlo para Academias de BJJ",
     description:
       "Gestão de membros, agendamento de aulas e análise de presenças — uma plataforma criada especialmente para academias de Brazilian Jiu-Jitsu.",
   },
@@ -476,12 +488,18 @@ const ptPT: Messages = {
       },
     ],
   },
-  testimonial: {
-    quote:
-      "Reduzimos o nosso tempo administrativo em 80%. Agora passo esse tempo no tatami, não em folhas de cálculo. GrapplingFlow é a ferramenta que desejei existisse quando abri a minha academia.",
-    author: "Professor Marco Lima",
-    role: "Alliance São Paulo · Faixa preta 4º grau",
-  },
+  testimonials: [
+    {
+      quote: "O Kumo transformou a forma como faço a gestão da minha academia. Tudo organizado, presenças automáticas, e finalmente consigo focar no ensino.",
+      author: "Murilo Rocha",
+      role: "Rocha Team Iguaba Grande",
+    },
+    {
+      quote: "Desde que começámos a usar o Kumo, reduzimos drasticamente o tempo administrativo. A melhor ferramenta para gestão de academias de BJJ.",
+      author: "Lucas Reis",
+      role: "Iguaba Jiu Jitsu",
+    },
+  ],
   pricing: {
     tag: "Preços",
     h2: "Planos que crescem com a sua academia.",
@@ -530,7 +548,7 @@ const ptPT: Messages = {
     h2: "A sua academia merece",
     h2Gradient: "melhores ferramentas",
     subtitle:
-      "Deixe de gerir a sua equipa em grupos de WhatsApp e folhas de cálculo. O GrapplingFlow foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
+      "Deixe de gerir a sua equipa em grupos de WhatsApp e folhas de cálculo. O Kumo foi criado para a forma como as academias de jiu-jitsu realmente funcionam.",
     ctaPrimary: "Começar gratuitamente",
     ctaSecondary: "Entrar na minha academia",
     setup: "Configuração em 10 min",
@@ -540,7 +558,7 @@ const ptPT: Messages = {
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
   login: {
     h1: "Bem-vindo de volta",
-    subtitle: "Entre na sua conta GrapplingFlow",
+    subtitle: "Entre na sua conta Kumo",
     emailLabel: "Endereço de e-mail",
     emailPlaceholder: "professor@suaacademia.pt",
     passwordLabel: "Palavra-passe",
@@ -558,7 +576,7 @@ const ptPT: Messages = {
 
 const de: Messages = {
   meta: {
-    title: "GrapplingFlow — Die Kommandozentrale für BJJ-Akademien",
+    title: "Kumo — Die Kommandozentrale für BJJ-Akademien",
     description:
       "Mitgliederverwaltung, Trainingsplanung und Anwesenheitsanalyse — eine Plattform, speziell entwickelt für Brazilian Jiu-Jitsu Akademien.",
   },
@@ -641,12 +659,18 @@ const de: Messages = {
       },
     ],
   },
-  testimonial: {
-    quote:
-      "Wir haben unsere Verwaltungszeit um 80 % reduziert. Jetzt verbringe ich diese Zeit auf der Matte, nicht mit Tabellen. GrapplingFlow ist das Tool, das ich mir gewünscht hätte, als ich meine Akademie eröffnete.",
-    author: "Professor Marco Lima",
-    role: "Alliance São Paulo · Schwarzgurt 4. Grad",
-  },
+  testimonials: [
+    {
+      quote: "Kumo hat die Verwaltung meiner Akademie komplett verändert. Alles organisiert, Anwesenheit automatisch, und ich kann mich endlich aufs Unterrichten konzentrieren.",
+      author: "Murilo Rocha",
+      role: "Rocha Team Iguaba Grande",
+    },
+    {
+      quote: "Seit wir Kumo nutzen, haben wir unsere Verwaltungszeit drastisch reduziert. Das beste Tool für BJJ-Akademie-Management.",
+      author: "Lucas Reis",
+      role: "Iguaba Jiu Jitsu",
+    },
+  ],
   pricing: {
     tag: "Preise",
     h2: "Pläne, die mit Ihrer Akademie wachsen.",
@@ -695,7 +719,7 @@ const de: Messages = {
     h2: "Ihre Akademie verdient",
     h2Gradient: "bessere Tools",
     subtitle:
-      "Hören Sie auf, Ihr Team in WhatsApp-Gruppen und Google Sheets zu verwalten. GrapplingFlow wurde genau dafür entwickelt, wie Jiu-Jitsu-Akademien wirklich arbeiten.",
+      "Hören Sie auf, Ihr Team in WhatsApp-Gruppen und Google Sheets zu verwalten. Kumo wurde genau dafür entwickelt, wie Jiu-Jitsu-Akademien wirklich arbeiten.",
     ctaPrimary: "Kostenlos starten",
     ctaSecondary: "Bei meiner Akademie anmelden",
     setup: "10-Min-Einrichtung",
@@ -705,7 +729,7 @@ const de: Messages = {
   footer: { tagline: "Für die Jiu-Jitsu-Gemeinschaft", signIn: "Anmelden →" },
   login: {
     h1: "Willkommen zurück",
-    subtitle: "Bei Ihrem GrapplingFlow-Konto anmelden",
+    subtitle: "Bei Ihrem Kumo-Konto anmelden",
     emailLabel: "E-Mail-Adresse",
     emailPlaceholder: "professor@ihreakademie.de",
     passwordLabel: "Passwort",
@@ -723,7 +747,7 @@ const de: Messages = {
 
 const fr: Messages = {
   meta: {
-    title: "GrapplingFlow — Le Centre de Commandement pour les Académies BJJ",
+    title: "Kumo — Le Centre de Commandement pour les Académies BJJ",
     description:
       "Gestion des membres, planification des séances et analyse des présences — une plateforme conçue spécialement pour les académies de Brazilian Jiu-Jitsu.",
   },
@@ -806,12 +830,18 @@ const fr: Messages = {
       },
     ],
   },
-  testimonial: {
-    quote:
-      "Nous avons réduit notre temps administratif de 80 %. Maintenant je passe ce temps sur le tatami, pas sur des tableurs. GrapplingFlow est l'outil que j'aurais voulu avoir quand j'ai ouvert mon académie.",
-    author: "Professeur Marco Lima",
-    role: "Alliance São Paulo · Ceinture noire 4e degré",
-  },
+  testimonials: [
+    {
+      quote: "Kumo a transformé la gestion de mon académie. Tout est organisé, les présences sont automatiques, et je peux enfin me concentrer sur l'enseignement.",
+      author: "Murilo Rocha",
+      role: "Rocha Team Iguaba Grande",
+    },
+    {
+      quote: "Depuis que nous utilisons Kumo, nous avons réduit drastiquement le temps administratif. Le meilleur outil de gestion d'académie de BJJ.",
+      author: "Lucas Reis",
+      role: "Iguaba Jiu Jitsu",
+    },
+  ],
   pricing: {
     tag: "Tarifs",
     h2: "Des forfaits qui évoluent avec votre académie.",
@@ -860,7 +890,7 @@ const fr: Messages = {
     h2: "Votre académie mérite",
     h2Gradient: "de meilleurs outils",
     subtitle:
-      "Arrêtez de gérer votre équipe dans des groupes WhatsApp et des feuilles Google. GrapplingFlow est conçu pour la façon dont les académies de jiu-jitsu fonctionnent réellement.",
+      "Arrêtez de gérer votre équipe dans des groupes WhatsApp et des feuilles Google. Kumo est conçu pour la façon dont les académies de jiu-jitsu fonctionnent réellement.",
     ctaPrimary: "Commencer gratuitement",
     ctaSecondary: "Accéder à mon académie",
     setup: "Installation en 10 min",
@@ -870,7 +900,7 @@ const fr: Messages = {
   footer: { tagline: "Pour la communauté du jiu-jitsu", signIn: "Connexion →" },
   login: {
     h1: "Bon retour",
-    subtitle: "Connectez-vous à votre compte GrapplingFlow",
+    subtitle: "Connectez-vous à votre compte Kumo",
     emailLabel: "Adresse e-mail",
     emailPlaceholder: "professeur@votreacademie.fr",
     passwordLabel: "Mot de passe",

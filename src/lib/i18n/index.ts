@@ -63,5 +63,5 @@ export async function getLocale(): Promise<Locale> {
   const acceptLang = headersList.get("accept-language") ?? ""
   if (acceptLang) return parseAcceptLanguage(acceptLang)
 
-  return "en"
+  return "pt-BR"
 }

@@ -135,7 +135,7 @@ export const webhookRouter = router({
 
       const payload = {
         event: "webhook.test",
-        data: { message: "Test from GrapplingFlow" },
+        data: { message: "Test from Kumo" },
         timestamp: new Date().toISOString(),
         webhook_id: webhook.id,
       }
@@ -150,8 +150,8 @@ export const webhookRouter = router({
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "X-GrapplingFlow-Signature": `sha256=${signature}`,
-            "X-GrapplingFlow-Event": "webhook.test",
+            "X-Kumo-Signature": `sha256=${signature}`,
+            "X-Kumo-Event": "webhook.test",
           },
           body,
           signal: AbortSignal.timeout(10_000),

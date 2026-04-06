@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
@@ -65,9 +66,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
     <>
       {/* Brand */}
       <div className="flex h-14 items-center gap-2.5 border-b border-white/8 px-4">
-        <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-brand-500 shadow-md shadow-brand-500/30">
-          <span className="text-[11px] font-black text-white">GF</span>
-        </div>
+        <Image src="/kumologo.png" alt="Kumo" width={28} height={28} className="shrink-0 rounded-lg" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-white">{academyName}</p>
         </div>
@@ -140,9 +139,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
         <button onClick={() => setOpen(true)} className="text-gray-400 hover:text-white">
           <Menu className="h-5 w-5" />
         </button>
-        <div className="flex h-6 w-6 items-center justify-center rounded-md bg-brand-500">
-          <span className="text-[9px] font-black text-white">GF</span>
-        </div>
+        <Image src="/kumologo.png" alt="Kumo" width={24} height={24} className="rounded-md" />
         <span className="truncate text-sm font-semibold text-white">{academyName}</span>
       </div>
 

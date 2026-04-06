@@ -1,6 +1,6 @@
 {
-  "name": "GrapplingFlow",
-  "short_name": "GrapplingFlow",
+  "name": "Kumo",
+  "short_name": "Kumo",
   "description": "BJJ Academy Management Platform",
   "start_url": "/app",
   "display": "standalone",
