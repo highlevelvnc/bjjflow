@@ -5,6 +5,7 @@ import { EmptyState } from "@/components/ui/EmptyState"
 import { SessionActionsMenu } from "@/components/sessions/SessionActionsMenu"
 import { QrCode } from "lucide-react"
 import { GenerateSessionsButton } from "@/components/sessions/GenerateSessionsButton"
+import { CalendarSubscription } from "@/components/sessions/CalendarSubscription"
 
 export const metadata: Metadata = {
   title: "Sessions",
@@ -39,9 +40,10 @@ function formatTime(t: string) {
 export default async function SessionsPage() {
   const trpc = await createServerCaller()
 
-  const [sessionResult, classResult] = await Promise.all([
+  const [sessionResult, classResult, academy] = await Promise.all([
     trpc.session.list(),
     trpc.class.list(),
+    trpc.academy.getCurrent(),
   ])
   const sessions = sessionResult.items
   const classes = classResult.items
@@ -60,6 +62,8 @@ export default async function SessionsPage() {
           </p>
         </div>
       </div>
+
+      <CalendarSubscription academySlug={academy.slug} academyName={academy.name} />
 
       {classes.length > 0 && (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-4">

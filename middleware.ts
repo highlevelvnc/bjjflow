@@ -10,7 +10,7 @@ import { createMiddlewareSupabase } from "@/server/supabase/middleware"
  * Public marketing routes — no session required.
  * "/" is the landing page and is always public.
  */
-const PUBLIC_PREFIXES = ["/", "/pricing", "/features", "/contact", "/invite", "/schedule"]
+const PUBLIC_PREFIXES = ["/", "/pricing", "/features", "/contact", "/invite", "/schedule", "/embed"]
 
 /** Auth routes — redirect to /app if already signed in. */
 const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email", "/callback"]
@@ -19,7 +19,7 @@ const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password",
 const ONBOARDING_PREFIX = "/setup"
 
 /** Routes that handle their own auth (webhooks, cron, tRPC). */
-const BYPASS_PREFIXES = ["/api/webhooks/", "/api/cron/", "/api/trpc/", "/_next/", "/favicon"]
+const BYPASS_PREFIXES = ["/api/webhooks/", "/api/cron/", "/api/trpc/", "/api/calendar/", "/_next/", "/favicon"]
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helper predicates

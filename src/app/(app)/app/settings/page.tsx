@@ -1,6 +1,8 @@
 import type { Metadata } from "next"
+import Link from "next/link"
 import { createServerCaller } from "@/lib/trpc/server"
 import { SettingsForm } from "./SettingsForm"
+import { EmbedCode } from "./EmbedCode"
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -26,6 +28,40 @@ export default async function SettingsPage() {
           allow_student_portal: academy.allow_student_portal,
         }}
       />
+
+      <EmbedCode slug={academy.slug} />
+
+      {/* Integrations */}
+      <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
+        <h2 className="mb-1 text-base font-semibold text-gray-100">Integrations</h2>
+        <p className="mb-4 text-xs text-gray-500">
+          Connect your academy to external tools and automations.
+        </p>
+        <Link
+          href="/app/settings/webhooks"
+          className="flex items-center justify-between rounded-lg border border-white/8 bg-white/4 px-4 py-3 transition-colors hover:bg-white/8"
+        >
+          <div>
+            <p className="text-sm font-medium text-gray-200">Webhooks</p>
+            <p className="text-xs text-gray-500">
+              Receive real-time event notifications via HTTP. Perfect for Zapier, Make, or n8n.
+            </p>
+          </div>
+          <svg
+            className="h-5 w-5 shrink-0 text-gray-500"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M8.25 4.5l7.5 7.5-7.5 7.5"
+            />
+          </svg>
+        </Link>
+      </div>
     </div>
   )
 }

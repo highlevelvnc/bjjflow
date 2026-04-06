@@ -1,6 +1,7 @@
 import type { Metadata } from "next"
 import Link from "next/link"
 import QRCode from "qrcode"
+import { Calendar } from "lucide-react"
 import { createServerCaller } from "@/lib/trpc/server"
 
 export const metadata: Metadata = {
@@ -72,6 +73,15 @@ export default async function SessionQRPage({
         <p className="mt-1 text-xs text-gray-600">
           Point your phone camera at the QR code above
         </p>
+
+        <a
+          href={`/api/calendar/session/${session.id}`}
+          download
+          className="mt-4 inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/10 transition-colors"
+        >
+          <Calendar className="h-3.5 w-3.5" />
+          Add to Calendar
+        </a>
       </div>
     </div>
   )

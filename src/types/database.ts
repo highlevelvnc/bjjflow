@@ -1167,6 +1167,48 @@ export type Database = {
           updated_at?: string
         }
       }
+      webhooks: {
+        Row: {
+          id: string
+          academy_id: string
+          url: string
+          secret: string
+          events: string[]
+          is_active: boolean
+          last_triggered_at: string | null
+          last_status_code: number | null
+          failure_count: number
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          url: string
+          secret?: string
+          events: string[]
+          is_active?: boolean
+          last_triggered_at?: string | null
+          last_status_code?: number | null
+          failure_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          url?: string
+          secret?: string
+          events?: string[]
+          is_active?: boolean
+          last_triggered_at?: string | null
+          last_status_code?: number | null
+          failure_count?: number
+          created_at?: string
+          updated_at?: string
+        }
+      }
       inventory_transactions: {
         Row: {
           id: string
