@@ -36,6 +36,31 @@
   from { opacity: 0; }
   to   { opacity: 1; }
 }
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px -4px oklch(62% 0.27 264 / 0.3); }
+  50%       { box-shadow: 0 0 40px -4px oklch(62% 0.27 264 / 0.6); }
+}
+@keyframes slide-in-left {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes gradient-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
 /* ─── Custom utilities ───────────────────────────────────────────────────────── */
 @utility bg-grid-dark {
@@ -84,6 +109,45 @@
   background: rgb(255 255 255 / 0.07);
   backdrop-filter: blur(12px);
   border: 1px solid rgb(255 255 255 / 0.12);
+}
+
+@utility shimmer {
+  background: linear-gradient(
+    90deg,
+    rgb(255 255 255 / 0.04) 0%,
+    rgb(255 255 255 / 0.10) 50%,
+    rgb(255 255 255 / 0.04) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+@utility glow-pulse {
+  animation: glow-pulse 2.5s ease-in-out infinite;
+}
+
+@utility gradient-border {
+  position: relative;
+  background: linear-gradient(oklch(12% 0.03 264), oklch(12% 0.03 264)) padding-box,
+              linear-gradient(135deg, oklch(62% 0.27 264 / 0.5), oklch(78% 0.15 200 / 0.3), oklch(62% 0.27 264 / 0.5)) border-box;
+  border: 1px solid transparent;
+}
+
+@utility text-shimmer {
+  background: linear-gradient(90deg, #c4b5fd, #818cf8, #38bdf8, #818cf8, #c4b5fd);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+@utility card-hover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 32px -8px oklch(62% 0.27 264 / 0.25);
+  }
 }
 
 /* ─── Base ───────────────────────────────────────────────────────────────────── */

@@ -1,8 +1,11 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { Users, Dumbbell, Award } from "lucide-react"
 import { createServerCaller } from "@/lib/trpc/server"
 import { BeltBadge } from "@/components/ui/BeltBadge"
 import { AttendanceChart } from "@/components/dashboard/AttendanceChart"
+import { AnimatedStatCard } from "@/components/ui/AnimatedStatCard"
+import { PageWrapper, PageItem } from "@/components/ui/PageWrapper"
 import { getLocale } from "@/lib/i18n"
 import { getAppMessagesSync } from "@/lib/i18n/app-messages"
 
@@ -51,56 +54,70 @@ export default async function DashboardPage() {
   ])
 
   return (
-    <div className="space-y-6">
+    <PageWrapper>
       {/* Page header */}
-      <div>
-        <h1 className="text-xl font-semibold text-gray-100">{academy.name}</h1>
-        <p className="mt-0.5 text-sm text-gray-500 capitalize">
-          {academy.plan} plan · {academy.timezone}
-        </p>
-      </div>
+      <PageItem>
+        <div className="flex items-end justify-between">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-brand-500">Painel</p>
+            <h1 className="mt-0.5 text-2xl font-bold text-white">{academy.name}</h1>
+            <p className="mt-0.5 text-sm text-gray-500 capitalize">
+              Plano {academy.plan} · {academy.timezone}
+            </p>
+          </div>
+          <div className="hidden items-center gap-1.5 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3 py-1 sm:flex">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="text-xs font-medium text-emerald-400">Sistema ativo</span>
+          </div>
+        </div>
+      </PageItem>
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-        <StatCard label={t.dashboard.totalMembers ?? "Total"} value={counts.total} href="/app/members" />
-        <StatCard label={t.dashboard.activeStudents ?? "Alunos"} value={counts.students} href="/app/members" />
-        <StatCard label={t.dashboard.instructors ?? "Instrutores"} value={counts.instructors} href="/app/members" />
-        <StatCard label={t.dashboard.admins ?? "Admins"} value={counts.admins} href="/app/members" />
-      </div>
+      {/* Animated Stat cards */}
+      <PageItem>
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <AnimatedStatCard label={t.dashboard.totalMembers ?? "Total"} value={counts.total} href="/app/members" icon={<Users className="h-4 w-4" />} color="brand" />
+          <AnimatedStatCard label={t.dashboard.activeStudents ?? "Alunos"} value={counts.students} href="/app/members" icon={<Users className="h-4 w-4" />} color="emerald" />
+          <AnimatedStatCard label={t.dashboard.instructors ?? "Instrutores"} value={counts.instructors} href="/app/members" icon={<Award className="h-4 w-4" />} color="cyan" />
+          <AnimatedStatCard label={t.dashboard.admins ?? "Admins"} value={counts.admins} href="/app/members" icon={<Dumbbell className="h-4 w-4" />} color="amber" />
+        </div>
+      </PageItem>
 
       {/* Overdue payments alert (admin only) */}
       {overdueSummary.count > 0 && (
-        <Link
-          href="/app/analytics/finance"
-          className="flex items-center gap-4 rounded-xl border border-red-500/20 bg-red-950/20 px-5 py-4 transition-colors hover:border-red-500/30 hover:bg-red-950/30"
-        >
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/15">
-            <svg
-              className="h-5 w-5 text-red-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth={2}
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
-              />
-            </svg>
-          </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-sm font-semibold text-red-400">
-              {overdueSummary.count} pagamento{overdueSummary.count !== 1 ? "s" : ""} em atraso
-            </p>
-            <p className="mt-0.5 text-xs text-gray-400">
-              Totaling R${overdueSummary.totalAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
-            </p>
-          </div>
-          <span className="shrink-0 text-xs text-gray-500">Ver detalhes →</span>
-        </Link>
+        <PageItem>
+          <Link
+            href="/app/analytics/finance"
+            className="flex items-center gap-4 rounded-xl border border-red-500/20 bg-red-950/20 px-5 py-4 transition-colors hover:border-red-500/30 hover:bg-red-950/30"
+          >
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500/15">
+              <svg
+                className="h-5 w-5 text-red-400"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={2}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z"
+                />
+              </svg>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-semibold text-red-400">
+                {overdueSummary.count} pagamento{overdueSummary.count !== 1 ? "s" : ""} em atraso
+              </p>
+              <p className="mt-0.5 text-xs text-gray-400">
+                Total R${overdueSummary.totalAmount.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              </p>
+            </div>
+            <span className="shrink-0 text-xs text-gray-500">Ver detalhes →</span>
+          </Link>
+        </PageItem>
       )}
 
+      <PageItem>
       <div className="grid gap-6 lg:grid-cols-2">
         {/* Upcoming sessions */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
@@ -208,17 +225,21 @@ export default async function DashboardPage() {
           )}
         </section>
       </div>
+      </PageItem>
 
       {/* Attendance trend */}
       {attendanceTrend.length > 0 && (
+        <PageItem>
         <section className="rounded-xl border border-white/8 bg-gray-900 p-5">
           <h2 className="mb-4 text-sm font-medium text-gray-100">Frequência (Últimas 4 Semanas)</h2>
           <AttendanceChart weeks={attendanceTrend} />
         </section>
+        </PageItem>
       )}
 
       {/* Recent Announcements */}
       {recentAnnouncements.items.length > 0 && (
+        <PageItem>
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
             <h2 className="text-sm font-medium text-gray-100">Avisos Recentes</h2>
@@ -254,9 +275,11 @@ export default async function DashboardPage() {
             })}
           </ul>
         </section>
+        </PageItem>
       )}
 
       {/* 3 new sections: Birthdays, Titles, Weekly Training */}
+      <PageItem>
       <div className="grid gap-6 lg:grid-cols-3">
         {/* Aniversariantes do mês */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
@@ -357,8 +380,10 @@ export default async function DashboardPage() {
           )}
         </section>
       </div>
+      </PageItem>
 
       {/* Quick actions */}
+      <PageItem>
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
         <h2 className="text-sm font-medium text-gray-100">{t.dashboard.quickActions ?? "Ações Rápidas"}</h2>
         <div className="mt-3 flex flex-wrap gap-2">
@@ -388,18 +413,7 @@ export default async function DashboardPage() {
           </Link>
         </div>
       </div>
-    </div>
-  )
-}
-
-function StatCard({ label, value, href }: { label: string; value: number; href: string }) {
-  return (
-    <Link
-      href={href}
-      className="group rounded-lg border border-white/8 bg-gray-900 px-5 py-4 hover:border-white/15 hover:bg-gray-800"
-    >
-      <p className="text-xs text-gray-500">{label}</p>
-      <p className="mt-1 text-2xl font-semibold text-white">{value}</p>
-    </Link>
+      </PageItem>
+    </PageWrapper>
   )
 }
