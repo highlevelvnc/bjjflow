@@ -34,22 +34,7 @@ AS $$
   SELECT (auth.jwt() -> 'app_metadata' ->> 'academy_id')::uuid;
 $$;
 
--- Check if the current authenticated user is an admin of the active academy.
--- Used by Tier 2 (admin-only) RLS policies on billing tables.
-CREATE OR REPLACE FUNCTION is_academy_admin()
-RETURNS boolean
-LANGUAGE sql
-SECURITY DEFINER
-STABLE
-AS $$
-  SELECT EXISTS (
-    SELECT 1 FROM public.members
-    WHERE academy_id = get_current_academy_id()
-      AND user_id = auth.uid()
-      AND role = 'admin'
-      AND status = 'active'
-  );
-$$;
+-- is_academy_admin() is defined AFTER the members table is created (see section 2.2b).
 
 -- Auto-set updated_at on row modification.
 CREATE OR REPLACE FUNCTION set_updated_at()
@@ -62,25 +47,7 @@ BEGIN
 END;
 $$;
 
--- Auto-insert belt history when belt_rank or stripes change on members.
-CREATE OR REPLACE FUNCTION record_belt_promotion()
-RETURNS trigger
-LANGUAGE plpgsql
-SECURITY DEFINER
-AS $$
-BEGIN
-  IF OLD.belt_rank IS DISTINCT FROM NEW.belt_rank
-     OR OLD.stripes IS DISTINCT FROM NEW.stripes
-  THEN
-    INSERT INTO public.member_belt_history (
-      academy_id, member_id, belt_rank, stripes, promoted_at
-    ) VALUES (
-      OLD.academy_id, OLD.id, OLD.belt_rank, OLD.stripes, now()
-    );
-  END IF;
-  RETURN NEW;
-END;
-$$;
+-- record_belt_promotion() is defined AFTER member_belt_history table (see section 2.3b).
 
 -- Denormalized attendance count maintenance.
 CREATE OR REPLACE FUNCTION maintain_attendance_count()
@@ -146,6 +113,7 @@ CREATE TABLE public.academies (
 
   -- Permission booleans (extracted from jsonb per SCHEMA_REVISION H-3)
   allow_student_self_checkin  boolean NOT NULL DEFAULT true,
+  allow_student_portal       boolean NOT NULL DEFAULT true,
   require_checkin_geolocation boolean NOT NULL DEFAULT false,
   instructor_can_add_students boolean NOT NULL DEFAULT false,
   student_directory_visible   boolean NOT NULL DEFAULT false,
@@ -169,9 +137,9 @@ CREATE TABLE public.academies (
   created_at                  timestamptz NOT NULL DEFAULT now(),
   updated_at                  timestamptz NOT NULL DEFAULT now(),
 
-  -- Active academies MUST have Stripe integration (SCHEMA_REVISION rule)
+  -- Stripe constraint relaxed: trialing academies don't have Stripe yet
   CONSTRAINT chk_academies_stripe CHECK (
-    status IN ('suspended', 'cancelled', 'deleted')
+    status IN ('trialing', 'suspended', 'cancelled', 'deleted')
     OR stripe_customer_id IS NOT NULL
   )
 );
@@ -200,7 +168,7 @@ CREATE TABLE public.members (
                         CHECK (role IN ('admin', 'instructor', 'student')),
 
   -- Profile
-  display_name          text NOT NULL,
+  full_name          text NOT NULL,
   email                 text,            -- NULLABLE for phone-only managed profiles (H-1)
   avatar_url            text,
   phone                 text,
@@ -214,7 +182,7 @@ CREATE TABLE public.members (
   stripes               int NOT NULL DEFAULT 0
                         CHECK (stripes BETWEEN 0 AND 4),
   weight_class          text,
-  date_of_birth         date,
+  birth_date         date,
   emergency_contact     text,
   emergency_phone       text,
 
@@ -229,10 +197,15 @@ CREATE TABLE public.members (
   status                text NOT NULL DEFAULT 'active'
                         CHECK (status IN ('active', 'inactive', 'suspended', 'trial')),
 
+  -- Notes
+  notes                 text,
+
+  -- Tracking
+  total_classes         int NOT NULL DEFAULT 0,
+  last_check_in         timestamptz,
+
   -- Provenance
   created_by            uuid REFERENCES public.members(id) ON DELETE SET NULL,
-  joined_at             timestamptz NOT NULL DEFAULT now(),
-  last_active_at        timestamptz,
 
   -- Timestamps
   created_at            timestamptz NOT NULL DEFAULT now(),
@@ -271,12 +244,7 @@ CREATE TRIGGER trg_members_updated_at
   BEFORE UPDATE ON public.members
   FOR EACH ROW EXECUTE FUNCTION set_updated_at();
 
-CREATE TRIGGER trg_members_belt_promotion
-  BEFORE UPDATE ON public.members
-  FOR EACH ROW
-  WHEN (OLD.belt_rank IS DISTINCT FROM NEW.belt_rank
-        OR OLD.stripes IS DISTINCT FROM NEW.stripes)
-  EXECUTE FUNCTION record_belt_promotion();
+-- trg_members_belt_promotion is created after record_belt_promotion() function (see section 2.3b)
 
 
 -- 2.3 member_belt_history ------------------------------------------------
@@ -296,6 +264,53 @@ CREATE TABLE public.member_belt_history (
 CREATE INDEX idx_belt_history_member ON public.member_belt_history (academy_id, member_id);
 
 
+-- 2.2b is_academy_admin (deferred — depends on members table)
+CREATE OR REPLACE FUNCTION is_academy_admin()
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.members
+    WHERE academy_id = get_current_academy_id()
+      AND user_id = auth.uid()
+      AND role = 'admin'
+      AND status = 'active'
+  );
+$$;
+
+
+-- 2.3b record_belt_promotion trigger function (deferred — depends on member_belt_history)
+CREATE OR REPLACE FUNCTION record_belt_promotion()
+RETURNS trigger
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $$
+BEGIN
+  IF OLD.belt_rank IS DISTINCT FROM NEW.belt_rank
+     OR OLD.stripes IS DISTINCT FROM NEW.stripes
+  THEN
+    INSERT INTO public.member_belt_history (
+      academy_id, member_id, belt_rank, stripes, promoted_at
+    ) VALUES (
+      OLD.academy_id, OLD.id, OLD.belt_rank, OLD.stripes, now()
+    );
+  END IF;
+  RETURN NEW;
+END;
+$$;
+
+
+-- Now create the deferred belt promotion trigger
+CREATE TRIGGER trg_members_belt_promotion
+  BEFORE UPDATE ON public.members
+  FOR EACH ROW
+  WHEN (OLD.belt_rank IS DISTINCT FROM NEW.belt_rank
+        OR OLD.stripes IS DISTINCT FROM NEW.stripes)
+  EXECUTE FUNCTION record_belt_promotion();
+
+
 -- 2.4 invites ------------------------------------------------------------
 
 CREATE TABLE public.invites (
@@ -303,8 +318,8 @@ CREATE TABLE public.invites (
   academy_id            uuid NOT NULL REFERENCES public.academies(id) ON DELETE CASCADE,
 
   -- Invite vs activation (SCHEMA_REVISION C-7)
-  invite_type           text NOT NULL DEFAULT 'invite'
-                        CHECK (invite_type IN ('invite', 'activation')),
+  invite_type           text NOT NULL DEFAULT 'instructor'
+                        CHECK (invite_type IN ('instructor', 'student_activation')),
 
   email                 text NOT NULL,
   role                  text NOT NULL DEFAULT 'student'
@@ -328,9 +343,9 @@ CREATE TABLE public.invites (
 
   -- Activation invites must reference a target member
   CONSTRAINT chk_invites_type_target CHECK (
-    (invite_type = 'invite'     AND target_member_id IS NULL)
+    (invite_type = 'instructor'         AND target_member_id IS NULL)
     OR
-    (invite_type = 'activation' AND target_member_id IS NOT NULL)
+    (invite_type = 'student_activation' AND target_member_id IS NOT NULL)
   )
 );
 
