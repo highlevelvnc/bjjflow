@@ -5,24 +5,24 @@ import { Flame, Trophy } from "lucide-react"
 
 const MILESTONES = [4, 8, 12, 26, 52] as const
 const MILESTONE_LABELS: Record<number, string> = {
-  4: "1 Month",
-  8: "2 Months",
-  12: "3 Months",
-  26: "6 Months",
-  52: "1 Year",
+  4: "1 Mês",
+  8: "2 Meses",
+  12: "3 Meses",
+  26: "6 Meses",
+  52: "1 Ano",
 }
 
 function formatLastTraining(dateStr: string | null): string {
-  if (!dateStr) return "Never"
+  if (!dateStr) return "Nunca"
   const d = new Date(dateStr + "T00:00:00")
   const now = new Date()
   now.setHours(0, 0, 0, 0)
   const diffMs = now.getTime() - d.getTime()
   const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24))
-  if (diffDays === 0) return "Today"
-  if (diffDays === 1) return "Yesterday"
-  if (diffDays < 7) return `${diffDays} days ago`
-  return d.toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  if (diffDays === 0) return "Hoje"
+  if (diffDays === 1) return "Ontem"
+  if (diffDays < 7) return `${diffDays} dias atrás`
+  return d.toLocaleDateString("pt-BR", { month: "short", day: "numeric" })
 }
 
 export function StreakCard() {
@@ -58,7 +58,7 @@ export function StreakCard() {
                 : "text-gray-600"
             }`}
           />
-          <h3 className="text-sm font-medium text-gray-300">Training Streak</h3>
+          <h3 className="text-sm font-medium text-gray-300">Sequência de Treinos</h3>
         </div>
 
         {/* Big number */}
@@ -71,7 +71,7 @@ export function StreakCard() {
             {currentStreak}
           </span>
           <span className="text-sm text-gray-500">
-            {currentStreak === 1 ? "week" : "weeks"}
+            {currentStreak === 1 ? "semana" : "semanas"}
           </span>
           {currentStreak > 0 && (
             <span className="ml-1 text-lg">🔥</span>
@@ -80,7 +80,7 @@ export function StreakCard() {
 
         {/* Week progress dots (last 8 weeks) */}
         <div className="mb-4">
-          <p className="mb-2 text-xs text-gray-600">Last 8 weeks</p>
+          <p className="mb-2 text-xs text-gray-600">Últimas 8 semanas</p>
           <div className="flex gap-1.5">
             {Array.from({ length: 8 }).map((_, i) => {
               const weekIndex = 7 - i // 7 = oldest, 0 = this week
@@ -100,13 +100,13 @@ export function StreakCard() {
         {/* Stats row */}
         <div className="mb-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-gray-500">
           <span>
-            Longest: <span className="text-gray-300">{longestStreak} weeks</span>
+            Maior: <span className="text-gray-300">{longestStreak} semanas</span>
           </span>
           <span>
-            Total days: <span className="text-gray-300">{totalDays}</span>
+            Total de dias: <span className="text-gray-300">{totalDays}</span>
           </span>
           <span>
-            Last: <span className="text-gray-300">{formatLastTraining(lastTraining)}</span>
+            Último: <span className="text-gray-300">{formatLastTraining(lastTraining)}</span>
           </span>
         </div>
 
@@ -128,7 +128,7 @@ export function StreakCard() {
         {/* Motivational message when no streak */}
         {currentStreak === 0 && (
           <p className="mt-2 text-sm text-gray-500">
-            Start your streak! Train this week.
+            Comece sua sequência! Treine esta semana.
           </p>
         )}
       </div>

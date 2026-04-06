@@ -9,48 +9,48 @@ import { trpc } from "@/lib/trpc/client"
 
 const EVENT_CATEGORIES = [
   {
-    label: "Members",
+    label: "Membros",
     events: [
-      { value: "member.created", label: "Member created" },
-      { value: "member.updated", label: "Member updated" },
-      { value: "member.deactivated", label: "Member deactivated" },
+      { value: "member.created", label: "Membro criado" },
+      { value: "member.updated", label: "Membro atualizado" },
+      { value: "member.deactivated", label: "Membro desativado" },
     ],
   },
   {
     label: "Aulas",
     events: [
-      { value: "session.created", label: "Session created" },
-      { value: "session.completed", label: "Session completed" },
-      { value: "session.cancelled", label: "Session cancelled" },
+      { value: "session.created", label: "Aula criada" },
+      { value: "session.completed", label: "Aula concluída" },
+      { value: "session.cancelled", label: "Aula cancelada" },
     ],
   },
   {
     label: "Frequência",
     events: [
-      { value: "attendance.marked", label: "Attendance marked" },
-      { value: "attendance.unmarked", label: "Attendance unmarked" },
+      { value: "attendance.marked", label: "Presença marcada" },
+      { value: "attendance.unmarked", label: "Presença desmarcada" },
     ],
   },
   {
-    label: "Classes",
+    label: "Turmas",
     events: [
-      { value: "class.created", label: "Class created" },
-      { value: "class.updated", label: "Class updated" },
+      { value: "class.created", label: "Turma criada" },
+      { value: "class.updated", label: "Turma atualizada" },
     ],
   },
   {
-    label: "Invites",
+    label: "Convites",
     events: [
-      { value: "invite.created", label: "Invite created" },
-      { value: "invite.accepted", label: "Invite accepted" },
+      { value: "invite.created", label: "Convite criado" },
+      { value: "invite.accepted", label: "Convite aceito" },
     ],
   },
   {
-    label: "Other",
+    label: "Outros",
     events: [
-      { value: "contract.signed", label: "Contract signed" },
-      { value: "event.created", label: "Event created" },
-      { value: "announcement.created", label: "Announcement created" },
+      { value: "contract.signed", label: "Contrato assinado" },
+      { value: "event.created", label: "Evento criado" },
+      { value: "announcement.created", label: "Aviso criado" },
     ],
   },
 ] as const
@@ -159,8 +159,7 @@ export function WebhooksClient() {
       {webhooks.length === 0 && !showForm ? (
         <div className="rounded-lg border border-zinc-800 bg-zinc-900/50 p-8 text-center">
           <p className="text-sm text-gray-500">
-            No webhooks configured. Add one to start receiving event
-            notifications.
+            Nenhum webhook configurado. Adicione um para começar a receber notificações de eventos.
           </p>
         </div>
       ) : (
@@ -197,7 +196,7 @@ export function WebhooksClient() {
                     })
                   }
                   onDelete={() => {
-                    if (confirm("Delete this webhook? This cannot be undone.")) {
+                    if (confirm("Excluir este webhook? Esta ação não pode ser desfeita.")) {
                       deleteMutation.mutate({ id: webhook.id })
                     }
                   }}
@@ -237,7 +236,7 @@ export function WebhooksClient() {
               d="M9 5l7 7-7 7"
             />
           </svg>
-          Webhook Documentation
+          Documentação de Webhooks
         </button>
         {showDocs && <WebhookDocs />}
       </div>
@@ -265,17 +264,17 @@ function SecretBanner({
       <div className="flex items-start justify-between">
         <div>
           <h3 className="text-sm font-semibold text-amber-300">
-            Signing Secret
+            Chave de Assinatura
           </h3>
           <p className="mt-0.5 text-xs text-amber-400/80">
-            Copiar this secret now. It will not be shown again.
+            Copie esta chave agora. Ela não será exibida novamente.
           </p>
         </div>
         <button
           onClick={onDismiss}
           className="text-amber-400 hover:text-amber-200 text-sm"
         >
-          Dismiss
+          Fechar
         </button>
       </div>
       <div className="flex items-center gap-2">
@@ -287,6 +286,7 @@ function SecretBanner({
           className="shrink-0 rounded bg-zinc-800 px-3 py-2 text-xs font-medium text-gray-300 hover:bg-zinc-700 transition-colors"
         >
           {copied ? "Copiado!" : "Copiar"}
+
         </button>
       </div>
     </div>
@@ -342,18 +342,18 @@ function WebhookCard({
             </span>
             {!webhook.is_active && (
               <span className="rounded bg-zinc-800 px-1.5 py-0.5 text-gray-500">
-                Inactive
+                Inativo
               </span>
             )}
             {isFailing && webhook.is_active && (
               <span className="rounded bg-red-900/50 px-1.5 py-0.5 text-red-400">
-                {webhook.failure_count} failure
+                {webhook.failure_count} falha
                 {webhook.failure_count !== 1 ? "s" : ""}
               </span>
             )}
             {webhook.last_triggered_at && (
               <span>
-                Last triggered{" "}
+                Último disparo{" "}
                 {new Date(webhook.last_triggered_at).toLocaleDateString()}
               </span>
             )}
@@ -374,7 +374,7 @@ function WebhookCard({
               : "bg-red-950/40 text-red-400"
           }`}
         >
-          Test {testResult.ok ? "succeeded" : "failed"} — HTTP{" "}
+          Teste {testResult.ok ? "passou" : "falhou"} — HTTP{" "}
           {testResult.status || "timeout"}
         </div>
       )}
@@ -386,25 +386,25 @@ function WebhookCard({
           disabled={testing}
           className="rounded bg-zinc-800 px-2.5 py-1 text-xs font-medium text-gray-300 hover:bg-zinc-700 disabled:opacity-50 transition-colors"
         >
-          {testing ? "Sending..." : "Testar"}
+          {testing ? "Enviando..." : "Testar"}
         </button>
         <button
           onClick={onEdit}
           className="rounded bg-zinc-800 px-2.5 py-1 text-xs font-medium text-gray-300 hover:bg-zinc-700 transition-colors"
         >
-          Edit
+          Editar
         </button>
         <button
           onClick={onToggle}
           className="rounded bg-zinc-800 px-2.5 py-1 text-xs font-medium text-gray-300 hover:bg-zinc-700 transition-colors"
         >
-          {webhook.is_active ? "Disable" : "Enable"}
+          {webhook.is_active ? "Desativar" : "Ativar"}
         </button>
         <button
           onClick={onDelete}
           className="rounded bg-zinc-800 px-2.5 py-1 text-xs font-medium text-red-400 hover:bg-red-900/30 transition-colors"
         >
-          Delete
+          Excluir
         </button>
       </div>
     </div>
@@ -488,7 +488,7 @@ function WebhookForm({
           htmlFor="webhook-url"
           className="block text-sm font-medium text-gray-300"
         >
-          Endpoint URL
+          URL do Endpoint
         </label>
         <input
           id="webhook-url"
@@ -505,7 +505,7 @@ function WebhookForm({
       <div>
         <div className="flex items-center justify-between">
           <span className="block text-sm font-medium text-gray-300">
-            Events
+            Eventos
           </span>
           <button
             type="button"
@@ -513,8 +513,8 @@ function WebhookForm({
             className="text-xs text-indigo-400 hover:text-indigo-300"
           >
             {selectedEvents.size === ALL_EVENTS.length
-              ? "Deselect all"
-              : "Select all"}
+              ? "Desmarcar tudo"
+              : "Selecionar tudo"}
           </button>
         </div>
         <div className="mt-2 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -571,7 +571,7 @@ function WebhookForm({
               : "Criando..."
             : isEdit
               ? "Salvar Alterações"
-              : "Create Webhook"}
+              : "Criar Webhook"}
         </button>
         {onCancel && (
           <button
@@ -579,12 +579,12 @@ function WebhookForm({
             onClick={onCancel}
             className="rounded-md px-4 py-2 text-sm font-medium text-gray-400 hover:text-gray-200 transition-colors"
           >
-            Cancel
+            Cancelar
           </button>
         )}
         {!isEdit && selectedEvents.size === 0 && (
           <span className="text-xs text-gray-500">
-            Select at least one event
+            Selecione pelo menos um evento
           </span>
         )}
       </div>
@@ -602,10 +602,10 @@ function WebhookDocs() {
       {/* Payload structure */}
       <div>
         <h3 className="text-sm font-semibold text-gray-200">
-          Payload Structure
+          Estrutura do Payload
         </h3>
         <p className="mt-1">
-          Every webhook delivery is an HTTP POST with a JSON body:
+          Cada entrega de webhook é um HTTP POST com corpo JSON:
         </p>
         <pre className="mt-2 overflow-x-auto rounded-md bg-zinc-950 p-3 text-xs text-gray-300">
 {`{
@@ -624,7 +624,7 @@ function WebhookDocs() {
 
       {/* Headers */}
       <div>
-        <h3 className="text-sm font-semibold text-gray-200">Headers</h3>
+        <h3 className="text-sm font-semibold text-gray-200">Cabeçalhos</h3>
         <ul className="mt-1 list-disc pl-5 space-y-1">
           <li>
             <code className="text-xs text-indigo-300">Content-Type</code>:{" "}
@@ -648,7 +648,7 @@ function WebhookDocs() {
       {/* Signature verification */}
       <div>
         <h3 className="text-sm font-semibold text-gray-200">
-          Signature Verification (Node.js)
+          Verificação de Assinatura (Node.js)
         </h3>
         <pre className="mt-2 overflow-x-auto rounded-md bg-zinc-950 p-3 text-xs text-gray-300">
 {`const crypto = require("crypto");
@@ -681,7 +681,7 @@ app.post("/webhooks/grapplingflow", (req, res) => {
       {/* Available events */}
       <div>
         <h3 className="text-sm font-semibold text-gray-200">
-          Available Events
+          Eventos Disponíveis
         </h3>
         <div className="mt-2 grid gap-x-8 gap-y-1 sm:grid-cols-2 lg:grid-cols-3">
           {EVENT_CATEGORIES.map((cat) => (
@@ -704,13 +704,13 @@ app.post("/webhooks/grapplingflow", (req, res) => {
       {/* Retry / failure policy */}
       <div>
         <h3 className="text-sm font-semibold text-gray-200">
-          Failure Policy
+          Política de Falhas
         </h3>
         <p className="mt-1">
-          If your endpoint responds with a non-2xx status code, the failure
-          counter increments. After 10 consecutive failures, the webhook is
-          automatically disabled. Re-enable it from this page once the issue is
-          resolved.
+          Se o seu endpoint responder com um código de status diferente de 2xx, o
+          contador de falhas será incrementado. Após 10 falhas consecutivas, o webhook
+          é desativado automaticamente. Reative-o nesta página assim que o problema
+          for resolvido.
         </p>
       </div>
     </div>

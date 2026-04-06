@@ -17,12 +17,12 @@ function getActionColor(action: string) {
 function timeAgo(dateStr: string) {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 1) return "just now"
-  if (mins < 60) return `${mins}m ago`
+  if (mins < 1) return "agora"
+  if (mins < 60) return `${mins}m atrás`
   const hours = Math.floor(mins / 60)
-  if (hours < 24) return `${hours}h ago`
+  if (hours < 24) return `${hours}h atrás`
   const days = Math.floor(hours / 24)
-  return days === 1 ? "yesterday" : `${days}d ago`
+  return days === 1 ? "ontem" : `${days}d atrás`
 }
 
 export function AuditClient() {
@@ -32,21 +32,21 @@ export function AuditClient() {
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <ScrollText className="h-5 w-5 text-gray-500" />
-        <h1 className="text-xl font-semibold text-gray-100">Audit Log</h1>
+        <h1 className="text-xl font-semibold text-gray-100">Log de Auditoria</h1>
       </div>
 
       {isLoading ? (
         <div className="flex justify-center py-12"><Loader2 className="h-5 w-5 animate-spin text-gray-500" /></div>
       ) : !data || data.items.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-white/10 bg-white/3 py-12 text-center text-sm text-gray-500">No audit entries yet</div>
+        <div className="rounded-xl border border-dashed border-white/10 bg-white/3 py-12 text-center text-sm text-gray-500">Nenhuma entrada de auditoria ainda</div>
       ) : (
         <div className="overflow-hidden rounded-xl border border-white/8 bg-gray-900">
           <table className="min-w-full divide-y divide-white/8">
             <thead><tr className="bg-gray-800/50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Time</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Actor</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Action</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Resource</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Hora</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Usuário</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Ação</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Recurso</th>
             </tr></thead>
             <tbody className="divide-y divide-white/6">
               {data.items.map((entry) => (

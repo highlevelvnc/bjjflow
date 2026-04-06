@@ -70,12 +70,12 @@ export function PortalClient() {
           />
           <StatCard
             icon={<Award className="h-4 w-4" />}
-            label="Attendance Rate"
+            label="Taxa de Presença"
             value={`${stats.attendanceRate30}%`}
           />
           <StatCard
             icon={<Clock className="h-4 w-4" />}
-            label="Last 90 Days"
+            label="Últimos 90 Dias"
             value={stats.last90Days}
           />
         </div>
@@ -100,13 +100,13 @@ export function PortalClient() {
 
       {/* Recent attendance */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-        <h3 className="mb-4 text-sm font-medium text-gray-300">Recent Attendance</h3>
+        <h3 className="mb-4 text-sm font-medium text-gray-300">Presença Recente</h3>
         {loadingHistory ? (
           <div className="flex justify-center py-6">
             <Loader2 className="h-4 w-4 animate-spin text-gray-500" />
           </div>
         ) : !history || history.items.length === 0 ? (
-          <p className="py-6 text-center text-sm text-gray-600">No attendance records yet</p>
+          <p className="py-6 text-center text-sm text-gray-600">Nenhum registro de presença ainda</p>
         ) : (
           <div className="space-y-2">
             {history.items.map((a) => (
@@ -118,12 +118,12 @@ export function PortalClient() {
                   <p className="text-sm text-gray-200">{a.session?.class_name ?? "Session"}</p>
                   <p className="text-xs text-gray-500">
                     {a.session?.date
-                      ? new Date(a.session.date).toLocaleDateString("en-US", {
+                      ? new Date(a.session.date).toLocaleDateString("pt-BR", {
                           weekday: "short",
                           month: "short",
                           day: "numeric",
                         })
-                      : "Unknown date"}
+                      : "Data desconhecida"}
                     {a.session?.start_time && ` \u00b7 ${a.session.start_time}`}
                     {a.session?.gi_type && (
                       <span className="ml-1 capitalize">\u00b7 {a.session.gi_type}</span>

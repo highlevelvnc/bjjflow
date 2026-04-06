@@ -34,31 +34,31 @@ interface BenchmarkClientProps {
 
 const RATING_CONFIG: Record<Rating, { label: string; color: string; bgColor: string; textColor: string }> = {
   excellent: {
-    label: "Excellent",
+    label: "Excelente",
     color: "bg-emerald-500",
     bgColor: "bg-emerald-500/10",
     textColor: "text-emerald-400",
   },
   good: {
-    label: "Good",
+    label: "Bom",
     color: "bg-blue-500",
     bgColor: "bg-blue-500/10",
     textColor: "text-blue-400",
   },
   average: {
-    label: "Average",
+    label: "Médio",
     color: "bg-yellow-500",
     bgColor: "bg-yellow-500/10",
     textColor: "text-yellow-400",
   },
   below_average: {
-    label: "Below Average",
+    label: "Abaixo da Média",
     color: "bg-orange-500",
     bgColor: "bg-orange-500/10",
     textColor: "text-orange-400",
   },
   needs_improvement: {
-    label: "Needs Improvement",
+    label: "Precisa Melhorar",
     color: "bg-red-500",
     bgColor: "bg-red-500/10",
     textColor: "text-red-400",
@@ -66,33 +66,33 @@ const RATING_CONFIG: Record<Rating, { label: string; color: string; bgColor: str
 }
 
 const ADVICE: Record<string, Record<Rating, string>> = {
-  "Avg Attendance / Session": {
-    excellent: "Outstanding attendance! Your sessions are well-attended and engaging.",
-    good: "Good attendance numbers. Consider adding more popular time slots.",
-    average: "Average attendance. Try varying class times or adding themed sessions.",
-    below_average: "Attendance is below average. Survey members on preferred times and topics.",
-    needs_improvement: "Low attendance needs attention. Review your schedule and marketing efforts.",
+  "Média de Presença / Aula": {
+    excellent: "Presença excepcional! Suas aulas são bem frequentadas e engajantes.",
+    good: "Bons números de presença. Considere adicionar mais horários populares.",
+    average: "Presença média. Tente variar os horários das aulas ou adicionar aulas temáticas.",
+    below_average: "Presença abaixo da média. Pesquise os alunos sobre horários e temas preferidos.",
+    needs_improvement: "Presença baixa precisa de atenção. Revise sua grade horária e esforços de divulgação.",
   },
-  "Retention Rate": {
-    excellent: "Amazing retention! Your community is strong and engaged.",
-    good: "Good retention. Keep focusing on member experience and community building.",
-    average: "Average retention. Consider implementing a welcome program for new members.",
-    below_average: "Retention needs work. Reach out to inactive members and ask for feedback.",
-    needs_improvement: "Critical: Focus on member onboarding and the first 90-day experience.",
+  "Taxa de Retenção": {
+    excellent: "Retenção incrível! Sua comunidade é forte e engajada.",
+    good: "Boa retenção. Continue focando na experiência do aluno e construção de comunidade.",
+    average: "Retenção média. Considere implementar um programa de boas-vindas para novos alunos.",
+    below_average: "Retenção precisa melhorar. Entre em contato com alunos inativos e peça feedback.",
+    needs_improvement: "Crítico: Foque no onboarding do aluno e na experiência dos primeiros 90 dias.",
   },
-  "Sessions / Week": {
-    excellent: "Great schedule coverage! You offer plenty of training opportunities.",
-    good: "Good session frequency. Consider adding open mat or special classes.",
-    average: "Average schedule. Adding 1-2 more weekly sessions could boost engagement.",
-    below_average: "Consider offering more sessions to meet member demand.",
-    needs_improvement: "Very few sessions offered. Expanding your schedule should be a top priority.",
+  "Aulas / Semana": {
+    excellent: "Ótima cobertura de grade! Você oferece muitas oportunidades de treino.",
+    good: "Boa frequência de aulas. Considere adicionar open mat ou aulas especiais.",
+    average: "Grade média. Adicionar 1-2 aulas semanais pode aumentar o engajamento.",
+    below_average: "Considere oferecer mais aulas para atender a demanda dos alunos.",
+    needs_improvement: "Poucas aulas oferecidas. Expandir sua grade deve ser prioridade máxima.",
   },
-  "Growth Rate": {
-    excellent: "Exceptional growth! Your academy is attracting new members rapidly.",
-    good: "Healthy growth rate. Keep your marketing and referral programs active.",
-    average: "Average growth. Try referral incentives or community events to attract members.",
-    below_average: "Growth is slow. Review your marketing strategy and trial class offerings.",
-    needs_improvement: "Growth needs attention. Consider free trial weeks or partner with local businesses.",
+  "Taxa de Crescimento": {
+    excellent: "Crescimento excepcional! Sua academia está atraindo novos alunos rapidamente.",
+    good: "Taxa de crescimento saudável. Mantenha seus programas de marketing e indicação ativos.",
+    average: "Crescimento médio. Tente incentivos de indicação ou eventos comunitários para atrair alunos.",
+    below_average: "Crescimento lento. Revise sua estratégia de marketing e ofertas de aula experimental.",
+    needs_improvement: "Crescimento precisa de atenção. Considere semanas de aula grátis ou parcerias com negócios locais.",
   },
 }
 
@@ -194,7 +194,7 @@ function PercentileGauge({
 
       {/* Percentile badge */}
       <div className="mt-3 flex items-center gap-2">
-        <span className="text-xs text-gray-500">Your percentile:</span>
+        <span className="text-xs text-gray-500">Seu percentil:</span>
         <span className={`text-xs font-semibold ${config.textColor}`}>
           Top {100 - percentile}%
         </span>
@@ -224,7 +224,7 @@ function OverallScore({ metrics }: { metrics: BenchmarkMetric[] }) {
           : "border-orange-500/20 bg-orange-950/20"
       }`}
     >
-      <p className="text-sm font-medium text-gray-400 mb-2">Overall Academy Score</p>
+      <p className="text-sm font-medium text-gray-400 mb-2">Pontuação Geral da Academia</p>
       <p
         className={`text-6xl font-bold ${
           isGood ? "text-emerald-400" : "text-orange-400"
@@ -232,20 +232,20 @@ function OverallScore({ metrics }: { metrics: BenchmarkMetric[] }) {
       >
         {avgPercentile}
       </p>
-      <p className="mt-1 text-sm text-gray-500">out of 100</p>
+      <p className="mt-1 text-sm text-gray-500">de 100</p>
       <p
         className={`mt-4 text-lg font-semibold ${
           isGood ? "text-emerald-300" : "text-orange-300"
         }`}
       >
         {isGood
-          ? `Your academy scores in the top ${topPercent}% overall!`
-          : `Your academy is in the ${topPercent > 50 ? "bottom" : "top"} ${topPercent}%. Let's improve!`}
+          ? `Sua academia está no top ${topPercent}% geral!`
+          : `Sua academia está nos ${topPercent}%. Vamos melhorar!`}
       </p>
       <p className="mt-2 text-sm text-gray-400">
         {isGood
-          ? "Great work! Keep maintaining these standards."
-          : "Focus on the areas marked for improvement above to raise your score."}
+          ? "Ótimo trabalho! Continue mantendo esses padrões."
+          : "Foque nas áreas marcadas para melhoria acima para elevar sua pontuação."}
       </p>
     </div>
   )
@@ -262,10 +262,10 @@ export function BenchmarkClient({ benchmarkData }: BenchmarkClientProps) {
 
       <div>
         <h1 className="text-xl font-semibold text-gray-100">
-          Academy Benchmark &mdash; How You Compare
+          Benchmark da Academia &mdash; Como Você se Compara
         </h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          See how your academy stacks up against industry benchmarks for BJJ academies.
+          Veja como sua academia se compara com benchmarks do mercado para academias de BJJ.
         </p>
       </div>
 

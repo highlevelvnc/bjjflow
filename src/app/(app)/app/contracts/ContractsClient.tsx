@@ -20,9 +20,9 @@ export function ContractsClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Contracts</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Contratos</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} contract${data.total === 1 ? "" : "s"}` : "Carregando..."}
+            {data ? `${data.total} contrato${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         <Link
@@ -30,7 +30,7 @@ export function ContractsClient() {
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
         >
           <Plus className="h-4 w-4" />
-          New Contract
+          Novo Contrato
         </Link>
       </div>
 
@@ -42,9 +42,9 @@ export function ContractsClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <FileSignature className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">No contracts yet</p>
+          <p className="text-sm text-gray-400">Nenhum contrato ainda</p>
           <p className="mt-1 text-xs text-gray-600">
-            Create your first contract to get started with digital signatures.
+            Crie seu primeiro contrato para começar com assinaturas digitais.
           </p>
         </div>
       ) : (
@@ -53,19 +53,19 @@ export function ContractsClient() {
             <thead>
               <tr className="bg-gray-800/50">
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Member
+                  Membro
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Title
+                  Título
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
                   Status
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Date
+                  Data
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Actions
+                  Ações
                 </th>
               </tr>
             </thead>
@@ -82,14 +82,14 @@ export function ContractsClient() {
                     </span>
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500">
-                    {new Date(c.created_at).toLocaleDateString()}
+                    {new Date(c.created_at).toLocaleDateString("pt-BR")}
                   </td>
                   <td className="px-4 py-3">
                     <Link
                       href={`/app/contracts/${c.id}`}
                       className="text-sm text-brand-400 hover:text-brand-300"
                     >
-                      View
+                      Ver
                     </Link>
                   </td>
                 </tr>

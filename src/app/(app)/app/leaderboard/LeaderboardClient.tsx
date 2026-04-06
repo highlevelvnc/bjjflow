@@ -15,15 +15,15 @@ export function LeaderboardClient() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div className="flex items-center gap-2">
         <Trophy className="h-5 w-5 text-yellow-400" />
-        <h1 className="text-xl font-semibold text-gray-100">Leaderboard</h1>
-        <span className="text-xs text-gray-500">Last 30 days</span>
+        <h1 className="text-xl font-semibold text-gray-100">Ranking</h1>
+        <span className="text-xs text-gray-500">Últimos 30 dias</span>
       </div>
 
       {myRank && myRank.rank && (
         <div className="rounded-xl border border-brand-500/20 bg-brand-500/5 p-4 text-center">
-          <p className="text-sm text-gray-400">Your rank</p>
+          <p className="text-sm text-gray-400">Sua posição</p>
           <p className="text-3xl font-black text-brand-400">#{myRank.rank}</p>
-          <p className="text-xs text-gray-500">{myRank.sessions} aulas this month</p>
+          <p className="text-xs text-gray-500">{myRank.sessions} aulas este mês</p>
         </div>
       )}
 
@@ -52,9 +52,9 @@ export function LeaderboardClient() {
           <table className="min-w-full divide-y divide-white/8">
             <thead><tr className="bg-gray-800/50">
               <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">#</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Student</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Belt</th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">Sessions</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Aluno</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase text-gray-500">Faixa</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase text-gray-500">Aulas</th>
             </tr></thead>
             <tbody className="divide-y divide-white/6">
               {board.slice(3).map((m) => (
@@ -73,7 +73,7 @@ export function LeaderboardClient() {
       {(!board || board.length === 0) && (
         <div className="rounded-xl border border-dashed border-white/10 py-12 text-center">
           <Medal className="mx-auto mb-2 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-500">No attendance data yet. Start training!</p>
+          <p className="text-sm text-gray-500">Nenhum dado de frequência ainda. Comece a treinar!</p>
         </div>
       )}
     </div>

@@ -7,11 +7,11 @@ import { trpc } from "@/lib/trpc/client"
 import { ArrowLeft, Loader2 } from "lucide-react"
 
 const EVENT_TYPES = [
-  { value: "seminar", label: "Seminar", color: "bg-purple-500/15 text-purple-400 border-purple-500/30" },
-  { value: "competition", label: "Competition", color: "bg-red-500/15 text-red-400 border-red-500/30" },
+  { value: "seminar", label: "Seminário", color: "bg-purple-500/15 text-purple-400 border-purple-500/30" },
+  { value: "competition", label: "Competição", color: "bg-red-500/15 text-red-400 border-red-500/30" },
   { value: "social", label: "Social", color: "bg-green-500/15 text-green-400 border-green-500/30" },
   { value: "workshop", label: "Workshop", color: "bg-blue-500/15 text-blue-400 border-blue-500/30" },
-  { value: "other", label: "Other", color: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
+  { value: "other", label: "Outro", color: "bg-gray-500/15 text-gray-400 border-gray-500/30" },
 ] as const
 
 type EventType = "seminar" | "competition" | "social" | "workshop" | "other"
@@ -66,15 +66,15 @@ export function EventForm() {
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">New Event</h1>
-          <p className="mt-0.5 text-sm text-gray-500">Create a new academy event</p>
+          <h1 className="text-xl font-semibold text-gray-100">Novo Evento</h1>
+          <p className="mt-0.5 text-sm text-gray-500">Criar um novo evento da academia</p>
         </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-white/8 bg-gray-900 p-5">
         {/* Event type */}
         <div>
-          <label className="mb-2 block text-xs text-gray-500">Event Type</label>
+          <label className="mb-2 block text-xs text-gray-500">Tipo de Evento</label>
           <div className="flex flex-wrap gap-2">
             {EVENT_TYPES.map((type) => (
               <button
@@ -95,7 +95,7 @@ export function EventForm() {
 
         {/* Title */}
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Title *</label>
+          <label className="mb-1 block text-xs text-gray-500">Título *</label>
           <input
             type="text"
             required
@@ -108,20 +108,20 @@ export function EventForm() {
 
         {/* Description */}
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Description</label>
+          <label className="mb-1 block text-xs text-gray-500">Descrição</label>
           <textarea
             value={form.description}
             onChange={(e) => setForm({ ...form, description: e.target.value })}
             className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
             rows={3}
-            placeholder="Event details..."
+            placeholder="Detalhes do evento..."
           />
         </div>
 
         {/* Dates */}
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Start Date *</label>
+            <label className="mb-1 block text-xs text-gray-500">Data de Início *</label>
             <input
               type="date"
               required
@@ -131,7 +131,7 @@ export function EventForm() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-gray-500">End Date</label>
+            <label className="mb-1 block text-xs text-gray-500">Data de Término</label>
             <input
               type="date"
               value={form.end_date}
@@ -144,7 +144,7 @@ export function EventForm() {
         {/* Times */}
         <div className="grid gap-3 sm:grid-cols-2">
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Start Time</label>
+            <label className="mb-1 block text-xs text-gray-500">Hora de Início</label>
             <input
               type="time"
               value={form.start_time}
@@ -153,7 +153,7 @@ export function EventForm() {
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-gray-500">End Time</label>
+            <label className="mb-1 block text-xs text-gray-500">Hora de Término</label>
             <input
               type="time"
               value={form.end_time}
@@ -165,7 +165,7 @@ export function EventForm() {
 
         {/* Location */}
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Location</label>
+          <label className="mb-1 block text-xs text-gray-500">Local</label>
           <input
             type="text"
             value={form.location}
@@ -184,7 +184,7 @@ export function EventForm() {
               onChange={(e) => setForm({ ...form, is_public: e.target.checked })}
               className="h-4 w-4 rounded border-white/20 bg-white/5 accent-brand-500"
             />
-            Public event
+            Evento público
           </label>
           <label className="flex items-center gap-2 text-sm text-gray-300">
             <input
@@ -193,21 +193,21 @@ export function EventForm() {
               onChange={(e) => setForm({ ...form, registration_required: e.target.checked })}
               className="h-4 w-4 rounded border-white/20 bg-white/5 accent-brand-500"
             />
-            Registration required
+            Inscrição obrigatória
           </label>
         </div>
 
         {/* Max participants */}
         {form.registration_required && (
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Max Participants</label>
+            <label className="mb-1 block text-xs text-gray-500">Máximo de Participantes</label>
             <input
               type="number"
               min="1"
               value={form.max_participants}
               onChange={(e) => setForm({ ...form, max_participants: e.target.value })}
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
-              placeholder="Leave empty for unlimited"
+              placeholder="Deixe vazio para ilimitado"
             />
           </div>
         )}
@@ -218,7 +218,7 @@ export function EventForm() {
             href="/app/events"
             className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
           >
-            Cancel
+            Cancelar
           </Link>
           <button
             type="submit"
@@ -226,7 +226,7 @@ export function EventForm() {
             className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
           >
             {createMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-            Create Event
+            Criar Evento
           </button>
         </div>
         {createMutation.error && (

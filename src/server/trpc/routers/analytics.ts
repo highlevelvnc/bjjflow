@@ -431,7 +431,7 @@ export const analyticsRouter = router({
       // Format month label
       const [year, month] = key.split("-")
       const monthDate = new Date(Number(year), Number(month) - 1)
-      const label = monthDate.toLocaleDateString("en-US", { month: "short", year: "numeric" })
+      const label = monthDate.toLocaleDateString("pt-BR", { month: "short", year: "numeric" })
 
       result.push({
         month: label,

@@ -18,7 +18,7 @@ export function AttendanceChart({ weeks }: AttendanceChartProps) {
       {/* Summary */}
       <div className="mb-4 flex items-baseline gap-2">
         <span className="text-2xl font-semibold text-white">{totalAttendance}</span>
-        <span className="text-sm text-gray-500">check-ins in 4 weeks</span>
+        <span className="text-sm text-gray-500">check-ins em 4 semanas</span>
       </div>
 
       {/* Bar chart */}

@@ -18,7 +18,7 @@ export function EventsClient() {
   const { data, isLoading } = trpc.event.list.useQuery({ includePast: showPast })
 
   function formatDate(dateStr: string) {
-    return new Date(dateStr + "T00:00:00").toLocaleDateString(undefined, {
+    return new Date(dateStr + "T00:00:00").toLocaleDateString("pt-BR", {
       weekday: "short",
       month: "short",
       day: "numeric",
@@ -30,10 +30,7 @@ export function EventsClient() {
     if (!time) return null
     // time is HH:MM or HH:MM:SS
     const [h, m] = time.split(":")
-    const hour = parseInt(h!, 10)
-    const ampm = hour >= 12 ? "PM" : "AM"
-    const h12 = hour % 12 || 12
-    return `${h12}:${m} ${ampm}`
+    return `${h}:${m}`
   }
 
   return (
@@ -41,9 +38,9 @@ export function EventsClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Events</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Eventos</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} event${data.total === 1 ? "" : "s"}` : "Carregando..."}
+            {data ? `${data.total} evento${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -54,14 +51,14 @@ export function EventsClient() {
               onChange={(e) => setShowPast(e.target.checked)}
               className="h-3.5 w-3.5 rounded border-white/20 bg-white/5 accent-brand-500"
             />
-            Show past
+            Mostrar passados
           </label>
           <Link
             href="/app/events/new"
             className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
           >
             <Plus className="h-4 w-4" />
-            New Event
+            Novo Evento
           </Link>
         </div>
       </div>
@@ -74,9 +71,9 @@ export function EventsClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <CalendarHeart className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">No upcoming events</p>
+          <p className="text-sm text-gray-400">Nenhum evento programado</p>
           <p className="mt-1 text-xs text-gray-600">
-            Create your first event to keep your academy informed.
+            Crie seu primeiro evento para manter sua academia informada.
           </p>
         </div>
       ) : (
@@ -101,12 +98,12 @@ export function EventsClient() {
                       </span>
                       {event.is_public && (
                         <span className="inline-flex items-center rounded-full bg-brand-500/15 px-2 py-0.5 text-xs font-medium text-brand-400">
-                          Public
+                          Público
                         </span>
                       )}
                       {event.registration_required && (
                         <span className="inline-flex items-center rounded-full bg-yellow-500/15 px-2 py-0.5 text-xs font-medium text-yellow-400">
-                          Registration Required
+                          Inscrição Obrigatória
                         </span>
                       )}
                     </div>
@@ -137,7 +134,7 @@ export function EventsClient() {
                         </span>
                       )}
                       {event.max_participants && (
-                        <span>Max: {event.max_participants} participants</span>
+                        <span>Máx: {event.max_participants} participantes</span>
                       )}
                     </div>
                   </div>

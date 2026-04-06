@@ -28,7 +28,7 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
           &larr; Voltar aos alunos
         </Link>
         <h1 className="mt-2 text-2xl font-bold text-gray-100">Editar Aluno</h1>
-        <p className="mt-1 text-sm text-gray-500">Update {member.full_name}&apos;s perfil</p>
+        <p className="mt-1 text-sm text-gray-500">Atualizar perfil de {member.full_name}</p>
       </div>
 
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
@@ -39,7 +39,7 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
       <div className="mt-4 rounded-xl border border-white/8 bg-gray-900 p-5">
         <h3 className="mb-3 text-sm font-medium text-gray-300">Certificado</h3>
         <p className="mb-3 text-xs text-gray-500">
-          Gerar certificado de graduação for {member.full_name}&apos;s graduação atual ({beltLabel} Faixa).
+          Gerar certificado de graduação de {member.full_name} para a graduação atual ({beltLabel}).
         </p>
         <a
           href={`/api/certificate/${member.id}?belt=${encodeURIComponent(member.belt_rank)}`}

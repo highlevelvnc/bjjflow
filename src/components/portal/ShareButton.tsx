@@ -47,12 +47,12 @@ export function ShareButton({ name, belt, totalSessions }: ShareButtonProps) {
       {copied ? (
         <>
           <Check className="h-4 w-4 text-green-400" />
-          <span className="text-green-400">Copied!</span>
+          <span className="text-green-400">Copiado!</span>
         </>
       ) : (
         <>
           <Share2 className="h-4 w-4" />
-          Share my journey
+          Compartilhar minha jornada
         </>
       )}
     </button>

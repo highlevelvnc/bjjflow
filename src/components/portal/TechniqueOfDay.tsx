@@ -27,10 +27,10 @@ export function TechniqueOfDay() {
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-gray-600" />
-          <h3 className="text-sm font-medium text-gray-500">Technique of the Day</h3>
+          <h3 className="text-sm font-medium text-gray-500">Técnica do Dia</h3>
         </div>
         <p className="mt-3 text-sm text-gray-600">
-          No technique of the day. Ask your instructor to add techniques!
+          Nenhuma técnica do dia. Peça ao seu instrutor para adicionar técnicas!
         </p>
       </div>
     )
@@ -48,7 +48,7 @@ export function TechniqueOfDay() {
         <div className="mb-3 flex items-center gap-2">
           <Sparkles className="h-4 w-4 text-brand-400" />
           <span className="text-xs font-medium uppercase tracking-wide text-brand-400">
-            Technique of the Day
+            Técnica do Dia
           </span>
         </div>
 
@@ -85,7 +85,7 @@ export function TechniqueOfDay() {
         {data.instructions && (
           <div className="mb-3">
             <h4 className="mb-1 text-xs font-medium uppercase tracking-wide text-gray-500">
-              Instructions
+              Instruções
             </h4>
             <p className="text-sm leading-relaxed text-gray-400">
               {data.instructions}
@@ -97,7 +97,7 @@ export function TechniqueOfDay() {
         {data.key_points && data.key_points.length > 0 && (
           <div>
             <h4 className="mb-1.5 text-xs font-medium uppercase tracking-wide text-gray-500">
-              Key Points
+              Pontos-Chave
             </h4>
             <ul className="space-y-1">
               {data.key_points.map((point, i) => (

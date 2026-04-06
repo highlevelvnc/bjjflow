@@ -45,7 +45,7 @@ function formatDuration(from: string, to: string): string {
 }
 
 function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-US", {
+  return new Date(iso).toLocaleDateString("pt-BR", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -73,7 +73,7 @@ export function BeltJourney({
 
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-      <h3 className="mb-5 text-sm font-medium text-gray-300">Belt Journey</h3>
+      <h3 className="mb-5 text-sm font-medium text-gray-300">Jornada de Faixas</h3>
 
       {!hasMilestones ? (
         /* ---- No belt history: single milestone ---- */
@@ -93,8 +93,8 @@ export function BeltJourney({
             <p className="text-base font-semibold text-gray-100">
               {currentLabel} Belt{currentStripes > 0 ? ` \u00b7 ${currentStripes} stripe${currentStripes > 1 ? "s" : ""}` : ""}
             </p>
-            <p className="mt-1 text-xs text-gray-500">Your journey begins</p>
-            <p className="text-xs text-gray-600">Member since {formatDate(memberSince)}</p>
+            <p className="mt-1 text-xs text-gray-500">Sua jornada começa</p>
+            <p className="text-xs text-gray-600">Membro desde {formatDate(memberSince)}</p>
           </div>
         </div>
       ) : (
@@ -151,7 +151,7 @@ export function BeltJourney({
               <Award className="h-4 w-4 text-gray-500" />
             </div>
             <div>
-              <p className="text-xs font-medium text-gray-400">Journey started</p>
+              <p className="text-xs font-medium text-gray-400">Jornada iniciada</p>
               <p className="text-xs text-gray-600">{formatDate(memberSince)}</p>
             </div>
           </div>
@@ -212,7 +212,7 @@ function TimelineMilestone({
           )}
           {isCurrent && (
             <span className="ml-2 inline-block rounded-full bg-brand-500/15 px-2 py-0.5 text-[10px] font-medium text-brand-400">
-              Current
+              Atual
             </span>
           )}
         </p>
@@ -227,7 +227,7 @@ function TimelineMilestone({
           className="mt-1.5 inline-flex items-center gap-1 rounded-md border border-white/8 bg-white/3 px-2 py-1 text-[10px] font-medium text-gray-400 transition-colors hover:bg-white/6 hover:text-gray-200"
         >
           <Download className="h-3 w-3" />
-          Certificate
+          Certificado
         </a>
       </div>
     </div>

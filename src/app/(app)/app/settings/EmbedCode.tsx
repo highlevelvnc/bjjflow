@@ -28,9 +28,9 @@ export function EmbedCode({ slug }: { slug: string }) {
 
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-      <h2 className="text-lg font-semibold text-gray-100">Embed Schedule Widget</h2>
+      <h2 className="text-lg font-semibold text-gray-100">Incorporar Widget de Agenda</h2>
       <p className="mt-1 text-sm text-gray-500">
-        Add your class schedule to any website. Copy the code below and paste it into your site.
+        Adicione a agenda de aulas em qualquer site. Copie o código abaixo e cole no seu site.
       </p>
 
       {/* Controls */}
@@ -72,7 +72,7 @@ export function EmbedCode({ slug }: { slug: string }) {
                 : "text-gray-400 hover:text-gray-200"
             }`}
           >
-            Dark
+            Escuro
           </button>
           <button
             type="button"
@@ -83,7 +83,7 @@ export function EmbedCode({ slug }: { slug: string }) {
                 : "text-gray-400 hover:text-gray-200"
             }`}
           >
-            Light
+            Claro
           </button>
         </div>
       </div>
@@ -102,14 +102,14 @@ export function EmbedCode({ slug }: { slug: string }) {
             onClick={handleCopy}
             className="absolute top-2 right-2 rounded-md border border-white/10 bg-gray-800 px-2.5 py-1.5 text-xs font-medium text-gray-300 transition-colors hover:bg-gray-700 hover:text-white"
           >
-            {copied ? "Copied!" : "Copy"}
+            {copied ? "Copiado!" : "Copiar"}
           </button>
         </div>
       </div>
 
       {/* Preview */}
       <div className="mt-5">
-        <p className="mb-2 text-xs font-medium text-gray-500">Preview</p>
+        <p className="mb-2 text-xs font-medium text-gray-500">Pré-visualização</p>
         <div
           className="overflow-hidden rounded-xl border border-white/10"
           style={{ height: 400 }}
@@ -119,7 +119,7 @@ export function EmbedCode({ slug }: { slug: string }) {
             width="100%"
             height="100%"
             style={{ border: "none" }}
-            title="Schedule Widget Preview"
+            title="Pré-visualização do Widget"
           />
         </div>
       </div>

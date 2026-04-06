@@ -35,8 +35,8 @@ export default async function MembersPage({
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Alunos</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {members.length} {statusLabel} member{members.length !== 1 ? "s" : ""}
-            {hasFilters ? " (filtered)" : ""}
+            {members.length} {statusLabel === "active" ? "ativo" : statusLabel === "inactive" ? "inativo" : statusLabel === "suspended" ? "suspenso" : statusLabel}{members.length !== 1 ? "s" : ""}
+            {hasFilters ? " (filtrado)" : ""}
           </p>
         </div>
         <div className="flex gap-2">
@@ -44,7 +44,7 @@ export default async function MembersPage({
             href="/app/members/invite"
             className="rounded-md border border-white/12 px-3 py-1.5 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-gray-100"
           >
-            Invite Instructor
+            Convidar Instrutor
           </Link>
           <Link
             href="/app/members/new"
@@ -114,16 +114,16 @@ export default async function MembersPage({
                   <td className="px-4 py-3">
                     {member.has_portal_access ? (
                       <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-medium text-emerald-400">
-                        Active
+                        Ativo
                       </span>
                     ) : (
                       <span className="inline-flex items-center rounded-full bg-white/8 px-2 py-0.5 text-xs font-medium text-gray-500">
-                        Managed
+                        Gerenciado
                       </span>
                     )}
                   </td>
                   <td className="px-4 py-3 text-sm text-gray-500">
-                    {new Date(member.created_at).toLocaleDateString("en-US", { month: "short", year: "numeric" })}
+                    {new Date(member.created_at).toLocaleDateString("pt-BR", { month: "short", year: "numeric" })}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <Link
@@ -131,7 +131,7 @@ export default async function MembersPage({
                       className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-gray-400 hover:bg-white/6 hover:text-gray-200"
                     >
                       <Pencil className="h-3 w-3" />
-                      Edit
+                      Editar
                     </Link>
                   </td>
                 </tr>

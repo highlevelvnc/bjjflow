@@ -34,7 +34,7 @@ export function OnboardingTour() {
         <div className="flex items-start justify-between mb-4">
           <div className="flex items-center gap-2">
             <Sparkles className="h-5 w-5 text-brand-400" />
-            <span className="text-xs text-gray-500">Step {step + 1} of {STEPS.length}</span>
+            <span className="text-xs text-gray-500">Passo {step + 1} de {STEPS.length}</span>
           </div>
           <button onClick={finish} className="text-gray-500 hover:text-gray-300"><X className="h-4 w-4" /></button>
         </div>

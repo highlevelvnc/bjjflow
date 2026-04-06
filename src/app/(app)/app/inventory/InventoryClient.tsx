@@ -26,9 +26,9 @@ const CATEGORY_STYLES: Record<string, string> = {
 }
 
 function formatPrice(cents: number, currency: string) {
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("pt-BR", {
     style: "currency",
-    currency: currency || "USD",
+    currency: currency || "BRL",
     minimumFractionDigits: 2,
   }).format(cents / 100)
 }
@@ -78,9 +78,9 @@ export function InventoryClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Inventory</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Estoque</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} item${data.total === 1 ? "" : "s"}` : "Carregando..."}
+            {data ? `${data.total} ite${data.total === 1 ? "m" : "ns"}` : "Carregando..."}
           </p>
         </div>
         <Link
@@ -88,7 +88,7 @@ export function InventoryClient() {
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
         >
           <Plus className="h-4 w-4" />
-          Add Item
+          Adicionar Item
         </Link>
       </div>
 
@@ -97,9 +97,9 @@ export function InventoryClient() {
         <div className="flex items-start gap-3 rounded-xl border border-amber-500/20 bg-amber-500/5 px-4 py-3">
           <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0 text-amber-400" />
           <div>
-            <p className="text-sm font-medium text-amber-300">Low Stock Alert</p>
+            <p className="text-sm font-medium text-amber-300">Alerta de Estoque Baixo</p>
             <p className="mt-0.5 text-xs text-amber-400/70">
-              {lowStockItems.length} item{lowStockItems.length > 1 ? "s" : ""} running low:{" "}
+              {lowStockItems.length} ite{lowStockItems.length > 1 ? "ns" : "m"} com estoque baixo:{" "}
               {lowStockItems.map((i) => i.name).join(", ")}
             </p>
           </div>
@@ -114,9 +114,9 @@ export function InventoryClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <ShoppingBag className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">No inventory items yet</p>
+          <p className="text-sm text-gray-400">Nenhum item no estoque</p>
           <p className="mt-1 text-xs text-gray-600">
-            Add your first product to start tracking inventory.
+            Adicione seu primeiro produto para começar a controlar o estoque.
           </p>
         </div>
       ) : (
@@ -147,7 +147,7 @@ export function InventoryClient() {
                   className={`flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-medium ${stockBg(item.stock_quantity, item.low_stock_threshold)} ${stockColor(item.stock_quantity, item.low_stock_threshold)}`}
                 >
                   <Package className="h-3 w-3" />
-                  {item.stock_quantity} in stock
+                  {item.stock_quantity} em estoque
                 </div>
                 {item.sku && (
                   <span className="text-[10px] text-gray-600">SKU: {item.sku}</span>
@@ -180,7 +180,7 @@ export function InventoryClient() {
                       disabled={recordTx.isPending || item.stock_quantity === 0}
                       className="rounded-lg bg-red-500/15 px-2.5 py-1.5 text-xs font-medium text-red-400 transition-colors hover:bg-red-500/25 disabled:opacity-50"
                     >
-                      Confirm
+                      Confirmar
                     </button>
                     <button
                       onClick={() => {
@@ -202,7 +202,7 @@ export function InventoryClient() {
                     className="inline-flex items-center gap-1 rounded-lg bg-white/5 px-2.5 py-1.5 text-xs font-medium text-gray-300 transition-colors hover:bg-white/10 disabled:opacity-50"
                   >
                     <MinusCircle className="h-3 w-3 text-red-400" />
-                    Sell
+                    Vender
                   </button>
                 )}
               </div>

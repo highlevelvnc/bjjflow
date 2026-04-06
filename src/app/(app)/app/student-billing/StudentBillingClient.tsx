@@ -111,13 +111,13 @@ export function StudentBillingClient() {
   })
 
   function handleMarkPaid(paymentId: string) {
-    if (confirm("Mark this payment as paid?")) {
+    if (confirm("Marcar este pagamento como pago?")) {
       recordPayment.mutate({ paymentId })
     }
   }
 
   function handleCancelPlan(planId: string) {
-    if (confirm("Are you sure you want to cancel this plan? This will also cancel all pending payments.")) {
+    if (confirm("Tem certeza que deseja cancelar este plano? Isso também cancelará todos os pagamentos pendentes.")) {
       cancelPlan.mutate({ id: planId })
     }
   }
@@ -127,8 +127,8 @@ export function StudentBillingClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Student Billing</h1>
-          <p className="mt-0.5 text-sm text-gray-500">Manage student plans, payments, and PIX billing.</p>
+          <h1 className="text-xl font-semibold text-gray-100">Cobranças de Alunos</h1>
+          <p className="mt-0.5 text-sm text-gray-500">Gerencie planos, pagamentos e cobranças PIX dos alunos.</p>
         </div>
         <div className="flex items-center gap-2">
           <button
@@ -137,14 +137,14 @@ export function StudentBillingClient() {
             className="flex items-center gap-2 rounded-lg border border-white/10 bg-white/4 px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-white/8 disabled:opacity-50"
           >
             <RefreshCw className={cn("h-4 w-4", generatePayments.isPending && "animate-spin")} />
-            Generate Monthly
+            Gerar Mensal
           </button>
           <Link
             href="/app/student-billing/new"
             className="flex items-center gap-2 rounded-lg bg-brand-500 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-400"
           >
             <Plus className="h-4 w-4" />
-            New Plan
+            Novo Plano
           </Link>
         </div>
       </div>
@@ -152,25 +152,25 @@ export function StudentBillingClient() {
       {/* Overview Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Active Plans"
+          label="Planos Ativos"
           value={stats.data?.activePlans ?? 0}
           icon={CreditCard}
           color="brand"
         />
         <StatCard
-          label="Revenue This Month"
+          label="Receita do Mês"
           value={stats.data ? formatCurrency(stats.data.totalRevenue, "BRL") : "R$ 0,00"}
           icon={DollarSign}
           color="emerald"
         />
         <StatCard
-          label="Overdue Payments"
+          label="Pagamentos em Atraso"
           value={stats.data?.overdueCount ?? 0}
           icon={AlertTriangle}
           color="red"
         />
         <StatCard
-          label="Due Next 7 Days"
+          label="Vencem em 7 Dias"
           value={stats.data?.upcomingDue ?? 0}
           icon={Clock}
           color="amber"
@@ -183,7 +183,7 @@ export function StudentBillingClient() {
           <div className="mb-3 flex items-center gap-2">
             <AlertTriangle className="h-5 w-5 text-red-400" />
             <h2 className="text-sm font-semibold text-red-300">
-              Overdue Payments ({overdue.data.length})
+              Pagamentos em Atraso ({overdue.data.length})
             </h2>
           </div>
           <div className="space-y-2">
@@ -197,11 +197,11 @@ export function StudentBillingClient() {
                 >
                   <div>
                     <p className="text-sm font-medium text-gray-200">
-                      {member?.full_name ?? "Unknown"}{" "}
+                      {member?.full_name ?? "Desconhecido"}{" "}
                       <span className="text-gray-500">({plan?.name ?? "Plan"})</span>
                     </p>
                     <p className="text-xs text-red-400">
-                      Due: {new Date(payment.due_date).toLocaleDateString()} &middot;{" "}
+                      Vencimento: {new Date(payment.due_date).toLocaleDateString("pt-BR")} &middot;{" "}
                       {formatCurrency(payment.amount, payment.currency)}
                     </p>
                   </div>
@@ -221,7 +221,7 @@ export function StudentBillingClient() {
                       className="flex items-center gap-1.5 rounded-lg bg-emerald-500/12 px-3 py-1.5 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/20 disabled:opacity-50"
                     >
                       <Check className="h-3.5 w-3.5" />
-                      Mark Paid
+                      Marcar Pago
                     </button>
                   </div>
                 </div>
@@ -234,20 +234,20 @@ export function StudentBillingClient() {
       {/* All Plans Table */}
       <div className="rounded-xl border border-white/8 bg-gray-900">
         <div className="border-b border-white/8 px-5 py-4">
-          <h2 className="text-sm font-semibold text-gray-200">All Plans</h2>
+          <h2 className="text-sm font-semibold text-gray-200">Todos os Planos</h2>
         </div>
 
         {plans.isLoading ? (
-          <div className="px-5 py-12 text-center text-sm text-gray-500">Loading plans...</div>
+          <div className="px-5 py-12 text-center text-sm text-gray-500">Carregando planos...</div>
         ) : !plans.data?.items.length ? (
           <div className="px-5 py-12 text-center">
-            <p className="text-sm text-gray-500">No student plans yet.</p>
+            <p className="text-sm text-gray-500">Nenhum plano de aluno ainda.</p>
             <Link
               href="/app/student-billing/new"
               className="mt-2 inline-flex items-center gap-1 text-sm font-medium text-brand-400 hover:text-brand-300"
             >
               <Plus className="h-4 w-4" />
-              Create your first plan
+              Crie seu primeiro plano
             </Link>
           </div>
         ) : (
@@ -267,7 +267,7 @@ export function StudentBillingClient() {
                     {/* Student */}
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-gray-200">
-                        {member?.full_name ?? "Unknown"}
+                        {member?.full_name ?? "Desconhecido"}
                       </p>
                       <p className="text-xs text-gray-500">{plan.name}</p>
                     </div>
@@ -302,7 +302,7 @@ export function StudentBillingClient() {
                       <button
                         onClick={() => setExpandedPlan(isExpanded ? null : plan.id)}
                         className="rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-white/5 hover:text-gray-300"
-                        title="View payments"
+                        title="Ver pagamentos"
                       >
                         {isExpanded ? (
                           <ChevronUp className="h-4 w-4" />
@@ -315,7 +315,7 @@ export function StudentBillingClient() {
                           onClick={() => handleCancelPlan(plan.id)}
                           disabled={cancelPlan.isPending}
                           className="rounded-lg p-1.5 text-gray-500 transition-colors hover:bg-red-500/10 hover:text-red-400 disabled:opacity-50"
-                          title="Cancel plan"
+                          title="Cancelar plano"
                         >
                           <XCircle className="h-4 w-4" />
                         </button>
@@ -355,7 +355,7 @@ function PlanPayments({
   })
 
   function handleMarkPaid(paymentId: string) {
-    if (confirm("Mark this payment as paid?")) {
+    if (confirm("Marcar este pagamento como pago?")) {
       recordPayment.mutate({ paymentId })
     }
   }
@@ -363,7 +363,7 @@ function PlanPayments({
   if (payments.isLoading) {
     return (
       <div className="border-t border-white/5 bg-gray-950/50 px-5 py-4 text-sm text-gray-500">
-        Loading payments...
+        Carregando pagamentos...
       </div>
     )
   }
@@ -371,7 +371,7 @@ function PlanPayments({
   if (!payments.data?.items.length) {
     return (
       <div className="border-t border-white/5 bg-gray-950/50 px-5 py-4 text-sm text-gray-500">
-        Nenhum pagamento recorded yet.
+        Nenhum pagamento registrado ainda.
       </div>
     )
   }
@@ -381,18 +381,18 @@ function PlanPayments({
       <table className="w-full">
         <thead>
           <tr className="text-xs text-gray-500">
-            <th className="px-5 py-2 text-left font-medium">Due Date</th>
-            <th className="px-5 py-2 text-left font-medium">Amount</th>
+            <th className="px-5 py-2 text-left font-medium">Vencimento</th>
+            <th className="px-5 py-2 text-left font-medium">Valor</th>
             <th className="px-5 py-2 text-left font-medium">Status</th>
-            <th className="px-5 py-2 text-left font-medium">Paid At</th>
-            <th className="px-5 py-2 text-right font-medium">Actions</th>
+            <th className="px-5 py-2 text-left font-medium">Pago em</th>
+            <th className="px-5 py-2 text-right font-medium">Ações</th>
           </tr>
         </thead>
         <tbody className="divide-y divide-white/5">
           {payments.data.items.map((payment) => (
             <tr key={payment.id}>
               <td className="px-5 py-2.5 text-sm text-gray-300">
-                {new Date(payment.due_date).toLocaleDateString()}
+                {new Date(payment.due_date).toLocaleDateString("pt-BR")}
               </td>
               <td className="px-5 py-2.5 text-sm font-medium text-gray-200">
                 {formatCurrency(payment.amount, payment.currency)}
@@ -402,7 +402,7 @@ function PlanPayments({
               </td>
               <td className="px-5 py-2.5 text-sm text-gray-500">
                 {payment.paid_at
-                  ? new Date(payment.paid_at).toLocaleDateString()
+                  ? new Date(payment.paid_at).toLocaleDateString("pt-BR")
                   : "—"}
               </td>
               <td className="px-5 py-2.5 text-right">
@@ -421,7 +421,7 @@ function PlanPayments({
                       disabled={recordPayment.isPending}
                       className="rounded-lg px-2 py-1 text-xs font-medium text-emerald-400 transition-colors hover:bg-emerald-500/10 disabled:opacity-50"
                     >
-                      Mark Paid
+                      Marcar Pago
                     </button>
                   )}
                 </div>

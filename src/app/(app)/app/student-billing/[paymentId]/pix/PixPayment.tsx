@@ -130,12 +130,12 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
   if (!payment) {
     return (
       <div className="space-y-4 py-12 text-center">
-        <p className="text-sm text-gray-500">Payment not found.</p>
+        <p className="text-sm text-gray-500">Pagamento não encontrado.</p>
         <button
           onClick={() => router.back()}
           className="text-sm font-medium text-brand-400 hover:text-brand-300"
         >
-          Go back
+          Voltar
         </button>
       </div>
     )
@@ -160,7 +160,7 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
       {/* Payment Info */}
       <div className="rounded-xl border border-purple-500/20 bg-gradient-to-b from-purple-500/5 to-transparent p-6">
         <div className="mb-6 text-center">
-          <h1 className="text-lg font-semibold text-gray-100">PIX Payment</h1>
+          <h1 className="text-lg font-semibold text-gray-100">Pagamento PIX</h1>
           <p className="mt-1 text-sm text-gray-400">
             {member?.full_name ?? "Aluno"} &mdash; {plan?.name ?? "Plan"}
           </p>
@@ -193,7 +193,7 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
             {!pixKey ? (
               <div className="rounded-xl border border-amber-500/20 bg-amber-500/5 p-4 text-center">
                 <p className="text-sm text-amber-300">
-                  PIX key not configured. Go to Settings to add your PIX key.
+                  Chave PIX não configurada. Vá em Configurações para adicionar sua chave PIX.
                 </p>
               </div>
             ) : pixPayload ? (
@@ -218,12 +218,12 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
                   {copied ? (
                     <>
                       <Check className="h-4 w-4" />
-                      Copiado! Paste in your bank app.
+                      Copiado! Cole no app do seu banco.
                     </>
                   ) : (
                     <>
                       <Copy className="h-4 w-4" />
-                      Copy PIX Code (Copia e Cola)
+                      Copiar Código PIX (Copia e Cola)
                     </>
                   )}
                 </button>
@@ -232,32 +232,32 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
                 <div className="rounded-xl border border-white/8 bg-gray-900/50 p-4">
                   <div className="mb-3 flex items-center gap-2">
                     <Smartphone className="h-4 w-4 text-purple-400" />
-                    <p className="text-sm font-medium text-gray-200">How to pay</p>
+                    <p className="text-sm font-medium text-gray-200">Como pagar</p>
                   </div>
                   <ol className="space-y-2 text-sm text-gray-400">
                     <li className="flex gap-2">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/12 text-xs font-bold text-purple-400">
                         1
                       </span>
-                      Open your bank app
+                      Abra o app do seu banco
                     </li>
                     <li className="flex gap-2">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/12 text-xs font-bold text-purple-400">
                         2
                       </span>
-                      Go to PIX &rarr; Scan QR Code or Paste Code
+                      Vá em PIX &rarr; Ler QR Code ou Colar Código
                     </li>
                     <li className="flex gap-2">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/12 text-xs font-bold text-purple-400">
                         3
                       </span>
-                      Confirm the payment in your app
+                      Confirme o pagamento no app
                     </li>
                     <li className="flex gap-2">
                       <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-purple-500/12 text-xs font-bold text-purple-400">
                         4
                       </span>
-                      Click &ldquo;Mark as Paid&rdquo; below after payment
+                      Clique em &ldquo;Marcar como Pago&rdquo; abaixo após o pagamento
                     </li>
                   </ol>
                 </div>
@@ -278,11 +278,11 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
             className="mt-4 flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-500 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-emerald-400 disabled:opacity-50"
           >
             {recordPayment.isPending ? (
-              "Processing..."
+              "Processando..."
             ) : (
               <>
                 <Check className="h-4 w-4" />
-                Mark as Paid
+                Marcar como Pago
               </>
             )}
           </button>

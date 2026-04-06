@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 function formatDate(d: string) {
-  return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
+  return new Date(d + "T00:00:00").toLocaleDateString("pt-BR", {
     weekday: "long",
     month: "long",
     day: "numeric",
@@ -52,7 +52,7 @@ export default async function SessionQRPage({
 
       <div className="rounded-xl border border-white/8 bg-gray-900 p-8">
         <h1 className="text-lg font-semibold text-gray-100">
-          {session.class?.name ?? "Session"}
+          {session.class?.name ?? "Aula"}
         </h1>
         <p className="mt-1 text-sm text-gray-400">
           {formatDate(session.date)}

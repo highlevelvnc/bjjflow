@@ -60,7 +60,7 @@ export async function GET(
   const beltLabel = BELT_LABELS[belt] ?? belt
   const beltColor = BELT_HEX[belt] ?? "#6b7280"
   const promotionDate = dateParam ?? new Date().toISOString().split("T")[0]!
-  const formattedDate = new Date(promotionDate).toLocaleDateString("en-US", {
+  const formattedDate = new Date(promotionDate).toLocaleDateString("pt-BR", {
     month: "long",
     day: "numeric",
     year: "numeric",

@@ -8,11 +8,11 @@ import Link from "next/link"
 
 const CATEGORIES = [
   { value: "kimono", label: "Kimono" },
-  { value: "belt", label: "Belt" },
+  { value: "belt", label: "Faixa" },
   { value: "rashguard", label: "Rashguard" },
   { value: "shorts", label: "Shorts" },
-  { value: "accessory", label: "Accessory" },
-  { value: "other", label: "Other" },
+  { value: "accessory", label: "Acessório" },
+  { value: "other", label: "Outro" },
 ] as const
 
 export function ItemForm() {
@@ -60,7 +60,7 @@ export function ItemForm() {
         >
           <ArrowLeft className="h-4 w-4" />
         </Link>
-        <h1 className="text-xl font-semibold text-gray-100">Add Inventory Item</h1>
+        <h1 className="text-xl font-semibold text-gray-100">Adicionar Item ao Estoque</h1>
       </div>
 
       {/* Form */}
@@ -68,7 +68,7 @@ export function ItemForm() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Name *</label>
+              <label className="mb-1 block text-xs text-gray-500">Nome *</label>
               <input
                 type="text"
                 required
@@ -79,7 +79,7 @@ export function ItemForm() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Category</label>
+              <label className="mb-1 block text-xs text-gray-500">Categoria</label>
               <select
                 value={form.category}
                 onChange={(e) =>
@@ -98,7 +98,7 @@ export function ItemForm() {
               </select>
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Price (USD) *</label>
+              <label className="mb-1 block text-xs text-gray-500">Preço (R$) *</label>
               <input
                 type="number"
                 required
@@ -117,11 +117,11 @@ export function ItemForm() {
                 value={form.sku}
                 onChange={(e) => setForm({ ...form, sku: e.target.value })}
                 className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
-                placeholder="Optional"
+                placeholder="Opcional"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Stock Quantity</label>
+              <label className="mb-1 block text-xs text-gray-500">Quantidade em Estoque</label>
               <input
                 type="number"
                 min="0"
@@ -131,7 +131,7 @@ export function ItemForm() {
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Low Stock Threshold</label>
+              <label className="mb-1 block text-xs text-gray-500">Limite de Estoque Baixo</label>
               <input
                 type="number"
                 min="0"
@@ -143,13 +143,13 @@ export function ItemForm() {
           </div>
 
           <div>
-            <label className="mb-1 block text-xs text-gray-500">Description</label>
+            <label className="mb-1 block text-xs text-gray-500">Descrição</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
               rows={3}
-              placeholder="Optional description..."
+              placeholder="Descrição opcional..."
             />
           </div>
 
@@ -158,7 +158,7 @@ export function ItemForm() {
               href="/app/inventory"
               className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
             >
-              Cancel
+              Cancelar
             </Link>
             <button
               type="submit"
@@ -166,7 +166,7 @@ export function ItemForm() {
               className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
             >
               {createMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-              Add Item
+              Adicionar Item
             </button>
           </div>
 

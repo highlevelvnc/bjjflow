@@ -33,7 +33,7 @@ const GI_LABELS: Record<string, string> = {
 }
 
 function formatDate(d: string) {
-  return new Date(d + "T00:00:00").toLocaleDateString("en-US", {
+  return new Date(d + "T00:00:00").toLocaleDateString("pt-BR", {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -94,7 +94,7 @@ export default async function AttendancePage({ params }: Props) {
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0">
             <h1 className="text-lg font-semibold text-gray-100">
-              {session.class?.name ?? "Session"}
+              {session.class?.name ?? "Aula"}
             </h1>
             <p className="mt-0.5 text-sm text-gray-500">
               {formatDate(session.date)} · {formatTime(session.start_time)}–{formatTime(session.end_time)}

@@ -48,7 +48,7 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
     return (
       <div className="rounded-xl border border-dashed border-white/10 bg-white/3 px-6 py-12 text-center">
         <Clock className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-        <p className="text-sm text-gray-400">No aulas available today</p>
+        <p className="text-sm text-gray-400">Nenhuma aula disponível hoje</p>
       </div>
     )
   }
@@ -91,7 +91,7 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
             {done ? (
               <div className="flex items-center gap-1.5 text-sm text-emerald-400">
                 <CheckCircle2 className="h-4 w-4" />
-                Checked in
+                Check-in feito
               </div>
             ) : (
               <button
@@ -99,7 +99,7 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
                 disabled={checkin.isPending}
                 className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
               >
-                {checkin.isPending ? "..." : "Check In"}
+                {checkin.isPending ? "..." : "Check-in"}
               </button>
             )}
           </div>

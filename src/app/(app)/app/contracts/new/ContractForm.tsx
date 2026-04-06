@@ -8,85 +8,85 @@ import Link from "next/link"
 
 const TEMPLATES: Record<string, { title: string; content: string }> = {
   enrollment: {
-    title: "Enrollment Agreement",
-    content: `ENROLLMENT AGREEMENT
+    title: "Contrato de Matrícula",
+    content: `CONTRATO DE MATRÍCULA
 
-This Enrollment Agreement ("Agreement") is entered into between the Academy and the undersigned Student/Member.
+Este Contrato de Matrícula ("Contrato") é firmado entre a Academia e o Aluno/Membro abaixo assinado.
 
-1. ENROLLMENT
-The Student agrees to enroll in the Academy's Brazilian Jiu-Jitsu program and abide by all rules and regulations set forth by the Academy.
+1. MATRÍCULA
+O Aluno concorda em se matricular no programa de Jiu-Jitsu Brasileiro da Academia e cumprir todas as regras e regulamentos estabelecidos pela Academia.
 
-2. TERM
-This Agreement shall commence on the date of execution and continue for the duration of the Student's active membership.
+2. VIGÊNCIA
+Este Contrato terá início na data de sua assinatura e continuará durante o período de matrícula ativa do Aluno.
 
-3. FEES AND PAYMENTS
-The Student agrees to pay all applicable tuition fees as outlined in their selected membership plan. Fees are due on the first of each month.
+3. TAXAS E PAGAMENTOS
+O Aluno concorda em pagar todas as taxas de mensalidade aplicáveis conforme descrito no plano de matrícula selecionado. As taxas vencem no primeiro dia de cada mês.
 
-4. RULES AND CONDUCT
-The Student agrees to:
-- Maintain proper hygiene and wear a clean uniform
-- Respect all instructors, staff, and fellow students
-- Follow the Academy's training guidelines and safety protocols
-- Not use techniques learned in a harmful or irresponsible manner
+4. REGRAS E CONDUTA
+O Aluno concorda em:
+- Manter higiene adequada e usar uniforme limpo
+- Respeitar todos os instrutores, funcionários e colegas
+- Seguir as diretrizes de treinamento e protocolos de segurança da Academia
+- Não utilizar técnicas aprendidas de forma prejudicial ou irresponsável
 
-5. ACKNOWLEDGMENT
-By signing below, the Student acknowledges that they have read, understood, and agree to the terms of this Agreement.
+5. DECLARAÇÃO
+Ao assinar abaixo, o Aluno declara que leu, compreendeu e concorda com os termos deste Contrato.
 
-Signature: ___________________________
-Date: ___________________________`,
+Assinatura: ___________________________
+Data: ___________________________`,
   },
   liability: {
-    title: "Liability Waiver",
-    content: `LIABILITY WAIVER AND RELEASE OF CLAIMS
+    title: "Termo de Responsabilidade",
+    content: `TERMO DE RESPONSABILIDADE E ISENÇÃO DE RESPONSABILIDADE
 
-I, the undersigned, acknowledge that participation in Brazilian Jiu-Jitsu training involves inherent risks of physical injury.
+Eu, abaixo assinado(a), reconheço que a participação no treinamento de Jiu-Jitsu Brasileiro envolve riscos inerentes de lesão física.
 
-1. ASSUMPTION OF RISK
-I voluntarily assume all risks associated with participation in BJJ classes, open mats, seminars, and competitions organized by the Academy, including but not limited to bruises, sprains, fractures, and other injuries.
+1. ASSUNÇÃO DE RISCO
+Assumo voluntariamente todos os riscos associados à participação em aulas de BJJ, treinos livres, seminários e competições organizadas pela Academia, incluindo, mas não se limitando a, contusões, entorses, fraturas e outras lesões.
 
-2. RELEASE OF LIABILITY
-I hereby release, waive, and discharge the Academy, its owners, instructors, employees, and agents from any and all liability for any injury, illness, or damage arising from my participation in Academy activities.
+2. ISENÇÃO DE RESPONSABILIDADE
+Pelo presente, isento, renuncio e libero a Academia, seus proprietários, instrutores, funcionários e representantes de toda e qualquer responsabilidade por lesão, doença ou dano decorrente da minha participação nas atividades da Academia.
 
-3. MEDICAL AUTHORIZATION
-I confirm that I am physically fit to participate in BJJ training. I authorize the Academy to seek emergency medical treatment on my behalf if necessary.
+3. AUTORIZAÇÃO MÉDICA
+Confirmo que estou fisicamente apto(a) para participar do treinamento de BJJ. Autorizo a Academia a buscar atendimento médico de emergência em meu nome, se necessário.
 
-4. PHOTO/VIDEO CONSENT
-I grant the Academy permission to use photographs and videos taken during training for promotional and educational purposes.
+4. CONSENTIMENTO DE FOTO/VÍDEO
+Concedo à Academia permissão para usar fotografias e vídeos feitos durante o treinamento para fins promocionais e educacionais.
 
-5. AGREEMENT
-This waiver shall remain in effect for the duration of my membership at the Academy.
+5. ACORDO
+Este termo permanecerá em vigor durante o período da minha matrícula na Academia.
 
-Signature: ___________________________
-Date: ___________________________`,
+Assinatura: ___________________________
+Data: ___________________________`,
   },
   monthly: {
-    title: "Monthly Plan Agreement",
-    content: `MONTHLY MEMBERSHIP PLAN AGREEMENT
+    title: "Contrato de Plano Mensal",
+    content: `CONTRATO DE PLANO MENSAL
 
-This Monthly Membership Plan Agreement ("Agreement") is between the Academy and the undersigned Member.
+Este Contrato de Plano Mensal ("Contrato") é firmado entre a Academia e o Membro abaixo assinado.
 
-1. MEMBERSHIP PLAN
-The Member agrees to enroll in a monthly membership plan, granting access to classes as defined by their plan level.
+1. PLANO DE MATRÍCULA
+O Membro concorda em se inscrever em um plano mensal, com acesso às aulas conforme definido pelo nível do seu plano.
 
-2. PAYMENT TERMS
-- Monthly dues are automatically charged on the 1st of each month
-- The Member is responsible for keeping payment information up to date
-- Late payments may result in suspension of training privileges
+2. TERMOS DE PAGAMENTO
+- As mensalidades são cobradas automaticamente no dia 1º de cada mês
+- O Membro é responsável por manter as informações de pagamento atualizadas
+- Atrasos no pagamento podem resultar na suspensão dos privilégios de treinamento
 
-3. CANCELLATION POLICY
-- A minimum of 30 days' written notice is required for cancellation
-- No refunds will be issued for partial months
-- The Academy reserves the right to terminate membership for violations of Academy policies
+3. POLÍTICA DE CANCELAMENTO
+- É necessário aviso prévio por escrito de no mínimo 30 dias para cancelamento
+- Não haverá reembolso para meses parciais
+- A Academia reserva-se o direito de cancelar a matrícula por violações das políticas da Academia
 
-4. FREEZING MEMBERSHIP
-- Members may freeze their membership for up to 30 days per year
-- Freeze requests must be submitted in writing at least 7 days in advance
+4. CONGELAMENTO DE MATRÍCULA
+- Membros podem congelar sua matrícula por até 30 dias por ano
+- Solicitações de congelamento devem ser enviadas por escrito com pelo menos 7 dias de antecedência
 
-5. AGREEMENT
-By signing below, the Member confirms their enrollment in the monthly plan and agrees to all terms stated above.
+5. ACORDO
+Ao assinar abaixo, o Membro confirma sua inscrição no plano mensal e concorda com todos os termos acima descritos.
 
-Signature: ___________________________
-Date: ___________________________`,
+Assinatura: ___________________________
+Data: ___________________________`,
   },
 }
 
@@ -134,14 +134,14 @@ export function ContractForm() {
           <ArrowLeft className="h-4 w-4" />
         </Link>
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">New Contract</h1>
-          <p className="mt-0.5 text-sm text-gray-500">Create a contract for a member to sign</p>
+          <h1 className="text-xl font-semibold text-gray-100">Novo Contrato</h1>
+          <p className="mt-0.5 text-sm text-gray-500">Crie um contrato para um membro assinar</p>
         </div>
       </div>
 
       {/* Template selector */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-        <h2 className="mb-3 text-sm font-medium text-gray-300">Quick Templates</h2>
+        <h2 className="mb-3 text-sm font-medium text-gray-300">Modelos Rápidos</h2>
         <div className="flex flex-wrap gap-2">
           {Object.entries(TEMPLATES).map(([key, t]) => (
             <button
@@ -159,24 +159,24 @@ export function ContractForm() {
       {/* Form */}
       <form onSubmit={handleSubmit} className="space-y-4 rounded-xl border border-white/8 bg-gray-900 p-5">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Member *</label>
+          <label className="mb-1 block text-xs text-gray-500">Membro *</label>
           <select
             required
             value={form.memberId}
             onChange={(e) => setForm({ ...form, memberId: e.target.value })}
             className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none focus:border-brand-500/50"
           >
-            <option value="">Select a member...</option>
+            <option value="">Selecione um membro...</option>
             {members?.items?.map((m) => (
               <option key={m.id} value={m.id}>
-                {m.full_name} ({m.email ?? "no email"})
+                {m.full_name} ({m.email ?? "sem email"})
               </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Title *</label>
+          <label className="mb-1 block text-xs text-gray-500">Título *</label>
           <input
             type="text"
             required
@@ -188,19 +188,19 @@ export function ContractForm() {
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Content *</label>
+          <label className="mb-1 block text-xs text-gray-500">Conteúdo *</label>
           <textarea
             required
             value={form.content}
             onChange={(e) => setForm({ ...form, content: e.target.value })}
             className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50 font-mono"
             rows={16}
-            placeholder="Contract content..."
+            placeholder="Conteúdo do contrato..."
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Expiry Date (optional)</label>
+          <label className="mb-1 block text-xs text-gray-500">Data de Expiração (opcional)</label>
           <input
             type="date"
             value={form.expiresAt}
@@ -214,7 +214,7 @@ export function ContractForm() {
             href="/app/contracts"
             className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
           >
-            Cancel
+            Cancelar
           </Link>
           <button
             type="submit"
@@ -222,7 +222,7 @@ export function ContractForm() {
             className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
           >
             {createMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-            Create Contract
+            Criar Contrato
           </button>
         </div>
         {createMutation.error && (

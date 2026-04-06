@@ -190,7 +190,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
           {/* Chave PIX Type */}
           <div>
             <label htmlFor="pix_key_type" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Chave PIX Type
+              Tipo de Chave PIX
             </label>
             <select
               id="pix_key_type"
@@ -201,7 +201,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               <option value="cpf">CPF</option>
               <option value="cnpj">CNPJ</option>
               <option value="email">Email</option>
-              <option value="phone">Phone</option>
+              <option value="phone">Telefone</option>
               <option value="random">Chave Aleatória</option>
             </select>
           </div>

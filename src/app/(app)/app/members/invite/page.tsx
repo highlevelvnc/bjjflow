@@ -34,8 +34,7 @@ export default async function InvitePage() {
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-100">Convidar Instrutor</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Cria um token de convite de 7 dias. Email delivery is not yet configured — share the token
-          manually.
+          Cria um token de convite de 7 dias. Envio de email ainda não está configurado — compartilhe o token manualmente.
         </p>
       </div>
 
@@ -62,7 +61,7 @@ export default async function InvitePage() {
                       {invite.token}
                     </p>
                     <p className="mt-0.5 text-xs text-gray-600">
-                      Expires {new Date(invite.expires_at).toLocaleDateString()}
+                      Expira em {new Date(invite.expires_at).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}>
@@ -88,7 +87,7 @@ export default async function InvitePage() {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm text-gray-300">{invite.email}</p>
                     <p className="mt-0.5 text-xs text-gray-600">
-                      Created {new Date(invite.created_at).toLocaleDateString()}
+                      Criado em {new Date(invite.created_at).toLocaleDateString("pt-BR")}
                     </p>
                   </div>
                   <span className={`shrink-0 rounded-full px-2 py-0.5 text-xs font-medium ${status.className}`}>

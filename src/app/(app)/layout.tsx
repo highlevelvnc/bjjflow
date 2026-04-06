@@ -64,7 +64,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} locale={locale} />
       <div className="relative flex min-w-0 flex-1 flex-col">
         {academyStatus === "trialing" && <TrialBanner />}
-        <main className="flex-1 px-6 py-6 pt-20 text-gray-100 md:px-8 md:pt-6">{children}</main>
+        <main className="flex-1 px-4 py-4 pt-18 text-gray-100 sm:px-6 sm:py-6 md:px-8 md:pt-6">{children}</main>
       </div>
       <OnboardingTour />
     </div>

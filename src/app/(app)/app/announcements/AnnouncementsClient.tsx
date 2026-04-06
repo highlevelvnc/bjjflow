@@ -25,16 +25,16 @@ function timeAgo(dateStr: string | null): string {
   const diff = now - then
 
   const seconds = Math.floor(diff / 1000)
-  if (seconds < 60) return "just now"
+  if (seconds < 60) return "agora"
   const minutes = Math.floor(seconds / 60)
-  if (minutes < 60) return `${minutes} min ago`
+  if (minutes < 60) return `${minutes} min atrás`
   const hours = Math.floor(minutes / 60)
-  if (hours < 24) return `${hours} hour${hours > 1 ? "s" : ""} ago`
+  if (hours < 24) return `${hours} hora${hours > 1 ? "s" : ""} atrás`
   const days = Math.floor(hours / 24)
-  if (days === 1) return "yesterday"
-  if (days < 30) return `${days} days ago`
+  if (days === 1) return "ontem"
+  if (days < 30) return `${days} dias atrás`
 
-  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+  return new Date(dateStr).toLocaleDateString("pt-BR", { month: "short", day: "numeric" })
 }
 
 // ─── Priority styling ────────────────────────────────────────────────────────
@@ -139,9 +139,9 @@ export function AnnouncementsClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Announcements</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Avisos</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} post${data.total === 1 ? "" : "s"}` : "Carregando..."}
+            {data ? `${data.total} aviso${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         {!showForm && (
@@ -153,7 +153,7 @@ export function AnnouncementsClient() {
             className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
           >
             <Plus className="h-4 w-4" />
-            New Post
+            Novo Aviso
           </button>
         )}
       </div>
@@ -163,7 +163,7 @@ export function AnnouncementsClient() {
         <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
           <div className="mb-4 flex items-center justify-between">
             <h2 className="text-sm font-medium text-gray-200">
-              {editingId ? "Edit Announcement" : "New Announcement"}
+              {editingId ? "Editar Aviso" : "Novo Aviso"}
             </h2>
             <button onClick={resetForm} className="text-gray-500 hover:text-gray-300">
               <X className="h-4 w-4" />
@@ -171,31 +171,31 @@ export function AnnouncementsClient() {
           </div>
           <form onSubmit={handleSubmit} className="space-y-3">
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Title *</label>
+              <label className="mb-1 block text-xs text-gray-500">Título *</label>
               <input
                 type="text"
                 required
                 value={form.title}
                 onChange={(e) => setForm({ ...form, title: e.target.value })}
                 className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
-                placeholder="Announcement title"
+                placeholder="Título do aviso"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Content *</label>
+              <label className="mb-1 block text-xs text-gray-500">Conteúdo *</label>
               <textarea
                 required
                 value={form.content}
                 onChange={(e) => setForm({ ...form, content: e.target.value })}
                 className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
                 rows={4}
-                placeholder="What would you like to announce?"
+                placeholder="O que você gostaria de anunciar?"
               />
             </div>
             <div className="flex flex-wrap items-center gap-4">
               {/* Priority pills */}
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Priority</label>
+                <label className="mb-1 block text-xs text-gray-500">Prioridade</label>
                 <div className="flex gap-1">
                   {(["normal", "important", "urgent"] as const).map((p) => (
                     <button
@@ -226,7 +226,7 @@ export function AnnouncementsClient() {
                   className="rounded border-white/20 bg-white/5"
                 />
                 <Pin className="h-3.5 w-3.5" />
-                Pin to top
+                Fixar no topo
               </label>
             </div>
             <div className="flex justify-end gap-2 pt-1">
@@ -235,7 +235,7 @@ export function AnnouncementsClient() {
                 onClick={resetForm}
                 className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 type="submit"
@@ -243,7 +243,7 @@ export function AnnouncementsClient() {
                 className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
               >
                 {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                {editingId ? "Salvar Alterações" : "Post"}
+                {editingId ? "Salvar Alterações" : "Publicar"}
               </button>
             </div>
             {(createMutation.error || updateMutation.error) && (
@@ -263,9 +263,9 @@ export function AnnouncementsClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <MessageSquare className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">Nenhum aviso yet</p>
+          <p className="text-sm text-gray-400">Nenhum aviso ainda</p>
           <p className="mt-1 text-xs text-gray-600">
-            Create your first announcement to share with the academy.
+            Crie seu primeiro aviso para compartilhar com a academia.
           </p>
         </div>
       ) : (
@@ -308,7 +308,7 @@ export function AnnouncementsClient() {
                     <button
                       onClick={() => pinMutation.mutate({ id: a.id, pinned: !a.pinned })}
                       className="rounded-md p-1.5 text-gray-600 hover:bg-white/5 hover:text-gray-300"
-                      title={a.pinned ? "Unpin" : "Pin"}
+                      title={a.pinned ? "Desafixar" : "Fixar"}
                     >
                       {a.pinned ? (
                         <PinOff className="h-3.5 w-3.5" />
@@ -325,7 +325,7 @@ export function AnnouncementsClient() {
                     </button>
                     <button
                       onClick={() => {
-                        if (confirm("Delete this announcement?")) {
+                        if (confirm("Excluir este aviso?")) {
                           deleteMutation.mutate({ id: a.id })
                         }
                       }}
@@ -353,11 +353,11 @@ export function AnnouncementsClient() {
                     >
                       {isExpanded ? (
                         <>
-                          Show less <ChevronUp className="h-3 w-3" />
+                          Ver menos <ChevronUp className="h-3 w-3" />
                         </>
                       ) : (
                         <>
-                          Read more <ChevronDown className="h-3 w-3" />
+                          Ver mais <ChevronDown className="h-3 w-3" />
                         </>
                       )}
                     </button>

@@ -82,7 +82,7 @@ interface FinanceClientProps {
 // ─────────────────────────────────────────────────────────────────────────────
 
 function formatCurrency(amount: number, currency: string): string {
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat(currency === "BRL" ? "pt-BR" : "en-US", {
     style: "currency",
     currency,
     minimumFractionDigits: 0,
@@ -93,7 +93,7 @@ function formatCurrency(amount: number, currency: string): string {
 function formatMonthLabel(month: string): string {
   const [year, m] = month.split("-")
   const date = new Date(Number(year), Number(m) - 1)
-  return date.toLocaleString("en-US", { month: "short" })
+  return date.toLocaleString("pt-BR", { month: "short" })
 }
 
 const BELT_COLORS: Record<string, string> = {
@@ -105,10 +105,10 @@ const BELT_COLORS: Record<string, string> = {
 }
 
 const METHOD_COLORS: Record<string, { bg: string; text: string; label: string }> = {
-  cash: { bg: "bg-emerald-500", text: "text-emerald-400", label: "Cash" },
+  cash: { bg: "bg-emerald-500", text: "text-emerald-400", label: "Dinheiro" },
   pix: { bg: "bg-purple-500", text: "text-purple-400", label: "PIX" },
   stripe: { bg: "bg-blue-500", text: "text-blue-400", label: "Stripe" },
-  other: { bg: "bg-gray-500", text: "text-gray-400", label: "Other" },
+  other: { bg: "bg-gray-500", text: "text-gray-400", label: "Outro" },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -146,7 +146,7 @@ function RevenueChart({
 
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-      <h2 className="mb-4 text-lg font-semibold text-white">Revenue (6 Months)</h2>
+      <h2 className="mb-4 text-lg font-semibold text-white">Receita (6 Meses)</h2>
 
       <div className="flex items-end gap-3" style={{ height: 200 }}>
         {data.map((d) => {
@@ -183,7 +183,7 @@ function RevenueChart({
 
       {data.every((d) => d.revenue === 0) && (
         <p className="mt-4 text-center text-sm text-gray-500">
-          No revenue data yet. Revenue will appear here as payments and sales are recorded.
+          Nenhum dado de receita ainda. A receita aparecerá aqui conforme pagamentos forem registrados.
         </p>
       )}
     </div>
@@ -199,23 +199,23 @@ function MemberLTVTable({
 }) {
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-      <h2 className="mb-4 text-lg font-semibold text-white">Member Lifetime Value</h2>
+      <h2 className="mb-4 text-lg font-semibold text-white">Valor Vitalício do Aluno</h2>
 
       {members.length === 0 ? (
         <p className="text-sm text-gray-500">
-          No active members with plans found. Assign student plans to track LTV.
+          Nenhum aluno ativo com plano encontrado. Atribua planos para acompanhar o LTV.
         </p>
       ) : (
         <div className="overflow-x-auto">
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-white/8 text-gray-400">
-                <th className="pb-3 pr-4 font-medium">Member</th>
-                <th className="pb-3 pr-4 font-medium">Belt</th>
-                <th className="pb-3 pr-4 font-medium text-right">Months</th>
-                <th className="pb-3 pr-4 font-medium text-right">Sessions</th>
-                <th className="pb-3 pr-4 font-medium text-right">Est. LTV</th>
-                <th className="pb-3 font-medium">Plan</th>
+                <th className="pb-3 pr-4 font-medium">Aluno</th>
+                <th className="pb-3 pr-4 font-medium">Faixa</th>
+                <th className="pb-3 pr-4 font-medium text-right">Meses</th>
+                <th className="pb-3 pr-4 font-medium text-right">Aulas</th>
+                <th className="pb-3 pr-4 font-medium text-right">LTV Est.</th>
+                <th className="pb-3 font-medium">Plano</th>
               </tr>
             </thead>
             <tbody>
@@ -243,7 +243,7 @@ function MemberLTVTable({
                           : "bg-gray-700 text-gray-400"
                       }`}
                     >
-                      {m.hasPlan ? "Ativo" : "No plan"}
+                      {m.hasPlan ? "Ativo" : "Sem plano"}
                     </span>
                   </td>
                 </tr>
@@ -266,15 +266,15 @@ function DelinquencyAlerts({
   if (members.length === 0) {
     return (
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-2 text-lg font-semibold text-white">Delinquency Alerts</h2>
-        <p className="text-sm text-gray-500">No overdue payments detected. All members are up to date.</p>
+        <h2 className="mb-2 text-lg font-semibold text-white">Alertas de Inadimplência</h2>
+        <p className="text-sm text-gray-500">Nenhum pagamento em atraso detectado. Todos os alunos estão em dia.</p>
       </div>
     )
   }
 
   return (
     <div className="rounded-xl border border-red-500/20 bg-red-950/20 p-6">
-      <h2 className="mb-4 text-lg font-semibold text-red-400">Delinquency Alerts</h2>
+      <h2 className="mb-4 text-lg font-semibold text-red-400">Alertas de Inadimplência</h2>
 
       <div className="space-y-3">
         {members.map((m) => (
@@ -291,7 +291,7 @@ function DelinquencyAlerts({
               <div>
                 <p className="font-medium text-white">{m.name}</p>
                 <p className="text-xs text-gray-400">
-                  {m.planName} &middot; {m.daysSincePayment} days overdue
+                  {m.planName} &middot; há {m.daysSincePayment} dias em atraso
                 </p>
               </div>
             </div>
@@ -301,7 +301,7 @@ function DelinquencyAlerts({
                 href={`/app/members`}
                 className="text-xs text-gray-400 hover:text-white transition-colors"
               >
-                View members
+                Ver alunos
               </a>
             </div>
           </div>
@@ -319,27 +319,27 @@ function StudentRevenueCards({ data }: { data: StudentRevenueOverview }) {
 
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-white">Student Revenue</h2>
+      <h2 className="text-lg font-semibold text-white">Receita de Alunos</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {/* Monthly Revenue */}
         <div className="rounded-xl border border-emerald-500/20 bg-emerald-950/20 p-5">
-          <p className="text-sm text-emerald-300/70">Monthly Revenue</p>
+          <p className="text-sm text-emerald-300/70">Receita Mensal</p>
           <p className="mt-1 text-2xl font-bold text-emerald-400">
             {formatCurrency(data.monthlyRevenue, currency)}
           </p>
           <p className="mt-0.5 text-xs text-gray-500">
-            vs {formatCurrency(data.previousMonth, currency)} last month
+            vs {formatCurrency(data.previousMonth, currency)} mês anterior
           </p>
         </div>
 
         {/* Growth Rate */}
         <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-          <p className="text-sm text-gray-400">Growth Rate</p>
+          <p className="text-sm text-gray-400">Taxa de Crescimento</p>
           <p className={`mt-1 text-2xl font-bold ${growthPositive ? "text-emerald-400" : "text-red-400"}`}>
             <span className="mr-1">{growthPositive ? "\u2191" : "\u2193"}</span>
             {Math.abs(data.growthRate)}%
           </p>
-          <p className="mt-0.5 text-xs text-gray-500">Month-over-month</p>
+          <p className="mt-0.5 text-xs text-gray-500">Mês a mês</p>
         </div>
 
         {/* Overdue Amount */}
@@ -349,23 +349,23 @@ function StudentRevenueCards({ data }: { data: StudentRevenueOverview }) {
             : "border border-white/8 bg-gray-900"
         }`}>
           <p className={`text-sm ${data.overdueAmount > 0 ? "text-red-300/70" : "text-gray-400"}`}>
-            Overdue
+            Em Atraso
           </p>
           <p className={`mt-1 text-2xl font-bold ${data.overdueAmount > 0 ? "text-red-400" : "text-gray-300"}`}>
             {formatCurrency(data.overdueAmount, currency)}
           </p>
           <p className="mt-0.5 text-xs text-gray-500">
-            {data.overdueCount} payment{data.overdueCount !== 1 ? "s" : ""} overdue
+            {data.overdueCount} pagamento{data.overdueCount !== 1 ? "s" : ""} em atraso
           </p>
         </div>
 
         {/* Projected Revenue */}
         <div className="rounded-xl border border-blue-500/20 bg-blue-950/20 p-5">
-          <p className="text-sm text-blue-300/70">Projected Next Month</p>
+          <p className="text-sm text-blue-300/70">Projeção Próximo Mês</p>
           <p className="mt-1 text-2xl font-bold text-blue-400">
             {formatCurrency(data.projectedRevenue, currency)}
           </p>
-          <p className="mt-0.5 text-xs text-gray-500">From active plans</p>
+          <p className="mt-0.5 text-xs text-gray-500">De planos ativos</p>
         </div>
       </div>
     </div>
@@ -383,7 +383,7 @@ function CashFlowForecastSection({
 }) {
   return (
     <div className="space-y-4">
-      <h2 className="text-lg font-semibold text-white">Cash Flow Forecast</h2>
+      <h2 className="text-lg font-semibold text-white">Previsão de Fluxo de Caixa</h2>
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
         {data.map((m) => {
           const maxVal = Math.max(...data.map((d) => d.expected), 1)
@@ -398,20 +398,20 @@ function CashFlowForecastSection({
 
               <div className="mt-3 space-y-2">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Expected</span>
+                  <span className="text-gray-400">Esperado</span>
                   <span className="font-medium text-white">
                     {formatCurrency(m.expected, currency)}
                   </span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-400">Est. Churn</span>
+                  <span className="text-gray-400">Est. Evasão</span>
                   <span className="font-medium text-red-400">
                     -{formatCurrency(m.estimated_churn, currency)}
                   </span>
                 </div>
                 <div className="border-t border-white/8 pt-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-400">Net Forecast</span>
+                    <span className="text-gray-400">Previsão Líquida</span>
                     <span className="font-semibold text-blue-400">
                       {formatCurrency(m.net_forecast, currency)}
                     </span>
@@ -427,7 +427,7 @@ function CashFlowForecastSection({
                 />
               </div>
               <p className="mt-1.5 text-xs text-gray-500">
-                {m.active_plans} active plan{m.active_plans !== 1 ? "s" : ""}
+                {m.active_plans} plano{m.active_plans !== 1 ? "s" : ""} ativo{m.active_plans !== 1 ? "s" : ""}
               </p>
             </div>
           )
@@ -450,7 +450,7 @@ function PaymentMethodBreakdownSection({
   const grandCount = data.reduce((s, d) => s + d.count, 0)
 
   // Filter to only methods with data, but always show all for structure
-  const fallback = { bg: "bg-gray-500", text: "text-gray-400", label: "Other" }
+  const fallback = { bg: "bg-gray-500", text: "text-gray-400", label: "Outro" }
   const segments = data.map((d) => {
     const cfg = METHOD_COLORS[d.method]
     return {
@@ -462,11 +462,11 @@ function PaymentMethodBreakdownSection({
 
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-      <h2 className="mb-4 text-lg font-semibold text-white">Payment Methods</h2>
+      <h2 className="mb-4 text-lg font-semibold text-white">Métodos de Pagamento</h2>
 
       {grandCount === 0 ? (
         <p className="text-sm text-gray-500">
-          No student payments recorded yet. Payment method data will appear here.
+          Nenhum pagamento de aluno registrado ainda. Os dados aparecerão aqui.
         </p>
       ) : (
         <div className="space-y-5">
@@ -496,7 +496,7 @@ function PaymentMethodBreakdownSection({
                   {formatCurrency(s.total, currency)}
                 </p>
                 <p className="text-xs text-gray-500">
-                  {s.count} payment{s.count !== 1 ? "s" : ""} ({s.pct}%)
+                  {s.count} pagamento{s.count !== 1 ? "s" : ""} ({s.pct}%)
                 </p>
               </div>
             ))}
@@ -527,9 +527,9 @@ export function FinanceClient({
       <AnalyticsNav />
 
       <div>
-        <h1 className="text-xl font-semibold text-gray-100">Financial Analytics</h1>
+        <h1 className="text-xl font-semibold text-gray-100">Análises Financeiras</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Revenue metrics, member lifetime value, and payment tracking.
+          Métricas de receita, valor vitalício do aluno e acompanhamento de pagamentos.
         </p>
       </div>
 
@@ -539,24 +539,24 @@ export function FinanceClient({
       {/* Section: Overview Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
-          label="Monthly Recurring Revenue"
+          label="Receita Mensal Recorrente"
           value={formatCurrency(overview.mrr, currency)}
-          sub={`From ${overview.activeMembers} active plans`}
+          sub={`De ${overview.activeMembers} planos ativos`}
           color="text-emerald-400"
         />
         <StatCard
-          label="Revenue (30 days)"
+          label="Receita (30 dias)"
           value={formatCurrency(overview.last30Revenue, currency)}
-          sub={`All time: ${formatCurrency(overview.allTimeRevenue, currency)}`}
+          sub={`Total: ${formatCurrency(overview.allTimeRevenue, currency)}`}
           color="text-emerald-400"
         />
         <StatCard
-          label="Avg Revenue / Member"
+          label="Receita Média / Aluno"
           value={formatCurrency(overview.avgRevenuePerMember, currency)}
-          sub="All-time average"
+          sub="Média geral"
         />
         <StatCard
-          label="Active Members"
+          label="Alunos Ativos"
           value={String(overview.activeMembers)}
           sub={`${overview.totalMembers} total`}
         />

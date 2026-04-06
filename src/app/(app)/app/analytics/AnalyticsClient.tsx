@@ -59,13 +59,10 @@ interface AnalyticsClientProps {
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
-const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 
 function formatHour(h: number): string {
-  if (h === 0) return "12 AM"
-  if (h < 12) return `${h} AM`
-  if (h === 12) return "12 PM"
-  return `${h - 12} PM`
+  return `${h}h`
 }
 
 function getHeatColor(value: number, max: number): string {
@@ -141,9 +138,9 @@ export function AnalyticsClient({
 
       {/* Page header */}
       <div>
-        <h1 className="text-xl font-semibold text-gray-100">Analytics</h1>
+        <h1 className="text-xl font-semibold text-gray-100">Análises</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Attendance patterns, churn prediction, and retention insights
+          Padrões de frequência, previsão de evasão e insights de retenção
         </p>
       </div>
 
@@ -151,16 +148,16 @@ export function AnalyticsClient({
       <section className="rounded-xl border border-white/8 bg-gray-900">
         <div className="border-b border-white/8 px-5 py-3">
           <h2 className="text-sm font-medium text-gray-100">
-            Attendance Heatmap — Last 90 Days
+            Mapa de Calor — Últimos 90 Dias
           </h2>
           <p className="mt-0.5 text-xs text-gray-500">
-            Average attendance by day of week and time of day
+            Média de presença por dia da semana e horário
           </p>
         </div>
         <div className="overflow-x-auto p-5">
           {weeklyHeatmap.grid.length === 0 ? (
             <p className="py-8 text-center text-sm text-gray-500">
-              No completed aulas in the last 90 days.
+              Nenhuma aula concluída nos últimos 90 dias.
             </p>
           ) : (
             <div className="min-w-[640px]">
@@ -194,7 +191,7 @@ export function AnalyticsClient({
                         <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1.5 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-[10px] text-gray-200 shadow-lg group-hover:block">
                           {DAY_LABELS[day]} {formatHour(hour)}
                           <br />
-                          Avg: {value} students
+                          Média: {value} alunos
                         </div>
                       </div>
                     )
@@ -203,13 +200,13 @@ export function AnalyticsClient({
               ))}
               {/* Legend */}
               <div className="mt-3 flex items-center gap-2 text-[10px] text-gray-500">
-                <span>Less</span>
+                <span>Menos</span>
                 <div className="h-3 w-5 rounded-sm bg-white/[0.03]" />
                 <div className="h-3 w-5 rounded-sm bg-emerald-500/20" />
                 <div className="h-3 w-5 rounded-sm bg-emerald-500/40" />
                 <div className="h-3 w-5 rounded-sm bg-emerald-500/60" />
                 <div className="h-3 w-5 rounded-sm bg-emerald-500/80" />
-                <span>More</span>
+                <span>Mais</span>
               </div>
             </div>
           )}
@@ -221,8 +218,8 @@ export function AnalyticsClient({
         {/* ── Section 2: Class Fill Rates ── */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">Class Fill Rates</h2>
-            <p className="mt-0.5 text-xs text-gray-500">Average capacity utilization per class</p>
+            <h2 className="text-sm font-medium text-gray-100">Taxa de Ocupação das Turmas</h2>
+            <p className="mt-0.5 text-xs text-gray-500">Utilização média de capacidade por turma</p>
           </div>
           <div className="p-5">
             {classFillRates.length === 0 ? (
@@ -256,8 +253,8 @@ export function AnalyticsClient({
         {/* ── Section 3: Peak Hours ── */}
         <section className="rounded-xl border border-white/8 bg-gray-900">
           <div className="border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">Peak Training Hours</h2>
-            <p className="mt-0.5 text-xs text-gray-500">Average attendance by time of day</p>
+            <h2 className="text-sm font-medium text-gray-100">Horários de Pico</h2>
+            <p className="mt-0.5 text-xs text-gray-500">Média de presença por horário</p>
           </div>
           <div className="p-5">
             {hourlyDistribution.length === 0 ? (
@@ -270,7 +267,7 @@ export function AnalyticsClient({
                     {formatHour(peakHour.hour)}
                   </span>
                   <span className="text-sm text-gray-500">
-                    peak hour ({peakHour.avgAttendance} avg attendance)
+                    horário de pico ({peakHour.avgAttendance} média de presença)
                   </span>
                 </div>
 
@@ -304,14 +301,14 @@ export function AnalyticsClient({
                           <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-1 hidden -translate-x-1/2 whitespace-nowrap rounded-md bg-gray-800 px-2 py-1 text-[10px] text-gray-200 shadow-lg group-hover:block">
                             {formatHour(h.hour)}
                             <br />
-                            Avg: {h.avgAttendance}
+                            Média: {h.avgAttendance}
                             <br />
                             {h.totalSessions} aulas
                           </div>
                         </div>
                         {/* Label */}
                         <span className="mt-1.5 text-[9px] font-medium text-gray-600">
-                          {h.hour % 2 === 0 ? formatHour(h.hour).replace(" AM", "a").replace(" PM", "p") : ""}
+                          {h.hour % 2 === 0 ? formatHour(h.hour) : ""}
                         </span>
                       </div>
                     )
@@ -326,26 +323,26 @@ export function AnalyticsClient({
       {/* ── Section 4: Churn Risk Table ── */}
       <section className="rounded-xl border border-white/8 bg-gray-900">
         <div className="border-b border-white/8 px-5 py-3">
-          <h2 className="text-sm font-medium text-gray-100">Churn Risk</h2>
+          <h2 className="text-sm font-medium text-gray-100">Risco de Evasão</h2>
           <p className="mt-0.5 text-xs text-gray-500">
-            Students most likely to stop training, based on attendance patterns
+            Alunos com maior probabilidade de abandonar, baseado em padrões de frequência
           </p>
         </div>
         <div className="overflow-x-auto">
           {churnPrediction.length === 0 ? (
             <p className="px-5 py-8 text-center text-sm text-gray-500">
-              No active students to analyze.
+              Nenhum aluno ativo para analisar.
             </p>
           ) : (
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-white/6 text-xs text-gray-500">
-                  <th className="px-5 py-2.5 font-medium">Student</th>
-                  <th className="px-3 py-2.5 font-medium">Belt</th>
-                  <th className="px-3 py-2.5 font-medium">Churn Score</th>
-                  <th className="px-3 py-2.5 font-medium">Risk</th>
-                  <th className="hidden px-3 py-2.5 font-medium sm:table-cell">Trend</th>
-                  <th className="hidden px-3 py-2.5 font-medium md:table-cell">Last Session</th>
+                  <th className="px-5 py-2.5 font-medium">Aluno</th>
+                  <th className="px-3 py-2.5 font-medium">Faixa</th>
+                  <th className="px-3 py-2.5 font-medium">Pontuação</th>
+                  <th className="px-3 py-2.5 font-medium">Risco</th>
+                  <th className="hidden px-3 py-2.5 font-medium sm:table-cell">Tendência</th>
+                  <th className="hidden px-3 py-2.5 font-medium md:table-cell">Última Aula</th>
                   <th className="px-3 py-2.5 font-medium" />
                 </tr>
               </thead>
@@ -395,17 +392,17 @@ export function AnalyticsClient({
                     </td>
                     <td className="hidden px-3 py-3 text-xs text-gray-400 md:table-cell">
                       {student.daysSinceLastSession === 0
-                        ? "Today"
+                        ? "Hoje"
                         : student.daysSinceLastSession === 1
-                          ? "Yesterday"
-                          : `${student.daysSinceLastSession}d ago`}
+                          ? "Ontem"
+                          : `há ${student.daysSinceLastSession}d`}
                     </td>
                     <td className="px-3 py-3">
                       <Link
                         href={`/app/members/${student.memberId}/edit`}
                         className="text-xs font-medium text-brand-400 hover:text-brand-300"
                       >
-                        Contact
+                        Contatar
                       </Link>
                     </td>
                   </tr>
@@ -419,24 +416,24 @@ export function AnalyticsClient({
       {/* ── Section 5: Retention Cohorts ── */}
       <section className="rounded-xl border border-white/8 bg-gray-900">
         <div className="border-b border-white/8 px-5 py-3">
-          <h2 className="text-sm font-medium text-gray-100">Retention Cohorts</h2>
+          <h2 className="text-sm font-medium text-gray-100">Coortes de Retenção</h2>
           <p className="mt-0.5 text-xs text-gray-500">
-            Monthly cohort retention — how many students who joined each month are still active
+            Retenção mensal — quantos alunos que entraram em cada mês ainda estão ativos
           </p>
         </div>
         <div className="overflow-x-auto">
           {retentionCohorts.length === 0 ? (
             <p className="px-5 py-8 text-center text-sm text-gray-500">
-              No cohort data available yet.
+              Nenhum dado de coorte disponível ainda.
             </p>
           ) : (
             <table className="w-full text-left text-sm">
               <thead>
                 <tr className="border-b border-white/6 text-xs text-gray-500">
-                  <th className="px-5 py-2.5 font-medium">Join Month</th>
-                  <th className="px-3 py-2.5 font-medium">Joined</th>
-                  <th className="px-3 py-2.5 font-medium">Still Active</th>
-                  <th className="px-3 py-2.5 font-medium">Retention</th>
+                  <th className="px-5 py-2.5 font-medium">Mês de Entrada</th>
+                  <th className="px-3 py-2.5 font-medium">Entrou</th>
+                  <th className="px-3 py-2.5 font-medium">Ainda Ativo</th>
+                  <th className="px-3 py-2.5 font-medium">Retenção</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/6">

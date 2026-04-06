@@ -132,7 +132,7 @@ export async function sendPaymentReminderEmail(opts: {
   dueDate: string
   academyName: string
 }) {
-  const formattedDate = new Date(opts.dueDate + "T00:00:00").toLocaleDateString("en-US", {
+  const formattedDate = new Date(opts.dueDate + "T00:00:00").toLocaleDateString("pt-BR", {
     weekday: "long",
     year: "numeric",
     month: "long",
@@ -235,13 +235,13 @@ export async function sendPaymentConfirmationEmail(opts: {
   nextDueDate: string | null
   academyName: string
 }) {
-  const formattedPaid = new Date(opts.paidDate).toLocaleDateString("en-US", {
+  const formattedPaid = new Date(opts.paidDate).toLocaleDateString("pt-BR", {
     year: "numeric",
     month: "long",
     day: "numeric",
   })
   const formattedNext = opts.nextDueDate
-    ? new Date(opts.nextDueDate + "T00:00:00").toLocaleDateString("en-US", {
+    ? new Date(opts.nextDueDate + "T00:00:00").toLocaleDateString("pt-BR", {
         year: "numeric",
         month: "long",
         day: "numeric",

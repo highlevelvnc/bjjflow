@@ -9,14 +9,14 @@ export const metadata: Metadata = {
   title: "Turmas",
 }
 
-const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+const DAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"]
 
 const CLASS_TYPE_LABELS: Record<string, string> = {
   regular: "Regular",
   open_mat: "Open Mat",
   competition_prep: "Comp Prep",
-  private: "Private",
-  seminar: "Seminar",
+  private: "Particular",
+  seminar: "Seminário",
   kids: "Kids",
 }
 
@@ -71,8 +71,8 @@ export default async function ClassesPage() {
         />
       ) : (
         <div className="space-y-6">
-          {active.length > 0 && <ClassGroup title="Active" classes={active} />}
-          {inactive.length > 0 && <ClassGroup title="Inactive" classes={inactive} muted />}
+          {active.length > 0 && <ClassGroup title="Ativas" classes={active} />}
+          {inactive.length > 0 && <ClassGroup title="Inativas" classes={inactive} muted />}
         </div>
       )}
     </div>
@@ -124,7 +124,7 @@ function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRo
                       className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-gray-400 hover:bg-white/6 hover:text-gray-200"
                     >
                       <Pencil className="h-3 w-3" />
-                      Edit
+                      Editar
                     </Link>
                     <ClassToggleButton classId={cls.id} isActive={cls.is_active} />
                   </div>

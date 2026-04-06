@@ -3,7 +3,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { AnalyticsClient } from "./AnalyticsClient"
 
 export const metadata: Metadata = {
-  title: "Analytics",
+  title: "Análises",
 }
 
 export default async function AnalyticsPage() {

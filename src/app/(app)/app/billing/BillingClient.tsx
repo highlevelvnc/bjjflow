@@ -6,24 +6,24 @@ import type { CurrencyInfo } from "@/lib/i18n/config"
 // Plan feature lists
 const PLAN_FEATURES: Record<string, string[]> = {
   Starter: [
-    "Up to 30 members",
-    "Class scheduling",
-    "Attendance tracking",
-    "Basic analytics",
+    "Até 30 membros",
+    "Agendamento de aulas",
+    "Controle de presença",
+    "Análises básicas",
   ],
   Growth: [
-    "Up to 100 members",
-    "Everything in Starter",
-    "Student portal",
-    "QR check-in",
-    "Priority support",
+    "Até 100 membros",
+    "Tudo do Starter",
+    "Portal do aluno",
+    "Check-in por QR code",
+    "Suporte prioritário",
   ],
   Pro: [
-    "Unlimited members",
-    "Everything in Growth",
-    "AI insights",
-    "Automations",
-    "White-label portal",
+    "Membros ilimitados",
+    "Tudo do Growth",
+    "Insights com IA",
+    "Automações",
+    "Portal white-label",
   ],
 }
 
@@ -72,10 +72,10 @@ export function BillingClient({
       if (data?.result?.data?.json?.url) {
         window.location.href = data.result.data.json.url
       } else {
-        setError("Failed to create checkout session. Please try again.")
+        setError("Falha ao criar sessão de pagamento. Tente novamente.")
       }
     } catch {
-      setError("Something went wrong. Please try again.")
+      setError("Algo deu errado. Tente novamente.")
     } finally {
       setLoading(null)
     }
@@ -95,10 +95,10 @@ export function BillingClient({
       if (data?.result?.data?.json?.url) {
         window.location.href = data.result.data.json.url
       } else {
-        setError("Failed to open billing portal. Please try again.")
+        setError("Falha ao abrir portal de pagamentos. Tente novamente.")
       }
     } catch {
-      setError("Something went wrong. Please try again.")
+      setError("Algo deu errado. Tente novamente.")
     } finally {
       setLoading(null)
     }
@@ -112,7 +112,7 @@ export function BillingClient({
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
-            <h2 className="text-lg font-semibold text-white">Current Plan</h2>
+            <h2 className="text-lg font-semibold text-white">Plano Atual</h2>
             <div className="mt-2 flex items-center gap-3">
               <span className="rounded-md bg-brand-500/15 px-2.5 py-1 text-sm font-semibold capitalize text-brand-300">
                 {academyPlan}
@@ -131,7 +131,7 @@ export function BillingClient({
             </div>
             {subscription?.cancel_at_period_end && (
               <p className="mt-2 text-sm text-amber-400">
-                Cancels at end of period ({new Date(subscription.current_period_end).toLocaleDateString()})
+                Cancela ao final do período ({new Date(subscription.current_period_end).toLocaleDateString("pt-BR")})
               </p>
             )}
           </div>
@@ -142,7 +142,7 @@ export function BillingClient({
               disabled={loading === "portal"}
               className="rounded-lg border border-white/12 px-4 py-2 text-sm font-medium text-gray-300 hover:bg-white/6 hover:text-white disabled:opacity-50"
             >
-              {loading === "portal" ? "Opening..." : "Manage Subscription"}
+              {loading === "portal" ? "Abrindo..." : "Gerenciar Assinatura"}
             </button>
           )}
         </div>
@@ -150,9 +150,9 @@ export function BillingClient({
         {/* Usage bar */}
         <div className="mt-6">
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-400">Members</span>
+            <span className="text-gray-400">Membros</span>
             <span className="text-gray-300">
-              {memberCount} / {maxMembers === 999999 ? "Unlimited" : maxMembers}
+              {memberCount} / {maxMembers === 999999 ? "Ilimitado" : maxMembers}
             </span>
           </div>
           <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/8">
@@ -167,7 +167,7 @@ export function BillingClient({
 
         {subscription && (
           <div className="mt-4 text-sm text-gray-500">
-            Current period ends: {new Date(subscription.current_period_end).toLocaleDateString()}
+            Período atual termina em: {new Date(subscription.current_period_end).toLocaleDateString("pt-BR")}
           </div>
         )}
       </div>
@@ -181,9 +181,9 @@ export function BillingClient({
 
       {/* Plan cards */}
       <div>
-        <h2 className="text-lg font-semibold text-white">Plans</h2>
+        <h2 className="text-lg font-semibold text-white">Planos</h2>
         <p className="mt-1 text-sm text-gray-500">
-          Choose the plan that works best for your academy.
+          Escolha o plano que funciona melhor para sua academia.
         </p>
 
         <div className="mt-4 grid gap-4 sm:grid-cols-3">
@@ -236,7 +236,7 @@ export function BillingClient({
                 <div className="mt-5">
                   {isCurrent ? (
                     <div className="w-full rounded-lg border border-white/12 py-2 text-center text-sm font-medium text-gray-400">
-                      Current Plan
+                      Plano Atual
                     </div>
                   ) : (
                     <button
@@ -248,7 +248,7 @@ export function BillingClient({
                           : "border border-white/12 text-gray-300 hover:bg-white/6 hover:text-white"
                       }`}
                     >
-                      {loading === planKey ? "Redirecting..." : "Upgrade"}
+                      {loading === planKey ? "Redirecionando..." : "Assinar"}
                     </button>
                   )}
                 </div>

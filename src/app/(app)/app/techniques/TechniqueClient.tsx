@@ -69,9 +69,9 @@ export function TechniqueClient() {
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Techniques</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Técnicas</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} technique${data.total === 1 ? "" : "s"}` : "Carregando..."}
+            {data ? `${data.total} técnica${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         <button
@@ -79,7 +79,7 @@ export function TechniqueClient() {
           className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400"
         >
           <Plus className="h-4 w-4" />
-          Add Technique
+          Adicionar Técnica
         </button>
       </div>
 
@@ -87,7 +87,7 @@ export function TechniqueClient() {
       {showForm && (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
           <div className="mb-4 flex items-center justify-between">
-            <h2 className="text-sm font-medium text-gray-200">New Technique</h2>
+            <h2 className="text-sm font-medium text-gray-200">Nova Técnica</h2>
             <button onClick={resetForm} className="text-gray-500 hover:text-gray-300">
               <X className="h-4 w-4" />
             </button>
@@ -95,7 +95,7 @@ export function TechniqueClient() {
           <form onSubmit={handleSubmit} className="space-y-3">
             <div className="grid gap-3 sm:grid-cols-2">
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Name *</label>
+                <label className="mb-1 block text-xs text-gray-500">Nome *</label>
                 <input
                   type="text"
                   required
@@ -106,7 +106,7 @@ export function TechniqueClient() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Position *</label>
+                <label className="mb-1 block text-xs text-gray-500">Posição *</label>
                 <input
                   type="text"
                   required
@@ -117,7 +117,7 @@ export function TechniqueClient() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Category *</label>
+                <label className="mb-1 block text-xs text-gray-500">Categoria *</label>
                 <input
                   type="text"
                   required
@@ -128,43 +128,43 @@ export function TechniqueClient() {
                 />
               </div>
               <div>
-                <label className="mb-1 block text-xs text-gray-500">Belt Level</label>
+                <label className="mb-1 block text-xs text-gray-500">Nível de Faixa</label>
                 <select
                   value={form.belt_level}
                   onChange={(e) => setForm({ ...form, belt_level: e.target.value })}
                   className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 outline-none focus:border-brand-500/50"
                 >
-                  <option value="white">White</option>
-                  <option value="blue">Blue</option>
-                  <option value="purple">Purple</option>
-                  <option value="brown">Brown</option>
-                  <option value="black">Black</option>
+                  <option value="white">Branca</option>
+                  <option value="blue">Azul</option>
+                  <option value="purple">Roxa</option>
+                  <option value="brown">Marrom</option>
+                  <option value="black">Preta</option>
                 </select>
               </div>
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Description</label>
+              <label className="mb-1 block text-xs text-gray-500">Descrição</label>
               <textarea
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
                 rows={2}
-                placeholder="Brief description of the technique..."
+                placeholder="Breve descrição da técnica..."
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-gray-500">Instructions</label>
+              <label className="mb-1 block text-xs text-gray-500">Instruções</label>
               <textarea
                 value={form.instructions}
                 onChange={(e) => setForm({ ...form, instructions: e.target.value })}
                 className="w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none focus:border-brand-500/50"
                 rows={3}
-                placeholder="Step-by-step instructions..."
+                placeholder="Instruções passo a passo..."
               />
             </div>
             <div>
               <label className="mb-1 block text-xs text-gray-500">
-                Key Points (one per line)
+                Pontos-Chave (um por linha)
               </label>
               <textarea
                 value={form.key_points}
@@ -180,7 +180,7 @@ export function TechniqueClient() {
                 onClick={resetForm}
                 className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
               >
-                Cancel
+                Cancelar
               </button>
               <button
                 type="submit"
@@ -188,7 +188,7 @@ export function TechniqueClient() {
                 className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
               >
                 {createMutation.isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                Save Technique
+                Salvar Técnica
               </button>
             </div>
             {createMutation.error && (
@@ -206,9 +206,9 @@ export function TechniqueClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <BookOpen className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">No techniques yet</p>
+          <p className="text-sm text-gray-400">Nenhuma técnica ainda</p>
           <p className="mt-1 text-xs text-gray-600">
-            Add your first technique to start building your curriculum.
+            Adicione sua primeira técnica para começar a montar seu currículo.
           </p>
         </div>
       ) : (
@@ -217,16 +217,16 @@ export function TechniqueClient() {
             <thead>
               <tr className="bg-gray-800/50">
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Name
+                  Nome
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Position
+                  Posição
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Category
+                  Categoria
                 </th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">
-                  Belt Level
+                  Nível de Faixa
                 </th>
               </tr>
             </thead>

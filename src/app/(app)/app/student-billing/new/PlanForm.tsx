@@ -43,13 +43,13 @@ export function PlanForm() {
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-4 text-base font-semibold text-gray-100">Plan Details</h2>
+        <h2 className="mb-4 text-base font-semibold text-gray-100">Detalhes do Plano</h2>
 
         <div className="space-y-4">
           {/* Select Member */}
           <div>
             <label htmlFor="member" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Student
+              Aluno
             </label>
             <select
               id="member"
@@ -58,7 +58,7 @@ export function PlanForm() {
               required
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
             >
-              <option value="">Select a student...</option>
+              <option value="">Selecione um aluno...</option>
               {members.data?.items.map((m) => (
                 <option key={m.id} value={m.id}>
                   {m.full_name} {m.email ? `(${m.email})` : ""}
@@ -70,7 +70,7 @@ export function PlanForm() {
           {/* Plan Name */}
           <div>
             <label htmlFor="planName" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Plan Name
+              Nome do Plano
             </label>
             <input
               id="planName"
@@ -88,7 +88,7 @@ export function PlanForm() {
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label htmlFor="price" className="mb-1.5 block text-sm font-medium text-gray-300">
-                Price
+                Preço
               </label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-gray-500">R$</span>
@@ -107,7 +107,7 @@ export function PlanForm() {
             </div>
             <div>
               <label htmlFor="cycle" className="mb-1.5 block text-sm font-medium text-gray-300">
-                Billing Cycle
+                Ciclo de Cobrança
               </label>
               <select
                 id="cycle"
@@ -115,10 +115,10 @@ export function PlanForm() {
                 onChange={(e) => setBillingCycle(e.target.value as typeof billingCycle)}
                 className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
               >
-                <option value="monthly">Monthly</option>
-                <option value="quarterly">Quarterly</option>
-                <option value="annual">Annual</option>
-                <option value="one_time">One Time</option>
+                <option value="monthly">Mensal</option>
+                <option value="quarterly">Trimestral</option>
+                <option value="annual">Anual</option>
+                <option value="one_time">Pagamento Único</option>
               </select>
             </div>
           </div>
@@ -126,7 +126,7 @@ export function PlanForm() {
           {/* Payment Method */}
           <div>
             <label htmlFor="method" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Payment Method
+              Método de Pagamento
             </label>
             <select
               id="method"
@@ -135,16 +135,16 @@ export function PlanForm() {
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
             >
               <option value="pix">PIX</option>
-              <option value="cash">Cash</option>
-              <option value="stripe">Credit Card (Stripe)</option>
-              <option value="other">Other</option>
+              <option value="cash">Dinheiro</option>
+              <option value="stripe">Cartão de Crédito (Stripe)</option>
+              <option value="other">Outro</option>
             </select>
           </div>
 
           {/* Start Date */}
           <div>
             <label htmlFor="startDate" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Start Date
+              Data de Início
             </label>
             <input
               id="startDate"
@@ -159,14 +159,14 @@ export function PlanForm() {
           {/* Notes */}
           <div>
             <label htmlFor="notes" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Notes (optional)
+              Observações (opcional)
             </label>
             <textarea
               id="notes"
               value={notes}
               onChange={(e) => setNotes(e.target.value)}
               rows={3}
-              placeholder="Any additional notes about this plan..."
+              placeholder="Observações adicionais sobre este plano..."
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
               maxLength={1000}
             />
@@ -181,17 +181,17 @@ export function PlanForm() {
           disabled={createPlan.isPending || !memberId}
           className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
         >
-          {createPlan.isPending ? "Criando..." : "Create Plan"}
+          {createPlan.isPending ? "Criando..." : "Criar Plano"}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
           className="rounded-lg border border-white/10 bg-white/4 px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-white/8"
         >
-          Cancel
+          Cancelar
         </button>
         {createPlan.isError && (
-          <span className="text-sm text-red-400">Failed to create plan. Please try again.</span>
+          <span className="text-sm text-red-400">Falha ao criar plano. Tente novamente.</span>
         )}
       </div>
     </form>

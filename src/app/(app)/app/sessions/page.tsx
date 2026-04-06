@@ -26,7 +26,7 @@ const STATUS_LABELS: Record<string, string> = {
 }
 
 function formatDate(d: string) {
-  return new Date(d + "T00:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })
+  return new Date(d + "T00:00:00").toLocaleDateString("pt-BR", { weekday: "short", month: "short", day: "numeric" })
 }
 
 function formatTime(t: string) {
@@ -58,7 +58,7 @@ export default async function SessionsPage() {
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Aulas</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {agendada.length} agendada · {past.length} past
+            {agendada.length} agendada · {past.length} passadas
           </p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default async function SessionsPage() {
 
       {classes.length > 0 && (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-4">
-          <h2 className="mb-3 text-sm font-medium text-gray-300">Generate agendada sessions</h2>
+          <h2 className="mb-3 text-sm font-medium text-gray-300">Gerar aulas agendadas</h2>
           <div className="space-y-2">
             {classes.map((cls) => (
               <div key={cls.id} className="flex items-center justify-between">
@@ -75,14 +75,14 @@ export default async function SessionsPage() {
                   <span className="text-sm text-gray-100">{cls.name}</span>
                   {cls.day_of_week !== null && (
                     <span className="ml-2 text-xs text-gray-600">
-                      {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][cls.day_of_week]}s · {formatTime(cls.start_time)}
+                      {["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"][cls.day_of_week]} · {formatTime(cls.start_time)}
                     </span>
                   )}
                 </div>
                 {cls.day_of_week !== null ? (
                   <GenerateSessionsButton classId={cls.id} />
                 ) : (
-                  <span className="text-xs text-gray-600">No day set</span>
+                  <span className="text-xs text-gray-600">Sem dia definido</span>
                 )}
               </div>
             ))}
@@ -96,7 +96,7 @@ export default async function SessionsPage() {
           description={
             classes.length === 0
               ? "Crie uma turma primeiro, depois gere as aulas."
-              : "Use the panel above to generate agendada sessions for your classes."
+              : "Use o painel acima para gerar aulas agendadas para suas turmas."
           }
           action={
             classes.length === 0 ? (
@@ -111,8 +111,8 @@ export default async function SessionsPage() {
         />
       ) : (
         <div className="space-y-6">
-          {agendada.length > 0 && <SessionTable title="Upcoming" sessions={agendada} />}
-          {past.length > 0 && <SessionTable title="Past" sessions={past} muted />}
+          {agendada.length > 0 && <SessionTable title="Próximas" sessions={agendada} />}
+          {past.length > 0 && <SessionTable title="Passadas" sessions={past} muted />}
         </div>
       )}
     </div>
@@ -134,7 +134,7 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
           <thead>
             <tr className="bg-gray-800/50">
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Data</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Turma</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Instrutor</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Status</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Frequência</th>
@@ -165,7 +165,7 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
                     <span className="text-gray-700">—</span>
                   ) : (
                     <Link href={`/app/sessions/${session.id}/attendance`} className="text-gray-400 hover:underline">
-                      {session.attendance_count} present
+                      {session.attendance_count} presentes
                     </Link>
                   )}
                 </td>
@@ -174,7 +174,7 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
                     <Link
                       href={`/app/sessions/${session.id}/qr`}
                       className="inline-flex items-center rounded-md p-1 text-gray-500 hover:bg-white/6 hover:text-gray-200"
-                      title="QR code check-in"
+                      title="Check-in por QR code"
                     >
                       <QrCode className="h-4 w-4" />
                     </Link>

@@ -119,7 +119,7 @@ export function ContractView({ contractId }: { contractId: string }) {
 
   if (!contract) {
     return (
-      <div className="py-20 text-center text-sm text-gray-500">Contract not found.</div>
+      <div className="py-20 text-center text-sm text-gray-500">Contrato não encontrado.</div>
     )
   }
 
@@ -140,7 +140,7 @@ export function ContractView({ contractId }: { contractId: string }) {
           <div>
             <h1 className="text-xl font-semibold text-gray-100">{contract.title}</h1>
             <p className="mt-0.5 text-sm text-gray-500">
-              For: {contract.member_name}
+              Para: {contract.member_name}
             </p>
           </div>
         </div>
@@ -165,7 +165,7 @@ export function ContractView({ contractId }: { contractId: string }) {
               ) : (
                 <Send className="h-3.5 w-3.5" />
               )}
-              Send to Member
+              Enviar para o Membro
             </button>
           )}
           <button
@@ -178,7 +178,7 @@ export function ContractView({ contractId }: { contractId: string }) {
             ) : (
               <XCircle className="h-3.5 w-3.5" />
             )}
-            Cancel Contract
+            Cancelar Contrato
           </button>
         </div>
       )}
@@ -198,7 +198,7 @@ export function ContractView({ contractId }: { contractId: string }) {
         <div className="rounded-xl border border-green-500/20 bg-green-500/5 p-5">
           <div className="mb-3 flex items-center gap-2">
             <Check className="h-4 w-4 text-green-400" />
-            <h3 className="text-sm font-medium text-green-300">Signed</h3>
+            <h3 className="text-sm font-medium text-green-300">Assinado</h3>
             {contract.signed_at && (
               <span className="text-xs text-green-400/60">
                 on {new Date(contract.signed_at).toLocaleString()}
@@ -217,9 +217,9 @@ export function ContractView({ contractId }: { contractId: string }) {
       {/* Signature pad for member to sign */}
       {showSignaturePad && (
         <div className="rounded-xl border border-blue-500/20 bg-blue-500/5 p-5">
-          <h3 className="mb-3 text-sm font-medium text-blue-300">Sign this contract</h3>
+          <h3 className="mb-3 text-sm font-medium text-blue-300">Assinar este contrato</h3>
           <p className="mb-4 text-xs text-gray-500">
-            Draw your signature in the box below using your mouse or finger.
+            Desenhe sua assinatura no campo abaixo usando o mouse ou o dedo.
           </p>
           <div className="mb-3 overflow-hidden rounded-lg border border-white/12 bg-gray-950">
             <canvas
@@ -240,7 +240,7 @@ export function ContractView({ contractId }: { contractId: string }) {
               onClick={clearCanvas}
               className="rounded-lg px-3 py-1.5 text-sm text-gray-400 hover:text-gray-200"
             >
-              Clear
+              Limpar
             </button>
             <button
               type="button"
@@ -253,7 +253,7 @@ export function ContractView({ contractId }: { contractId: string }) {
               ) : (
                 <Check className="h-3.5 w-3.5" />
               )}
-              Sign Contract
+              Assinar Contrato
             </button>
           </div>
           {signMutation.error && (
@@ -264,11 +264,11 @@ export function ContractView({ contractId }: { contractId: string }) {
 
       {/* Metadata */}
       <div className="flex flex-wrap gap-4 text-xs text-gray-600">
-        <span>Created: {new Date(contract.created_at).toLocaleDateString()}</span>
+        <span>Criado em: {new Date(contract.created_at).toLocaleDateString("pt-BR")}</span>
         {contract.expires_at && (
-          <span>Expires: {new Date(contract.expires_at).toLocaleDateString()}</span>
+          <span>Expira em: {new Date(contract.expires_at).toLocaleDateString("pt-BR")}</span>
         )}
-        {contract.signer_ip && <span>Signer IP: {contract.signer_ip}</span>}
+        {contract.signer_ip && <span>IP do Signatário: {contract.signer_ip}</span>}
       </div>
     </div>
   )

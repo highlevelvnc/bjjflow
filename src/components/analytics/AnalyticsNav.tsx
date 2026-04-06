@@ -4,8 +4,8 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 const NAV_ITEMS = [
-  { href: "/app/analytics", label: "Overview" },
-  { href: "/app/analytics/finance", label: "Financial" },
+  { href: "/app/analytics", label: "Visão Geral" },
+  { href: "/app/analytics/finance", label: "Financeiro" },
   { href: "/app/analytics/benchmark", label: "Benchmark" },
 ] as const
 
