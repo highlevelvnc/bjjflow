@@ -14,6 +14,9 @@ import { contractRouter } from "./routers/contract"
 import { eventRouter } from "./routers/event"
 import { announcementRouter } from "./routers/announcement"
 import { inventoryRouter } from "./routers/inventory"
+import { analyticsRouter } from "./routers/analytics"
+import { financeRouter } from "./routers/finance"
+import { benchmarkRouter } from "./routers/benchmark"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -30,6 +33,9 @@ export const appRouter = router({
   event: eventRouter,
   announcement: announcementRouter,
   inventory: inventoryRouter,
+  analytics: analyticsRouter,
+  finance: financeRouter,
+  benchmark: benchmarkRouter,
 })
 
 export type AppRouter = typeof appRouter
