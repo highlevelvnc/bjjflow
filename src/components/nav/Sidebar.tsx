@@ -5,7 +5,8 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
-  QrCode, BarChart3, BookOpen, Settings, CreditCard,
+  BookOpen, FileSignature, CalendarHeart, MessageSquare, ShoppingBag,
+  QrCode, BarChart3, CreditCard, Settings,
   LogOut, Menu, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
@@ -20,15 +21,19 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
-  { label: "Dashboard",   href: "/app",          icon: LayoutDashboard },
-  { label: "Members",     href: "/app/members",  icon: Users },
-  { label: "Classes",     href: "/app/classes",  icon: Dumbbell },
-  { label: "Sessions",    href: "/app/sessions", icon: CalendarDays },
-  { label: "Techniques",  href: "/app/techniques",icon: BookOpen },
-  { label: "Check In",    href: "/app/checkin",  icon: QrCode },
-  { label: "My Progress", href: "/app/portal",   icon: BarChart3 },
-  { label: "Billing",     href: "/app/billing",  icon: CreditCard },
-  { label: "Settings",    href: "/app/settings",  icon: Settings },
+  { label: "Dashboard",    href: "/app",              icon: LayoutDashboard },
+  { label: "Members",      href: "/app/members",      icon: Users },
+  { label: "Classes",      href: "/app/classes",       icon: Dumbbell },
+  { label: "Sessions",     href: "/app/sessions",      icon: CalendarDays },
+  { label: "Techniques",   href: "/app/techniques",    icon: BookOpen },
+  { label: "Contracts",    href: "/app/contracts",      icon: FileSignature },
+  { label: "Events",       href: "/app/events",         icon: CalendarHeart },
+  { label: "Feed",         href: "/app/announcements",  icon: MessageSquare },
+  { label: "Inventory",    href: "/app/inventory",      icon: ShoppingBag },
+  { label: "Check In",     href: "/app/checkin",        icon: QrCode },
+  { label: "My Progress",  href: "/app/portal",         icon: BarChart3 },
+  { label: "Billing",      href: "/app/billing",        icon: CreditCard },
+  { label: "Settings",     href: "/app/settings",       icon: Settings },
 ]
 
 interface SidebarProps {

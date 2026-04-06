@@ -8,6 +8,22 @@ export const metadata: Metadata = {
   title: "Dashboard",
 }
 
+function timeAgoShort(dateStr: string): string {
+  const now = Date.now()
+  const then = new Date(dateStr).getTime()
+  const diff = now - then
+  const seconds = Math.floor(diff / 1000)
+  if (seconds < 60) return "just now"
+  const minutes = Math.floor(seconds / 60)
+  if (minutes < 60) return `${minutes}m ago`
+  const hours = Math.floor(minutes / 60)
+  if (hours < 24) return `${hours}h ago`
+  const days = Math.floor(hours / 24)
+  if (days === 1) return "yesterday"
+  if (days < 30) return `${days}d ago`
+  return new Date(dateStr).toLocaleDateString("en-US", { month: "short", day: "numeric" })
+}
+
 function formatTime(t: string) {
   const [h, m] = t.split(":").map(Number)
   if (h === undefined || m === undefined) return t
@@ -19,12 +35,13 @@ function formatTime(t: string) {
 export default async function DashboardPage() {
   const trpc = await createServerCaller()
 
-  const [academy, counts, upcoming, atRisk, attendanceTrend] = await Promise.all([
+  const [academy, counts, upcoming, atRisk, attendanceTrend, recentAnnouncements] = await Promise.all([
     trpc.academy.getCurrent(),
     trpc.member.getCounts(),
     trpc.session.listUpcoming({ limit: 5 }),
     trpc.member.getAtRisk().catch(() => [] as Awaited<ReturnType<typeof trpc.member.getAtRisk>>),
     trpc.member.getAttendanceTrend().catch(() => [] as { label: string; count: number }[]),
+    trpc.announcement.list({ limit: 3, offset: 0 }).catch(() => ({ items: [] as { id: string; title: string; content: string; priority: string; published_at: string | null }[], total: 0 })),
   ])
 
   return (
@@ -158,6 +175,45 @@ export default async function DashboardPage() {
         <section className="rounded-xl border border-white/8 bg-gray-900 p-5">
           <h2 className="mb-4 text-sm font-medium text-gray-100">Attendance Trend (Last 4 Weeks)</h2>
           <AttendanceChart weeks={attendanceTrend} />
+        </section>
+      )}
+
+      {/* Recent Announcements */}
+      {recentAnnouncements.items.length > 0 && (
+        <section className="rounded-xl border border-white/8 bg-gray-900">
+          <div className="flex items-center justify-between border-b border-white/8 px-5 py-3">
+            <h2 className="text-sm font-medium text-gray-100">Recent Announcements</h2>
+            <Link href="/app/announcements" className="text-xs text-gray-500 hover:text-gray-300">
+              View all →
+            </Link>
+          </div>
+          <ul className="divide-y divide-white/6">
+            {recentAnnouncements.items.map((a) => {
+              const dotColor =
+                a.priority === "urgent"
+                  ? "bg-red-500"
+                  : a.priority === "important"
+                    ? "bg-amber-500"
+                    : "bg-gray-500"
+              return (
+                <li key={a.id}>
+                  <Link
+                    href="/app/announcements"
+                    className="flex items-start gap-3 px-5 py-3 hover:bg-white/4"
+                  >
+                    <span className={`mt-1.5 h-2 w-2 shrink-0 rounded-full ${dotColor}`} />
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-gray-100">{a.title}</p>
+                      <p className="mt-0.5 line-clamp-1 text-xs text-gray-500">{a.content}</p>
+                    </div>
+                    <span className="shrink-0 text-[10px] text-gray-600">
+                      {a.published_at ? timeAgoShort(a.published_at) : ""}
+                    </span>
+                  </Link>
+                </li>
+              )
+            })}
+          </ul>
         </section>
       )}
 

@@ -10,6 +10,10 @@ import { checkinRouter } from "./routers/checkin"
 import { portalRouter } from "./routers/portal"
 import { billingRouter } from "./routers/billing"
 import { techniqueRouter } from "./routers/technique"
+import { contractRouter } from "./routers/contract"
+import { eventRouter } from "./routers/event"
+import { announcementRouter } from "./routers/announcement"
+import { inventoryRouter } from "./routers/inventory"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -22,6 +26,10 @@ export const appRouter = router({
   portal: portalRouter,
   billing: billingRouter,
   technique: techniqueRouter,
+  contract: contractRouter,
+  event: eventRouter,
+  announcement: announcementRouter,
+  inventory: inventoryRouter,
 })
 
 export type AppRouter = typeof appRouter

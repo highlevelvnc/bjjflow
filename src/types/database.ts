@@ -969,6 +969,243 @@ export type Database = {
           created_at?: string
         }
       }
+      contracts: {
+        Row: {
+          id: string
+          academy_id: string
+          member_id: string
+          title: string
+          content: string
+          status: "draft" | "sent" | "signed" | "expired" | "cancelled"
+          signed_at: string | null
+          signature_data: string | null
+          signer_ip: string | null
+          expires_at: string | null
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          member_id: string
+          title: string
+          content: string
+          status?: "draft" | "sent" | "signed" | "expired" | "cancelled"
+          signed_at?: string | null
+          signature_data?: string | null
+          signer_ip?: string | null
+          expires_at?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          member_id?: string
+          title?: string
+          content?: string
+          status?: "draft" | "sent" | "signed" | "expired" | "cancelled"
+          signed_at?: string | null
+          signature_data?: string | null
+          signer_ip?: string | null
+          expires_at?: string | null
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      events: {
+        Row: {
+          id: string
+          academy_id: string
+          title: string
+          description: string | null
+          event_type: "seminar" | "competition" | "social" | "workshop" | "other"
+          start_date: string
+          end_date: string | null
+          start_time: string | null
+          end_time: string | null
+          location: string | null
+          is_public: boolean
+          max_participants: number | null
+          registration_required: boolean
+          created_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          title: string
+          description?: string | null
+          event_type?: "seminar" | "competition" | "social" | "workshop" | "other"
+          start_date: string
+          end_date?: string | null
+          start_time?: string | null
+          end_time?: string | null
+          location?: string | null
+          is_public?: boolean
+          max_participants?: number | null
+          registration_required?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          title?: string
+          description?: string | null
+          event_type?: "seminar" | "competition" | "social" | "workshop" | "other"
+          start_date?: string
+          end_date?: string | null
+          start_time?: string | null
+          end_time?: string | null
+          location?: string | null
+          is_public?: boolean
+          max_participants?: number | null
+          registration_required?: boolean
+          created_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      announcements: {
+        Row: {
+          id: string
+          academy_id: string
+          title: string
+          content: string
+          priority: "normal" | "important" | "urgent"
+          pinned: boolean
+          author_id: string | null
+          published_at: string | null
+          expires_at: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          title: string
+          content: string
+          priority?: "normal" | "important" | "urgent"
+          pinned?: boolean
+          author_id?: string | null
+          published_at?: string | null
+          expires_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          title?: string
+          content?: string
+          priority?: "normal" | "important" | "urgent"
+          pinned?: boolean
+          author_id?: string | null
+          published_at?: string | null
+          expires_at?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      inventory_items: {
+        Row: {
+          id: string
+          academy_id: string
+          name: string
+          description: string | null
+          category: "kimono" | "belt" | "rashguard" | "shorts" | "accessory" | "other"
+          price_cents: number
+          currency: string
+          stock_quantity: number
+          low_stock_threshold: number
+          sku: string | null
+          image_url: string | null
+          is_active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          name: string
+          description?: string | null
+          category?: "kimono" | "belt" | "rashguard" | "shorts" | "accessory" | "other"
+          price_cents: number
+          currency?: string
+          stock_quantity?: number
+          low_stock_threshold?: number
+          sku?: string | null
+          image_url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          name?: string
+          description?: string | null
+          category?: "kimono" | "belt" | "rashguard" | "shorts" | "accessory" | "other"
+          price_cents?: number
+          currency?: string
+          stock_quantity?: number
+          low_stock_threshold?: number
+          sku?: string | null
+          image_url?: string | null
+          is_active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      inventory_transactions: {
+        Row: {
+          id: string
+          academy_id: string
+          item_id: string
+          member_id: string | null
+          type: "sale" | "restock" | "adjustment" | "return"
+          quantity: number
+          price_cents: number | null
+          notes: string | null
+          created_by: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          item_id: string
+          member_id?: string | null
+          type: "sale" | "restock" | "adjustment" | "return"
+          quantity: number
+          price_cents?: number | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          item_id?: string
+          member_id?: string | null
+          type?: "sale" | "restock" | "adjustment" | "return"
+          quantity?: number
+          price_cents?: number | null
+          notes?: string | null
+          created_by?: string | null
+          created_at?: string
+        }
+      }
     }
     Views: {
       academy_public: {

@@ -6,6 +6,7 @@ import { trpc } from "@/lib/trpc/client"
 interface SettingsFormProps {
   initialData: {
     name: string
+    slug: string
     timezone: string
     allow_student_self_checkin: boolean
     allow_student_portal: boolean
@@ -169,6 +170,60 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
           <span className="text-sm text-red-400">Failed to save. Please try again.</span>
         )}
       </div>
+
+      {/* Public Schedule */}
+      <PublicScheduleSection slug={initialData.slug} />
     </form>
+  )
+}
+
+// ─── Public Schedule Section ─────────────────────────────────────────────────
+
+function PublicScheduleSection({ slug }: { slug: string }) {
+  const [copied, setCopied] = useState(false)
+  const scheduleUrl = `${typeof window !== "undefined" ? window.location.origin : "https://grapplingflow.com"}/schedule?academy=${slug}`
+
+  async function handleCopy() {
+    try {
+      await navigator.clipboard.writeText(scheduleUrl)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      // noop
+    }
+  }
+
+  return (
+    <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
+      <h2 className="mb-1 text-base font-semibold text-gray-100">Public Schedule</h2>
+      <p className="mb-4 text-xs text-gray-500">
+        Share your class schedule with students and visitors. No login required.
+      </p>
+
+      <div className="flex items-center gap-2">
+        <div className="min-w-0 flex-1 rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-400">
+          <span className="block truncate">{scheduleUrl}</span>
+        </div>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="shrink-0 rounded-lg border border-white/10 bg-white/4 px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-white/8 hover:text-gray-100"
+        >
+          {copied ? "Copied!" : "Copy Link"}
+        </button>
+      </div>
+
+      <a
+        href={`/schedule?academy=${slug}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-brand-400 transition-colors hover:text-brand-300"
+      >
+        Preview schedule
+        <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+        </svg>
+      </a>
+    </div>
   )
 }

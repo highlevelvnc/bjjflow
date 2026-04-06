@@ -20,6 +20,7 @@ export default async function SettingsPage() {
       <SettingsForm
         initialData={{
           name: academy.name,
+          slug: academy.slug,
           timezone: academy.timezone,
           allow_student_self_checkin: academy.allow_student_self_checkin,
           allow_student_portal: academy.allow_student_portal,
