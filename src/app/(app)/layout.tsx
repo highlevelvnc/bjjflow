@@ -4,6 +4,7 @@ import { createServerSupabase } from "@/server/supabase/server"
 import { createServerCaller } from "@/lib/trpc/server"
 import { Sidebar } from "@/components/nav/Sidebar"
 import { TrialBanner } from "@/components/ui/TrialBanner"
+import { OnboardingTour } from "@/components/onboarding/OnboardingTour"
 import type { Role } from "@/types/auth"
 
 export const metadata: Metadata = {
@@ -55,8 +56,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} />
       <div className="flex min-w-0 flex-1 flex-col">
         {academyStatus === "trialing" && <TrialBanner />}
-        <main className="flex-1 px-8 py-6 text-gray-100">{children}</main>
+        <main className="flex-1 px-8 py-6 pt-20 text-gray-100 md:pt-6">{children}</main>
       </div>
+      <OnboardingTour />
     </div>
   )
 }

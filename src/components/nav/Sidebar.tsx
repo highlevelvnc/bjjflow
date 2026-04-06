@@ -6,13 +6,14 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
   BookOpen, FileSignature, CalendarHeart, MessageSquare, ShoppingBag,
-  QrCode, BarChart3, BarChart2, Receipt, CreditCard, Settings,
+  QrCode, BarChart3, BarChart2, Receipt, Trophy, ScrollText, CreditCard, Settings,
   LogOut, Menu, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 import type { Role } from "@/types/auth"
 import { ROLE_LABELS } from "@/lib/constants/roles"
 import { createBrowserSupabase } from "@/server/supabase/browser"
+import { ThemeToggle } from "@/components/ui/ThemeToggle"
 
 interface NavItem {
   label: string
@@ -32,8 +33,10 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Inventory",    href: "/app/inventory",      icon: ShoppingBag },
   { label: "Check In",     href: "/app/checkin",        icon: QrCode },
   { label: "My Progress",  href: "/app/portal",         icon: BarChart3 },
+  { label: "Leaderboard",  href: "/app/leaderboard",    icon: Trophy },
   { label: "Student Billing",href: "/app/student-billing",icon: Receipt },
   { label: "Analytics",    href: "/app/analytics",      icon: BarChart2 },
+  { label: "Audit Log",    href: "/app/audit",          icon: ScrollText },
   { label: "Billing",      href: "/app/billing",        icon: CreditCard },
   { label: "Settings",     href: "/app/settings",       icon: Settings },
 ]
@@ -116,6 +119,7 @@ export function Sidebar({ academyName, memberName, memberRole }: SidebarProps) {
             <p className="truncate text-sm font-medium text-gray-200">{memberName}</p>
             <p className="text-xs text-gray-500">{ROLE_LABELS[memberRole]}</p>
           </div>
+          <ThemeToggle />
           <button
             onClick={handleLogout}
             disabled={loggingOut}
