@@ -22,7 +22,7 @@ export function ContractsClient() {
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Contracts</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} contract${data.total === 1 ? "" : "s"}` : "Loading..."}
+            {data ? `${data.total} contract${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         <Link

@@ -19,10 +19,10 @@ const STATUS_STYLES: Record<string, string> = {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  scheduled: "Scheduled",
-  in_progress: "In Progress",
-  completed: "Completed",
-  cancelled: "Cancelled",
+  scheduled: "Agendada",
+  in_progress: "Em Andamento",
+  completed: "Concluída",
+  cancelled: "Cancelada",
 }
 
 function formatDate(d: string) {
@@ -49,16 +49,16 @@ export default async function SessionsPage() {
   const classes = classResult.items
 
   const today = new Date().toISOString().split("T")[0]!
-  const upcoming = sessions.filter((s) => s.date >= today && s.status !== "cancelled")
+  const agendada = sessions.filter((s) => s.date >= today && s.status !== "cancelled")
   const past = sessions.filter((s) => s.date < today || s.status === "cancelled")
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Sessions</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Aulas</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {upcoming.length} upcoming · {past.length} past
+            {agendada.length} agendada · {past.length} past
           </p>
         </div>
       </div>
@@ -67,7 +67,7 @@ export default async function SessionsPage() {
 
       {classes.length > 0 && (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-4">
-          <h2 className="mb-3 text-sm font-medium text-gray-300">Generate upcoming sessions</h2>
+          <h2 className="mb-3 text-sm font-medium text-gray-300">Generate agendada sessions</h2>
           <div className="space-y-2">
             {classes.map((cls) => (
               <div key={cls.id} className="flex items-center justify-between">
@@ -92,11 +92,11 @@ export default async function SessionsPage() {
 
       {sessions.length === 0 ? (
         <EmptyState
-          title="No sessions yet"
+          title="Nenhuma aula ainda"
           description={
             classes.length === 0
-              ? "Create a class first, then generate sessions."
-              : "Use the panel above to generate upcoming sessions for your classes."
+              ? "Crie uma turma primeiro, depois gere as aulas."
+              : "Use the panel above to generate agendada sessions for your classes."
           }
           action={
             classes.length === 0 ? (
@@ -104,14 +104,14 @@ export default async function SessionsPage() {
                 href="/app/classes/new"
                 className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
               >
-                Create a Class
+                Criar Turma
               </Link>
             ) : undefined
           }
         />
       ) : (
         <div className="space-y-6">
-          {upcoming.length > 0 && <SessionTable title="Upcoming" sessions={upcoming} />}
+          {agendada.length > 0 && <SessionTable title="Upcoming" sessions={agendada} />}
           {past.length > 0 && <SessionTable title="Past" sessions={past} muted />}
         </div>
       )}
@@ -133,12 +133,12 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
         <table className="min-w-full divide-y divide-white/8">
           <thead>
             <tr className="bg-gray-800/50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Date</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Data</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Instructor</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Instrutor</th>
               <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Status</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Attendance</th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Frequência</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/6">
@@ -174,7 +174,7 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
                     <Link
                       href={`/app/sessions/${session.id}/qr`}
                       className="inline-flex items-center rounded-md p-1 text-gray-500 hover:bg-white/6 hover:text-gray-200"
-                      title="QR check-in code"
+                      title="QR code check-in"
                     >
                       <QrCode className="h-4 w-4" />
                     </Link>

@@ -16,7 +16,7 @@ export function ShareButton({ name, belt, totalSessions }: ShareButtonProps) {
 
   const beltLabel = BELT_LABELS[belt as Belt] ?? belt
 
-  const text = `\u{1F94B} ${name} \u00b7 ${beltLabel} Belt \u00b7 ${totalSessions} sessions on Kumo`
+  const text = `\u{1F94B} ${name} \u00b7 ${beltLabel} Belt \u00b7 ${totalSessions} aulas no Kumo`
 
   const handleShare = useCallback(async () => {
     // Try native Web Share API first

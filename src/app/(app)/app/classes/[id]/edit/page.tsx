@@ -4,7 +4,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { EditClassForm } from "@/components/classes/EditClassForm"
 
 export const metadata: Metadata = {
-  title: "Edit Class",
+  title: "Editar Turma",
 }
 
 export default async function EditClassPage({
@@ -30,11 +30,11 @@ export default async function EditClassPage({
     <div className="mx-auto max-w-xl space-y-6">
       <div>
         <Link href="/app/classes" className="text-sm text-gray-500 hover:text-gray-300">
-          &larr; Back to classes
+          &larr; Voltar às turmas
         </Link>
-        <h1 className="mt-2 text-xl font-semibold text-gray-100">Edit Class</h1>
+        <h1 className="mt-2 text-xl font-semibold text-gray-100">Editar Turma</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Update the class template details.
+          Atualize os detalhes do modelo de turma.
         </p>
       </div>
 

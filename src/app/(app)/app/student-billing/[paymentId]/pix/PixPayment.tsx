@@ -162,7 +162,7 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
         <div className="mb-6 text-center">
           <h1 className="text-lg font-semibold text-gray-100">PIX Payment</h1>
           <p className="mt-1 text-sm text-gray-400">
-            {member?.full_name ?? "Student"} &mdash; {plan?.name ?? "Plan"}
+            {member?.full_name ?? "Aluno"} &mdash; {plan?.name ?? "Plan"}
           </p>
         </div>
 
@@ -218,7 +218,7 @@ export function PixPayment({ paymentId }: { paymentId: string }) {
                   {copied ? (
                     <>
                       <Check className="h-4 w-4" />
-                      Copied! Paste in your bank app.
+                      Copiado! Paste in your bank app.
                     </>
                   ) : (
                     <>

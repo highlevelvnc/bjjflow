@@ -4,7 +4,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { InviteForm } from "@/components/members/InviteForm"
 
 export const metadata: Metadata = {
-  title: "Invite Instructor",
+  title: "Convidar Instrutor",
 }
 
 function inviteStatus(invite: {
@@ -12,11 +12,11 @@ function inviteStatus(invite: {
   revoked_at: string | null
   expires_at: string
 }) {
-  if (invite.revoked_at) return { label: "Revoked", className: "text-red-400 bg-red-500/15" }
-  if (invite.accepted_at) return { label: "Accepted", className: "text-emerald-400 bg-emerald-500/15" }
+  if (invite.revoked_at) return { label: "Revogado", className: "text-red-400 bg-red-500/15" }
+  if (invite.accepted_at) return { label: "Aceito", className: "text-emerald-400 bg-emerald-500/15" }
   if (new Date(invite.expires_at) < new Date())
-    return { label: "Expired", className: "text-gray-500 bg-white/8" }
-  return { label: "Pending", className: "text-blue-400 bg-blue-500/15" }
+    return { label: "Expirado", className: "text-gray-500 bg-white/8" }
+  return { label: "Pendente", className: "text-blue-400 bg-blue-500/15" }
 }
 
 export default async function InvitePage() {
@@ -30,17 +30,17 @@ export default async function InvitePage() {
     <div className="mx-auto max-w-2xl space-y-6">
       <div>
         <Link href="/app/members" className="text-sm text-gray-500 hover:text-gray-300">
-          ← Members
+          ← Alunos
         </Link>
-        <h1 className="mt-2 text-xl font-semibold text-gray-100">Invite Instructor</h1>
+        <h1 className="mt-2 text-xl font-semibold text-gray-100">Convidar Instrutor</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Creates a 7-day invite token. Email delivery is not yet configured — share the token
+          Cria um token de convite de 7 dias. Email delivery is not yet configured — share the token
           manually.
         </p>
       </div>
 
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-4 text-sm font-medium text-gray-100">New Invite</h2>
+        <h2 className="mb-4 text-sm font-medium text-gray-100">Novo Convite</h2>
         <InviteForm />
       </div>
 
@@ -48,7 +48,7 @@ export default async function InvitePage() {
         <div className="rounded-xl border border-white/8 bg-gray-900">
           <div className="border-b border-white/8 px-5 py-3">
             <h2 className="text-sm font-medium text-gray-100">
-              Pending ({pendingInvites.length})
+              Pendentes ({pendingInvites.length})
             </h2>
           </div>
           <ul className="divide-y divide-white/6">
@@ -78,7 +78,7 @@ export default async function InvitePage() {
       {pastInvites.length > 0 && (
         <div className="rounded-xl border border-white/8 bg-gray-900">
           <div className="border-b border-white/8 px-5 py-3">
-            <h2 className="text-sm font-medium text-gray-100">Past Invites</h2>
+            <h2 className="text-sm font-medium text-gray-100">Convites Anteriores</h2>
           </div>
           <ul className="divide-y divide-white/6">
             {pastInvites.map((invite) => {
@@ -102,7 +102,7 @@ export default async function InvitePage() {
       )}
 
       {invites.length === 0 && (
-        <p className="text-center text-sm text-gray-600">No invites sent yet.</p>
+        <p className="text-center text-sm text-gray-600">Nenhum convite enviado.</p>
       )}
     </div>
   )

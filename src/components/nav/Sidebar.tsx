@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import Image from "next/image"
 import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
@@ -70,7 +69,8 @@ export function Sidebar({ academyName, memberName, memberRole, locale }: Sidebar
     <>
       {/* Brand */}
       <div className="flex h-14 items-center gap-2.5 border-b border-white/8 px-4">
-        <Image src="/kumologo.png" alt="Kumo" width={28} height={28} className="shrink-0 rounded-lg" />
+        <span className="shrink-0 text-sm font-bold tracking-tight text-brand-400">Kumo</span>
+        <div className="mx-1 h-4 w-px bg-white/10" />
         <div className="min-w-0 flex-1">
           <p className="truncate text-sm font-semibold text-white">{academyName}</p>
         </div>
@@ -144,7 +144,8 @@ export function Sidebar({ academyName, memberName, memberRole, locale }: Sidebar
         <button onClick={() => setOpen(true)} className="text-gray-400 hover:text-white">
           <Menu className="h-5 w-5" />
         </button>
-        <Image src="/kumologo.png" alt="Kumo" width={24} height={24} className="rounded-md" />
+        <span className="text-sm font-bold tracking-tight text-brand-400">Kumo</span>
+        <span className="mx-1 h-4 w-px bg-white/10" />
         <span className="truncate text-sm font-semibold text-white">{academyName}</span>
       </div>
 

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { ContractView } from "./ContractView"
 
 export const metadata: Metadata = {
-  title: "Contract",
+  title: "Contrato",
 }
 
 export default async function ContractPage({

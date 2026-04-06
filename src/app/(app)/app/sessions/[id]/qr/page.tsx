@@ -5,7 +5,7 @@ import { Calendar } from "lucide-react"
 import { createServerCaller } from "@/lib/trpc/server"
 
 export const metadata: Metadata = {
-  title: "Session QR Code",
+  title: "QR Code da Aula",
 }
 
 function formatDate(d: string) {
@@ -46,7 +46,7 @@ export default async function SessionQRPage({
           href={`/app/sessions/${id}/attendance`}
           className="text-sm text-gray-500 hover:text-gray-300"
         >
-          &larr; Back to session
+          &larr; Voltar à aula
         </Link>
       </div>
 
@@ -68,10 +68,10 @@ export default async function SessionQRPage({
         />
 
         <p className="text-lg font-medium text-gray-200">
-          Scan to check in
+          Escaneie para fazer check-in
         </p>
         <p className="mt-1 text-xs text-gray-600">
-          Point your phone camera at the QR code above
+          Aponte a câmera do celular para o QR code acima
         </p>
 
         <a
@@ -80,7 +80,7 @@ export default async function SessionQRPage({
           className="mt-4 inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-medium text-gray-300 hover:bg-white/10 transition-colors"
         >
           <Calendar className="h-3.5 w-3.5" />
-          Add to Calendar
+          Adicionar ao Calendário
         </a>
       </div>
     </div>

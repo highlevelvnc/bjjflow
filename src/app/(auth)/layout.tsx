@@ -1,5 +1,4 @@
 import Link from "next/link"
-import Image from "next/image"
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -12,8 +11,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
       {/* Nav */}
       <header className="relative flex h-14 items-center border-b border-white/8 px-6">
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-          <Image src="/kumologo.png" alt="Kumo" width={24} height={24} className="rounded-md" />
-          <span className="text-sm font-semibold text-white">Kumo</span>
+          <span className="text-base font-bold tracking-tight text-brand-400">Kumo</span>
         </Link>
       </header>
 

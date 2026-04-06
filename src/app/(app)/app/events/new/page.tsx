@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { EventForm } from "./EventForm"
 
 export const metadata: Metadata = {
-  title: "New Event",
+  title: "Novo Evento",
 }
 
 export default function NewEventPage() {

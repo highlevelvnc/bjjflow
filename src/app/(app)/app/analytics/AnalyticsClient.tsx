@@ -160,7 +160,7 @@ export function AnalyticsClient({
         <div className="overflow-x-auto p-5">
           {weeklyHeatmap.grid.length === 0 ? (
             <p className="py-8 text-center text-sm text-gray-500">
-              No completed sessions in the last 90 days.
+              No completed aulas in the last 90 days.
             </p>
           ) : (
             <div className="min-w-[640px]">
@@ -226,7 +226,7 @@ export function AnalyticsClient({
           </div>
           <div className="p-5">
             {classFillRates.length === 0 ? (
-              <p className="py-8 text-center text-sm text-gray-500">No data available.</p>
+              <p className="py-8 text-center text-sm text-gray-500">Sem dados disponíveis.</p>
             ) : (
               <div className="space-y-3">
                 {classFillRates.map((cls) => (
@@ -236,7 +236,7 @@ export function AnalyticsClient({
                       <span className="text-xs text-gray-400">
                         {cls.fillRate}%
                         <span className="ml-1.5 text-gray-600">
-                          ({cls.avgAttendance} avg / {cls.totalSessions} sessions)
+                          ({cls.avgAttendance} avg / {cls.totalSessions} aulas)
                         </span>
                       </span>
                     </div>
@@ -261,7 +261,7 @@ export function AnalyticsClient({
           </div>
           <div className="p-5">
             {hourlyDistribution.length === 0 ? (
-              <p className="py-8 text-center text-sm text-gray-500">No data available.</p>
+              <p className="py-8 text-center text-sm text-gray-500">Sem dados disponíveis.</p>
             ) : (
               <>
                 {/* Peak indicator */}
@@ -306,7 +306,7 @@ export function AnalyticsClient({
                             <br />
                             Avg: {h.avgAttendance}
                             <br />
-                            {h.totalSessions} sessions
+                            {h.totalSessions} aulas
                           </div>
                         </div>
                         {/* Label */}

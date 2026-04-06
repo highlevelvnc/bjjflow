@@ -371,7 +371,7 @@ function PlanPayments({
   if (!payments.data?.items.length) {
     return (
       <div className="border-t border-white/5 bg-gray-950/50 px-5 py-4 text-sm text-gray-500">
-        No payments recorded yet.
+        Nenhum pagamento recorded yet.
       </div>
     )
   }

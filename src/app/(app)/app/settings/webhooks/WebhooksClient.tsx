@@ -17,7 +17,7 @@ const EVENT_CATEGORIES = [
     ],
   },
   {
-    label: "Sessions",
+    label: "Aulas",
     events: [
       { value: "session.created", label: "Session created" },
       { value: "session.completed", label: "Session completed" },
@@ -25,7 +25,7 @@ const EVENT_CATEGORIES = [
     ],
   },
   {
-    label: "Attendance",
+    label: "Frequência",
     events: [
       { value: "attendance.marked", label: "Attendance marked" },
       { value: "attendance.unmarked", label: "Attendance unmarked" },
@@ -117,7 +117,7 @@ export function WebhooksClient() {
         <SecretBanner
           secret={createdSecret}
           copied={copiedSecret}
-          onCopy={() => {
+          onCopiar={() => {
             navigator.clipboard.writeText(createdSecret)
             setCopiedSecret(true)
             setTimeout(() => setCopiedSecret(false), 2000)
@@ -141,7 +141,7 @@ export function WebhooksClient() {
           }}
           className="rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-medium text-white hover:bg-indigo-500 transition-colors"
         >
-          {showForm ? "Cancel" : "Add Webhook"}
+          {showForm ? "Cancelar" : "Adicionar Webhook"}
         </button>
       </div>
 
@@ -252,12 +252,12 @@ export function WebhooksClient() {
 function SecretBanner({
   secret,
   copied,
-  onCopy,
+  onCopiar,
   onDismiss,
 }: {
   secret: string
   copied: boolean
-  onCopy: () => void
+  onCopiar: () => void
   onDismiss: () => void
 }) {
   return (
@@ -268,7 +268,7 @@ function SecretBanner({
             Signing Secret
           </h3>
           <p className="mt-0.5 text-xs text-amber-400/80">
-            Copy this secret now. It will not be shown again.
+            Copiar this secret now. It will not be shown again.
           </p>
         </div>
         <button
@@ -283,10 +283,10 @@ function SecretBanner({
           {secret}
         </code>
         <button
-          onClick={onCopy}
+          onClick={onCopiar}
           className="shrink-0 rounded bg-zinc-800 px-3 py-2 text-xs font-medium text-gray-300 hover:bg-zinc-700 transition-colors"
         >
-          {copied ? "Copied!" : "Copy"}
+          {copied ? "Copiado!" : "Copiar"}
         </button>
       </div>
     </div>
@@ -386,7 +386,7 @@ function WebhookCard({
           disabled={testing}
           className="rounded bg-zinc-800 px-2.5 py-1 text-xs font-medium text-gray-300 hover:bg-zinc-700 disabled:opacity-50 transition-colors"
         >
-          {testing ? "Sending..." : "Test"}
+          {testing ? "Sending..." : "Testar"}
         </button>
         <button
           onClick={onEdit}
@@ -567,10 +567,10 @@ function WebhookForm({
         >
           {loading
             ? isEdit
-              ? "Saving..."
-              : "Creating..."
+              ? "Salvando..."
+              : "Criando..."
             : isEdit
-              ? "Save Changes"
+              ? "Salvar Alterações"
               : "Create Webhook"}
         </button>
         {onCancel && (

@@ -226,7 +226,7 @@ function MemberGroup({
                 ) : isPresent ? (
                   "Present ✓"
                 ) : (
-                  "Mark Present"
+                  "Marcar Presente"
                 )}
               </button>
             </li>

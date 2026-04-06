@@ -60,12 +60,12 @@ export function PortalClient() {
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <StatCard
             icon={<Calendar className="h-4 w-4" />}
-            label="Total Sessions"
+            label="Total de Aulas"
             value={stats.totalAttendance}
           />
           <StatCard
             icon={<TrendingUp className="h-4 w-4" />}
-            label="Last 30 Days"
+            label="Últimos 30 Dias"
             value={stats.last30Days}
           />
           <StatCard

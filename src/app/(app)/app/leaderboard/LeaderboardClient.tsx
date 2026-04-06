@@ -23,7 +23,7 @@ export function LeaderboardClient() {
         <div className="rounded-xl border border-brand-500/20 bg-brand-500/5 p-4 text-center">
           <p className="text-sm text-gray-400">Your rank</p>
           <p className="text-3xl font-black text-brand-400">#{myRank.rank}</p>
-          <p className="text-xs text-gray-500">{myRank.sessions} sessions this month</p>
+          <p className="text-xs text-gray-500">{myRank.sessions} aulas this month</p>
         </div>
       )}
 
@@ -39,7 +39,7 @@ export function LeaderboardClient() {
                 <p className="mt-1 truncate text-sm font-medium text-gray-100">{m.full_name}</p>
                 <BeltBadge belt={m.belt_rank} stripes={m.stripes} />
                 <p className="mt-1 text-lg font-bold text-gray-100">{m.sessions}</p>
-                <p className="text-xs text-gray-500">sessions</p>
+                <p className="text-xs text-gray-500">aulas</p>
               </div>
             )
           })}

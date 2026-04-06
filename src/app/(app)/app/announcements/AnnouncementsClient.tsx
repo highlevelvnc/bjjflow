@@ -141,7 +141,7 @@ export function AnnouncementsClient() {
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Announcements</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} post${data.total === 1 ? "" : "s"}` : "Loading..."}
+            {data ? `${data.total} post${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         {!showForm && (
@@ -243,7 +243,7 @@ export function AnnouncementsClient() {
                 className="inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3 py-1.5 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
               >
                 {isPending && <Loader2 className="h-3.5 w-3.5 animate-spin" />}
-                {editingId ? "Save Changes" : "Post"}
+                {editingId ? "Salvar Alterações" : "Post"}
               </button>
             </div>
             {(createMutation.error || updateMutation.error) && (
@@ -263,7 +263,7 @@ export function AnnouncementsClient() {
       ) : !data || data.items.length === 0 ? (
         <div className="rounded-xl border border-white/8 bg-gray-900 p-10 text-center">
           <MessageSquare className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-          <p className="text-sm text-gray-400">No announcements yet</p>
+          <p className="text-sm text-gray-400">Nenhum aviso yet</p>
           <p className="mt-1 text-xs text-gray-600">
             Create your first announcement to share with the academy.
           </p>
@@ -319,7 +319,7 @@ export function AnnouncementsClient() {
                     <button
                       onClick={() => startEdit(a)}
                       className="rounded-md p-1.5 text-gray-600 hover:bg-white/5 hover:text-gray-300"
-                      title="Edit"
+                      title="Editar"
                     >
                       <Pencil className="h-3.5 w-3.5" />
                     </button>
@@ -330,7 +330,7 @@ export function AnnouncementsClient() {
                         }
                       }}
                       className="rounded-md p-1.5 text-gray-600 hover:bg-white/5 hover:text-red-400"
-                      title="Delete"
+                      title="Excluir"
                     >
                       <Trash2 className="h-3.5 w-3.5" />
                     </button>

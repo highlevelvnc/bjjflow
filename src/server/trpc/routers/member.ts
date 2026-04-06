@@ -186,8 +186,8 @@ export const memberRouter = router({
         const rate = Math.round((recentSessions / totalSessions) * 100)
         const reason =
           recentSessions === 0
-            ? "No sessions in 30 days"
-            : `Only ${recentSessions} of ${totalSessions} sessions`
+            ? "Sem aulas em 30 dias"
+            : `Apenas ${recentSessions} de ${totalSessions} aulas`
         return { ...m, recentSessions, totalSessions, rate, reason }
       })
   }),

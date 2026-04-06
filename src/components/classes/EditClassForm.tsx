@@ -137,7 +137,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
         </div>
       )}
 
-      <Field label="Class Name" required>
+      <Field label="Nome da Turma" required>
         <input
           type="text"
           value={form.name}
@@ -150,7 +150,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
         />
       </Field>
 
-      <Field label="Description">
+      <Field label="Descrição">
         <textarea
           value={form.description}
           onChange={(e) => set("description", e.target.value)}
@@ -162,7 +162,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
       </Field>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Class Type" required>
+        <Field label="Tipo de Turma" required>
           <select
             value={form.class_type}
             onChange={(e) => set("class_type", e.target.value)}
@@ -173,7 +173,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             ))}
           </select>
         </Field>
-        <Field label="Gi Type" required>
+        <Field label="Tipo de Treino" required>
           <select
             value={form.gi_type}
             onChange={(e) => set("gi_type", e.target.value)}
@@ -199,7 +199,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             ))}
           </select>
         </Field>
-        <Field label="Start Time" required>
+        <Field label="Horário de Início" required>
           <input
             type="time"
             value={form.start_time}
@@ -208,7 +208,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             className={inputClass}
           />
         </Field>
-        <Field label="End Time" required>
+        <Field label="Horário de Término" required>
           <input
             type="time"
             value={form.end_time}
@@ -289,7 +289,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
           disabled={updateClass.isPending}
           className="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400 disabled:opacity-50"
         >
-          {updateClass.isPending ? "Saving..." : "Save Changes"}
+          {updateClass.isPending ? "Salvando..." : "Salvar Alterações"}
         </button>
         <a href="/app/classes" className="text-sm text-gray-500 hover:text-gray-300">
           Cancel

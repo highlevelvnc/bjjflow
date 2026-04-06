@@ -243,7 +243,7 @@ function MemberLTVTable({
                           : "bg-gray-700 text-gray-400"
                       }`}
                     >
-                      {m.hasPlan ? "Active" : "No plan"}
+                      {m.hasPlan ? "Ativo" : "No plan"}
                     </span>
                   </td>
                 </tr>

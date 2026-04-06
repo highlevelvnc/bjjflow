@@ -58,7 +58,7 @@ export function SessionActionsMenu({ sessionId, status }: SessionActionsMenuProp
               disabled={cancel.isPending}
               className="text-xs text-red-400 hover:text-red-300 disabled:opacity-40"
             >
-              {cancel.isPending ? "…" : "Confirm"}
+              {cancel.isPending ? "…" : "Confirmar"}
             </button>
             <button
               onClick={() => setShowCancelPrompt(false)}

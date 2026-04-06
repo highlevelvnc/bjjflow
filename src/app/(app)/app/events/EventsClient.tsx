@@ -43,7 +43,7 @@ export function EventsClient() {
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Events</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {data ? `${data.total} event${data.total === 1 ? "" : "s"}` : "Loading..."}
+            {data ? `${data.total} event${data.total === 1 ? "" : "s"}` : "Carregando..."}
           </p>
         </div>
         <div className="flex items-center gap-3">

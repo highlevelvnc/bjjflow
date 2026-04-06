@@ -3,7 +3,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { BenchmarkClient } from "./BenchmarkClient"
 
 export const metadata: Metadata = {
-  title: "Academy Benchmark",
+  title: "Benchmark da Academia",
 }
 
 export default async function BenchmarkPage() {

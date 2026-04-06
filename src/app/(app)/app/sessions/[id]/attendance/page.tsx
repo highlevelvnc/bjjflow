@@ -9,7 +9,7 @@ import {
 } from "@/components/attendance/AttendanceTracker"
 
 export const metadata: Metadata = {
-  title: "Attendance",
+  title: "Frequência",
 }
 
 const STATUS_STYLES: Record<string, string> = {
@@ -20,10 +20,10 @@ const STATUS_STYLES: Record<string, string> = {
 }
 
 const STATUS_LABELS: Record<string, string> = {
-  scheduled: "Scheduled",
-  in_progress: "In Progress",
-  completed: "Completed",
-  cancelled: "Cancelled",
+  scheduled: "Agendada",
+  in_progress: "Em Andamento",
+  completed: "Concluída",
+  cancelled: "Cancelada",
 }
 
 const GI_LABELS: Record<string, string> = {
@@ -86,7 +86,7 @@ export default async function AttendancePage({ params }: Props) {
     <div className="mx-auto max-w-2xl space-y-4">
       <div>
         <Link href="/app/sessions" className="text-sm text-gray-500 hover:text-gray-300">
-          ← Sessions
+          ← Aulas
         </Link>
       </div>
 

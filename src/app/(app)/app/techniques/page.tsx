@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { TechniqueClient } from "./TechniqueClient"
 
 export const metadata: Metadata = {
-  title: "Techniques",
+  title: "Técnicas",
 }
 
 export default function TechniquesPage() {

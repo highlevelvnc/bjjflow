@@ -6,8 +6,8 @@ import { trpc } from "@/lib/trpc/client"
 import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
 
 const ROLE_OPTIONS = [
-  { value: "student", label: "Student" },
-  { value: "instructor", label: "Instructor" },
+  { value: "student", label: "Aluno" },
+  { value: "instructor", label: "Instrutor" },
 ] as const
 
 export function CreateManagedMemberForm() {
@@ -67,7 +67,7 @@ export function CreateManagedMemberForm() {
       )}
 
       {/* Full name */}
-      <Field label="Full Name" required>
+      <Field label="Nome Completo" required>
         <input
           type="text"
           value={form.full_name}
@@ -93,7 +93,7 @@ export function CreateManagedMemberForm() {
 
       {/* Role + Belt in a row */}
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Role" required>
+        <Field label="Função" required>
           <select
             value={form.role}
             onChange={(e) => set("role", e.target.value as "student" | "instructor")}
@@ -123,7 +123,7 @@ export function CreateManagedMemberForm() {
       </div>
 
       {/* Stripes */}
-      <Field label="Stripes">
+      <Field label="Graus">
         <div className="flex gap-2">
           {[0, 1, 2, 3, 4].map((n) => (
             <button
@@ -143,7 +143,7 @@ export function CreateManagedMemberForm() {
       </Field>
 
       {/* Phone */}
-      <Field label="Phone">
+      <Field label="Telefone">
         <input
           type="tel"
           value={form.phone}
@@ -165,7 +165,7 @@ export function CreateManagedMemberForm() {
       </Field>
 
       {/* Notes */}
-      <Field label="Notes">
+      <Field label="Observações">
         <textarea
           value={form.notes}
           onChange={(e) => set("notes", e.target.value)}
@@ -183,7 +183,7 @@ export function CreateManagedMemberForm() {
           disabled={createMember.isPending}
           className="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400 disabled:opacity-50"
         >
-          {createMember.isPending ? "Creating..." : "Create Member"}
+          {createMember.isPending ? "Criando..." : "Create Member"}
         </button>
         <a href="/app/members" className="text-sm text-gray-500 hover:text-gray-300">
           Cancel

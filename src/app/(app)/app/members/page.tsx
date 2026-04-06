@@ -33,7 +33,7 @@ export default async function MembersPage({
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Members</h1>
+          <h1 className="text-xl font-semibold text-gray-100">Alunos</h1>
           <p className="mt-0.5 text-sm text-gray-500">
             {members.length} {statusLabel} member{members.length !== 1 ? "s" : ""}
             {hasFilters ? " (filtered)" : ""}
@@ -50,14 +50,14 @@ export default async function MembersPage({
             href="/app/members/new"
             className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
           >
-            Add Member
+            Adicionar Aluno
           </Link>
         </div>
       </div>
 
       {/* CSV Import section */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-4">
-        <h2 className="mb-3 text-sm font-medium text-gray-300">Bulk Import</h2>
+        <h2 className="mb-3 text-sm font-medium text-gray-300">Importar CSV</h2>
         <CSVImport />
       </div>
 
@@ -66,11 +66,11 @@ export default async function MembersPage({
 
       {members.length === 0 ? (
         <EmptyState
-          title={hasFilters ? "No members match your filters" : "No members yet"}
+          title={hasFilters ? "Nenhum aluno encontrado com esses filtros" : "Nenhum aluno ainda"}
           description={
             hasFilters
-              ? "Try adjusting your search or filter criteria."
-              : "Add your first student or invite an instructor to get started."
+              ? "Tente ajustar sua busca ou filtro."
+              : "Adicione seu primeiro aluno ou convide um instrutor para começar."
           }
           action={
             !hasFilters ? (
@@ -78,7 +78,7 @@ export default async function MembersPage({
                 href="/app/members/new"
                 className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
               >
-                Add Member
+                Adicionar Aluno
               </Link>
             ) : undefined
           }
@@ -88,12 +88,12 @@ export default async function MembersPage({
           <table className="min-w-full divide-y divide-white/8">
             <thead>
               <tr className="bg-gray-800/50">
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Name</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Role</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Belt</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Nome</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Função</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Faixa</th>
                 <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Portal</th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Joined</th>
-                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Cadastro</th>
+                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Ações</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/6">

@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import { EventsClient } from "./EventsClient"
 
 export const metadata: Metadata = {
-  title: "Events",
+  title: "Eventos",
 }
 
 export default function EventsPage() {

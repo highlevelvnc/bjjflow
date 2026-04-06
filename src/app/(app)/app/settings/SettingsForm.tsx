@@ -68,13 +68,13 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
     <form onSubmit={handleSubmit} className="space-y-6">
       {/* Academy info */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-4 text-base font-semibold text-gray-100">Academy Info</h2>
+        <h2 className="mb-4 text-base font-semibold text-gray-100">Informações da Academia</h2>
 
         <div className="space-y-4">
           {/* Name */}
           <div>
             <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Academy Name
+              Nome da Academia
             </label>
             <input
               id="name"
@@ -82,7 +82,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               value={name}
               onChange={(e) => setName(e.target.value)}
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
-              placeholder="My Academy"
+              placeholder="Minha Academia"
               required
               minLength={2}
               maxLength={100}
@@ -112,14 +112,14 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
 
       {/* Feature toggles */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-4 text-base font-semibold text-gray-100">Features</h2>
+        <h2 className="mb-4 text-base font-semibold text-gray-100">Funcionalidades</h2>
 
         <div className="space-y-4">
           {/* Self check-in toggle */}
           <label className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-200">Student Self Check-in</p>
-              <p className="text-xs text-gray-500">Allow students to check themselves in via QR code.</p>
+              <p className="text-sm font-medium text-gray-200">Check-in do Aluno</p>
+              <p className="text-xs text-gray-500">Permita que alunos façam check-in via QR code.</p>
             </div>
             <button
               type="button"
@@ -141,8 +141,8 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
           {/* Student portal toggle */}
           <label className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-gray-200">Student Portal</p>
-              <p className="text-xs text-gray-500">Let students log in and view their progress.</p>
+              <p className="text-sm font-medium text-gray-200">Portal do Aluno</p>
+              <p className="text-xs text-gray-500">Permita que alunos acessem e vejam seu progresso.</p>
             </div>
             <button
               type="button"
@@ -165,16 +165,16 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
 
       {/* PIX Configuration */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-1 text-base font-semibold text-gray-100">PIX Payment Settings</h2>
+        <h2 className="mb-1 text-base font-semibold text-gray-100">Configurações de Pagamento PIX</h2>
         <p className="mb-4 text-xs text-gray-500">
-          Configure PIX to accept student payments via QR code. Used for student billing.
+          Configure o PIX para aceitar pagamentos dos alunos via QR code.
         </p>
 
         <div className="space-y-4">
-          {/* PIX Key */}
+          {/* Chave PIX */}
           <div>
             <label htmlFor="pix_key" className="mb-1.5 block text-sm font-medium text-gray-300">
-              PIX Key
+              Chave PIX
             </label>
             <input
               id="pix_key"
@@ -182,15 +182,15 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               value={pixKey}
               onChange={(e) => setPixKey(e.target.value)}
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
-              placeholder="CPF, CNPJ, email, phone, or random key"
+              placeholder="CPF, CNPJ, email, telefone ou chave aleatória"
               maxLength={100}
             />
           </div>
 
-          {/* PIX Key Type */}
+          {/* Chave PIX Type */}
           <div>
             <label htmlFor="pix_key_type" className="mb-1.5 block text-sm font-medium text-gray-300">
-              PIX Key Type
+              Chave PIX Type
             </label>
             <select
               id="pix_key_type"
@@ -202,14 +202,14 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               <option value="cnpj">CNPJ</option>
               <option value="email">Email</option>
               <option value="phone">Phone</option>
-              <option value="random">Random Key</option>
+              <option value="random">Chave Aleatória</option>
             </select>
           </div>
 
-          {/* Merchant City */}
+          {/* Cidade do Recebedor */}
           <div>
             <label htmlFor="merchant_city" className="mb-1.5 block text-sm font-medium text-gray-300">
-              Merchant City
+              Cidade do Recebedor
             </label>
             <input
               id="merchant_city"
@@ -217,10 +217,10 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               value={merchantCity}
               onChange={(e) => setMerchantCity(e.target.value)}
               className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
-              placeholder="Sao Paulo"
+              placeholder="São Paulo"
               maxLength={15}
             />
-            <p className="mt-1 text-xs text-gray-600">City name for the PIX QR code (max 15 characters).</p>
+            <p className="mt-1 text-xs text-gray-600">Nome da cidade para o QR code PIX (máx. 15 caracteres).</p>
           </div>
         </div>
       </div>
@@ -232,23 +232,23 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
           disabled={updateSettings.isPending}
           className="rounded-lg bg-brand-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-brand-400 disabled:opacity-50"
         >
-          {updateSettings.isPending ? "Saving..." : "Save Settings"}
+          {updateSettings.isPending ? "Salvando..." : "Salvar Configurações"}
         </button>
         {saved && (
-          <span className="text-sm text-emerald-400">Settings saved.</span>
+          <span className="text-sm text-emerald-400">Configurações salvas.</span>
         )}
         {updateSettings.isError && (
-          <span className="text-sm text-red-400">Failed to save. Please try again.</span>
+          <span className="text-sm text-red-400">Falha ao salvar. Tente novamente.</span>
         )}
       </div>
 
-      {/* Public Schedule */}
+      {/* Agenda Pública */}
       <PublicScheduleSection slug={initialData.slug} />
     </form>
   )
 }
 
-// ─── Public Schedule Section ─────────────────────────────────────────────────
+// ─── Agenda Pública Section ─────────────────────────────────────────────────
 
 function PublicScheduleSection({ slug }: { slug: string }) {
   const [copied, setCopied] = useState(false)
@@ -266,9 +266,9 @@ function PublicScheduleSection({ slug }: { slug: string }) {
 
   return (
     <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-      <h2 className="mb-1 text-base font-semibold text-gray-100">Public Schedule</h2>
+      <h2 className="mb-1 text-base font-semibold text-gray-100">Agenda Pública</h2>
       <p className="mb-4 text-xs text-gray-500">
-        Share your class schedule with students and visitors. No login required.
+        Compartilhe a agenda de aulas com alunos e visitantes. Sem necessidade de login.
       </p>
 
       <div className="flex items-center gap-2">
@@ -280,7 +280,7 @@ function PublicScheduleSection({ slug }: { slug: string }) {
           onClick={handleCopy}
           className="shrink-0 rounded-lg border border-white/10 bg-white/4 px-3 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-white/8 hover:text-gray-100"
         >
-          {copied ? "Copied!" : "Copy Link"}
+          {copied ? "Copiado!" : "Copiar Link"}
         </button>
       </div>
 
@@ -290,7 +290,7 @@ function PublicScheduleSection({ slug }: { slug: string }) {
         rel="noopener noreferrer"
         className="mt-3 inline-flex items-center gap-1 text-xs font-medium text-brand-400 transition-colors hover:text-brand-300"
       >
-        Preview schedule
+        Visualizar agenda
         <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
         </svg>

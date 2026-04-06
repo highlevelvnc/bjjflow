@@ -45,27 +45,27 @@ export default async function ClassesPage() {
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-xl font-semibold text-gray-100">Classes</h1>
-          <p className="mt-0.5 text-sm text-gray-500">{active.length} active class{active.length !== 1 ? "es" : ""}</p>
+          <h1 className="text-xl font-semibold text-gray-100">Turmas</h1>
+          <p className="mt-0.5 text-sm text-gray-500">{active.length} turma ativa{active.length !== 1 ? "es" : ""}</p>
         </div>
         <Link
           href="/app/classes/new"
           className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
         >
-          New Class
+          Nova Turma
         </Link>
       </div>
 
       {classes.length === 0 ? (
         <EmptyState
-          title="No classes yet"
-          description="Create your first class template to start scheduling sessions."
+          title="Nenhuma turma ainda"
+          description="Crie seu primeiro modelo de turma para começar a agendar aulas."
           action={
             <Link
               href="/app/classes/new"
               className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
             >
-              New Class
+              Nova Turma
             </Link>
           }
         />
@@ -91,11 +91,11 @@ function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRo
         <table className="min-w-full divide-y divide-white/8">
           <thead>
             <tr className="bg-gray-800/50">
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Class</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Schedule</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Type</th>
-              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Capacity</th>
-              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Actions</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Turma</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Horário</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Tipo</th>
+              <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-gray-500">Capacidade</th>
+              <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wide text-gray-500">Ações</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-white/6">
@@ -109,14 +109,14 @@ function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRo
                   {cls.day_of_week !== null ? (
                     <span>{DAY_LABELS[cls.day_of_week]} · {formatTime(cls.start_time)}–{formatTime(cls.end_time)}</span>
                   ) : (
-                    <span className="text-gray-600">No schedule</span>
+                    <span className="text-gray-600">Sem horário</span>
                   )}
                 </td>
                 <td className="px-4 py-3">
                   <span className="text-sm text-gray-400">{CLASS_TYPE_LABELS[cls.class_type] ?? cls.class_type}</span>
                   <span className="ml-1 text-xs text-gray-600">· {GI_TYPE_LABELS[cls.gi_type] ?? cls.gi_type}</span>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-500">{cls.max_students ?? "Unlimited"}</td>
+                <td className="px-4 py-3 text-sm text-gray-500">{cls.max_students ?? "Ilimitado"}</td>
                 <td className="px-4 py-3 text-right">
                   <div className="flex items-center justify-end gap-2">
                     <Link

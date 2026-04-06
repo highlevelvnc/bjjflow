@@ -15,8 +15,8 @@ export default async function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-semibold text-gray-100">Settings</h1>
-        <p className="mt-0.5 text-sm text-gray-500">Manage your academy configuration.</p>
+        <h1 className="text-xl font-semibold text-gray-100">Configurações</h1>
+        <p className="mt-0.5 text-sm text-gray-500">Gerencie as configurações da sua academia.</p>
       </div>
 
       <SettingsForm
@@ -33,9 +33,9 @@ export default async function SettingsPage() {
 
       {/* Integrations */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
-        <h2 className="mb-1 text-base font-semibold text-gray-100">Integrations</h2>
+        <h2 className="mb-1 text-base font-semibold text-gray-100">Integrações</h2>
         <p className="mb-4 text-xs text-gray-500">
-          Connect your academy to external tools and automations.
+          Conecte sua academia a ferramentas externas e automações.
         </p>
         <Link
           href="/app/settings/webhooks"
@@ -44,7 +44,7 @@ export default async function SettingsPage() {
           <div>
             <p className="text-sm font-medium text-gray-200">Webhooks</p>
             <p className="text-xs text-gray-500">
-              Receive real-time event notifications via HTTP. Perfect for Zapier, Make, or n8n.
+              Receba notificações de eventos em tempo real via HTTP. Perfeito para Zapier, Make ou n8n.
             </p>
           </div>
           <svg

@@ -11,7 +11,7 @@ interface CheckInClientProps {
 
 export function CheckInClient({ autoSessionId }: CheckInClientProps) {
   const router = useRouter()
-  const { data: sessions, isLoading } = trpc.checkin.todaySessions.useQuery()
+  const { data: aulas, isLoading } = trpc.checkin.todaySessions.useQuery()
   const checkin = trpc.checkin.selfCheckin.useMutation({
     onSuccess: () => router.refresh(),
   })
@@ -23,18 +23,18 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
   useEffect(() => {
     if (
       autoSessionId &&
-      sessions &&
-      sessions.length > 0 &&
+      aulas &&
+      aulas.length > 0 &&
       !autoTriggered.current
     ) {
-      const target = sessions.find((s) => s.id === autoSessionId)
+      const target = aulas.find((s) => s.id === autoSessionId)
       if (target && !target.alreadyCheckedIn && !checkedIn.has(target.id)) {
         autoTriggered.current = true
         handleCheckin(target.id)
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [autoSessionId, sessions])
+  }, [autoSessionId, aulas])
 
   if (isLoading) {
     return (
@@ -44,11 +44,11 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
     )
   }
 
-  if (!sessions || sessions.length === 0) {
+  if (!aulas || aulas.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-white/10 bg-white/3 px-6 py-12 text-center">
         <Clock className="mx-auto mb-3 h-8 w-8 text-gray-600" />
-        <p className="text-sm text-gray-400">No sessions available today</p>
+        <p className="text-sm text-gray-400">No aulas available today</p>
       </div>
     )
   }
@@ -64,7 +64,7 @@ export function CheckInClient({ autoSessionId }: CheckInClientProps) {
 
   return (
     <div className="space-y-3">
-      {sessions.map((s) => {
+      {aulas.map((s) => {
         const done = s.alreadyCheckedIn || checkedIn.has(s.id)
         const isAutoTarget = autoSessionId === s.id
         return (

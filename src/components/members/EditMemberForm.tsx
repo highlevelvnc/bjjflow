@@ -6,14 +6,14 @@ import { trpc } from "@/lib/trpc/client"
 import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
 
 const ROLE_OPTIONS = [
-  { value: "student", label: "Student" },
-  { value: "instructor", label: "Instructor" },
+  { value: "student", label: "Aluno" },
+  { value: "instructor", label: "Instrutor" },
   { value: "admin", label: "Admin" },
 ] as const
 
 const STATUS_OPTIONS = [
-  { value: "active", label: "Active" },
-  { value: "inactive", label: "Inactive" },
+  { value: "active", label: "Ativo" },
+  { value: "inactive", label: "Inativo" },
   { value: "suspended", label: "Suspended" },
 ] as const
 
@@ -100,7 +100,7 @@ export function EditMemberForm({ member }: { member: Member }) {
       )}
 
       {/* Full name */}
-      <Field label="Full Name" required>
+      <Field label="Nome Completo" required>
         <input
           type="text"
           value={form.full_name}
@@ -125,7 +125,7 @@ export function EditMemberForm({ member }: { member: Member }) {
 
       {/* Role + Status */}
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Role" required>
+        <Field label="Função" required>
           <select
             value={form.role}
             onChange={(e) => set("role", e.target.value as Member["role"])}
@@ -164,7 +164,7 @@ export function EditMemberForm({ member }: { member: Member }) {
           </select>
         </Field>
 
-        <Field label="Stripes">
+        <Field label="Graus">
           <div className="flex gap-2">
             {[0, 1, 2, 3, 4].map((n) => (
               <button
@@ -185,7 +185,7 @@ export function EditMemberForm({ member }: { member: Member }) {
       </div>
 
       {/* Phone */}
-      <Field label="Phone">
+      <Field label="Telefone">
         <input
           type="tel"
           value={form.phone}
@@ -207,7 +207,7 @@ export function EditMemberForm({ member }: { member: Member }) {
       </Field>
 
       {/* Notes */}
-      <Field label="Notes">
+      <Field label="Observações">
         <textarea
           value={form.notes}
           onChange={(e) => set("notes", e.target.value)}
@@ -225,7 +225,7 @@ export function EditMemberForm({ member }: { member: Member }) {
           disabled={updateMember.isPending}
           className="rounded-md bg-brand-500 px-4 py-2 text-sm font-medium text-white hover:bg-brand-400 disabled:opacity-50"
         >
-          {updateMember.isPending ? "Saving..." : "Save Changes"}
+          {updateMember.isPending ? "Salvando..." : "Salvar Alterações"}
         </button>
         <a href="/app/members" className="text-sm text-gray-500 hover:text-gray-300">
           Cancel

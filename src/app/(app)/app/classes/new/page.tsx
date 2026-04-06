@@ -4,7 +4,7 @@ import { createServerCaller } from "@/lib/trpc/server"
 import { CreateClassForm } from "@/components/classes/CreateClassForm"
 
 export const metadata: Metadata = {
-  title: "New Class",
+  title: "Nova Turma",
 }
 
 export default async function NewClassPage() {
@@ -24,11 +24,11 @@ export default async function NewClassPage() {
     <div className="mx-auto max-w-xl space-y-6">
       <div>
         <Link href="/app/classes" className="text-sm text-gray-500 hover:text-gray-300">
-          ← Classes
+          ← Turmas
         </Link>
-        <h1 className="mt-2 text-xl font-semibold text-gray-100">New Class</h1>
+        <h1 className="mt-2 text-xl font-semibold text-gray-100">Nova Turma</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Create a class template. Generate sessions from it to schedule classes.
+          Crie um modelo de turma. Gere aulas a partir dele para agendar treinos.
         </p>
       </div>
 
