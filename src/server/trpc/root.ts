@@ -8,6 +8,7 @@ import { sessionRouter } from "./routers/session"
 import { attendanceRouter } from "./routers/attendance"
 import { checkinRouter } from "./routers/checkin"
 import { portalRouter } from "./routers/portal"
+import { billingRouter } from "./routers/billing"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -18,6 +19,7 @@ export const appRouter = router({
   attendance: attendanceRouter,
   checkin: checkinRouter,
   portal: portalRouter,
+  billing: billingRouter,
 })
 
 export type AppRouter = typeof appRouter

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 import { createServerSupabase } from "@/server/supabase/server"
 import { createServerCaller } from "@/lib/trpc/server"
 import { Sidebar } from "@/components/nav/Sidebar"
+import { TrialBanner } from "@/components/ui/TrialBanner"
 import type { Role } from "@/types/auth"
 
 export const metadata: Metadata = {
@@ -32,6 +33,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   let academyName = "My Academy"
   let memberName = session.user.email ?? "User"
   let memberRole: Role = "student"
+  let academyStatus = "active"
 
   try {
     const [academy, member] = await Promise.all([
@@ -39,6 +41,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
       trpc.member.getCurrent(),
     ])
     academyName = academy.name
+    academyStatus = academy.status
     if (member) {
       memberName = member.full_name
       memberRole = member.role as Role
@@ -51,6 +54,7 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     <div className="flex min-h-screen bg-gray-950">
       <Sidebar academyName={academyName} memberName={memberName} memberRole={memberRole} />
       <div className="flex min-w-0 flex-1 flex-col">
+        {academyStatus === "trialing" && <TrialBanner />}
         <main className="flex-1 px-8 py-6 text-gray-100">{children}</main>
       </div>
     </div>

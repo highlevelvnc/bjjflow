@@ -290,4 +290,34 @@ export const memberRouter = router({
 
       return { success: true }
     }),
+
+  /**
+   * Returns weekly attendance totals for the last 4 weeks.
+   * Used for the dashboard attendance trend chart.
+   */
+  getAttendanceTrend: instructorProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const weeks: { label: string; count: number }[] = []
+
+    for (let i = 3; i >= 0; i--) {
+      const weekStart = new Date()
+      weekStart.setDate(weekStart.getDate() - (i + 1) * 7)
+      const weekEnd = new Date()
+      weekEnd.setDate(weekEnd.getDate() - i * 7)
+
+      const { count } = await supabase
+        .from("attendance")
+        .select("id", { count: "exact", head: true })
+        .eq("academy_id", ctx.academyId!)
+        .gte("checked_in_at", weekStart.toISOString())
+        .lt("checked_in_at", weekEnd.toISOString())
+
+      weeks.push({
+        label: `W${4 - i}`,
+        count: count ?? 0,
+      })
+    }
+
+    return weeks
+  }),
 })

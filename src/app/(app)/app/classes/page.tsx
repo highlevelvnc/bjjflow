@@ -3,6 +3,7 @@ import Link from "next/link"
 import { createServerCaller } from "@/lib/trpc/server"
 import { EmptyState } from "@/components/ui/EmptyState"
 import { ClassToggleButton } from "@/components/classes/ClassToggleButton"
+import { Pencil } from "lucide-react"
 
 export const metadata: Metadata = {
   title: "Classes",
@@ -117,7 +118,16 @@ function ClassGroup({ title, classes, muted }: { title: string; classes: ClassRo
                 </td>
                 <td className="px-4 py-3 text-sm text-gray-500">{cls.max_students ?? "Unlimited"}</td>
                 <td className="px-4 py-3 text-right">
-                  <ClassToggleButton classId={cls.id} isActive={cls.is_active} />
+                  <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href={`/app/classes/${cls.id}/edit`}
+                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-gray-400 hover:bg-white/6 hover:text-gray-200"
+                    >
+                      <Pencil className="h-3 w-3" />
+                      Edit
+                    </Link>
+                    <ClassToggleButton classId={cls.id} isActive={cls.is_active} />
+                  </div>
                 </td>
               </tr>
             ))}

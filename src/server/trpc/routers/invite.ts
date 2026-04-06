@@ -2,8 +2,17 @@ import "server-only"
 import { z } from "zod"
 import { randomUUID } from "crypto"
 import { router } from "../init"
-import { adminProcedure } from "../procedures"
+import { adminProcedure, authenticatedProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
+import { createClient } from "@supabase/supabase-js"
+
+function getAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!,
+    { auth: { autoRefreshToken: false, persistSession: false } },
+  )
+}
 
 export const inviteRouter = router({
   /**
@@ -96,5 +105,58 @@ export const inviteRouter = router({
         throw new Error("Invite cannot be revoked — it may already be accepted or revoked")
 
       return { success: true }
+    }),
+
+  /** Accept an invite — creates a member in the invite's academy. */
+  accept: authenticatedProcedure
+    .input(z.object({ token: z.string() }))
+    .mutation(async ({ input }) => {
+      // 1. Find the invite by token (use admin to bypass RLS)
+      const { data: invite, error: findError } = await getAdmin()
+        .from("invites")
+        .select("id, academy_id, email, role, expires_at, accepted_at, revoked_at")
+        .eq("token", input.token)
+        .single()
+
+      if (findError || !invite) throw new Error("Invite not found")
+      if (invite.accepted_at) throw new Error("Invite already accepted")
+      if (invite.revoked_at) throw new Error("Invite has been revoked")
+      if (new Date(invite.expires_at) < new Date()) throw new Error("Invite has expired")
+
+      // 2. Get current user's email
+      const supabase = await createServerSupabase()
+      const { data: { user } } = await supabase.auth.getUser()
+      if (!user) throw new Error("Not authenticated")
+
+      // 3. Create member in the invite's academy (service role — cross-tenant)
+      const { error: memberError } = await getAdmin()
+        .from("members")
+        .insert({
+          academy_id: invite.academy_id,
+          user_id: user.id,
+          full_name: (user.user_metadata?.full_name as string) || user.email || "Member",
+          email: user.email,
+          role: invite.role,
+          has_portal_access: true,
+          status: "active",
+        })
+
+      if (memberError) {
+        if (memberError.code === "23505") throw new Error("You are already a member of this academy")
+        throw new Error("Failed to join academy")
+      }
+
+      // 4. Mark invite as accepted
+      await getAdmin()
+        .from("invites")
+        .update({ accepted_at: new Date().toISOString() })
+        .eq("id", invite.id)
+
+      // 5. Update user's app_metadata to point to this academy
+      await getAdmin().auth.admin.updateUserById(user.id, {
+        app_metadata: { academy_id: invite.academy_id },
+      })
+
+      return { academyId: invite.academy_id }
     }),
 })

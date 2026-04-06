@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { createServerCaller } from "@/lib/trpc/server"
 import { BeltBadge } from "@/components/ui/BeltBadge"
+import { AttendanceChart } from "@/components/dashboard/AttendanceChart"
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -18,11 +19,12 @@ function formatTime(t: string) {
 export default async function DashboardPage() {
   const trpc = await createServerCaller()
 
-  const [academy, counts, upcoming, atRisk] = await Promise.all([
+  const [academy, counts, upcoming, atRisk, attendanceTrend] = await Promise.all([
     trpc.academy.getCurrent(),
     trpc.member.getCounts(),
     trpc.session.listUpcoming({ limit: 5 }),
     trpc.member.getAtRisk().catch(() => [] as Awaited<ReturnType<typeof trpc.member.getAtRisk>>),
+    trpc.member.getAttendanceTrend().catch(() => [] as { label: string; count: number }[]),
   ])
 
   return (
@@ -150,6 +152,14 @@ export default async function DashboardPage() {
           )}
         </section>
       </div>
+
+      {/* Attendance trend */}
+      {attendanceTrend.length > 0 && (
+        <section className="rounded-xl border border-white/8 bg-gray-900 p-5">
+          <h2 className="mb-4 text-sm font-medium text-gray-100">Attendance Trend (Last 4 Weeks)</h2>
+          <AttendanceChart weeks={attendanceTrend} />
+        </section>
+      )}
 
       {/* Quick actions */}
       <div className="rounded-xl border border-white/8 bg-gray-900 p-5">

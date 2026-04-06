@@ -3,6 +3,7 @@ import Link from "next/link"
 import { createServerCaller } from "@/lib/trpc/server"
 import { EmptyState } from "@/components/ui/EmptyState"
 import { SessionActionsMenu } from "@/components/sessions/SessionActionsMenu"
+import { QrCode } from "lucide-react"
 import { GenerateSessionsButton } from "@/components/sessions/GenerateSessionsButton"
 
 export const metadata: Metadata = {
@@ -165,7 +166,16 @@ function SessionTable({ title, sessions, muted }: { title: string; sessions: Ses
                   )}
                 </td>
                 <td className="px-4 py-3 text-right">
-                  <SessionActionsMenu sessionId={session.id} status={session.status} />
+                  <div className="flex items-center justify-end gap-2">
+                    <Link
+                      href={`/app/sessions/${session.id}/qr`}
+                      className="inline-flex items-center rounded-md p-1 text-gray-500 hover:bg-white/6 hover:text-gray-200"
+                      title="QR check-in code"
+                    >
+                      <QrCode className="h-4 w-4" />
+                    </Link>
+                    <SessionActionsMenu sessionId={session.id} status={session.status} />
+                  </div>
                 </td>
               </tr>
             ))}

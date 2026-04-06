@@ -5,6 +5,7 @@ import { RoleBadge } from "@/components/ui/RoleBadge"
 import { BeltBadge } from "@/components/ui/BeltBadge"
 import { EmptyState } from "@/components/ui/EmptyState"
 import { CSVImport } from "@/components/members/CSVImport"
+import { MemberFilters } from "@/components/members/MemberFilters"
 import type { Role } from "@/types/auth"
 import { Pencil } from "lucide-react"
 
@@ -12,9 +13,21 @@ export const metadata: Metadata = {
   title: "Members",
 }
 
-export default async function MembersPage() {
+export default async function MembersPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ search?: string; role?: string; status?: string }>
+}) {
+  const params = await searchParams
   const trpc = await createServerCaller()
-  const { items: members } = await trpc.member.list({ status: "active" })
+  const { items: members } = await trpc.member.list({
+    search: params.search || undefined,
+    role: (params.role as "admin" | "instructor" | "student") || undefined,
+    status: (params.status as "active" | "inactive" | "suspended") || "active",
+  })
+
+  const statusLabel = params.status || "active"
+  const hasFilters = !!(params.search || params.role || params.status)
 
   return (
     <div className="space-y-4">
@@ -22,7 +35,8 @@ export default async function MembersPage() {
         <div>
           <h1 className="text-xl font-semibold text-gray-100">Members</h1>
           <p className="mt-0.5 text-sm text-gray-500">
-            {members.length} active member{members.length !== 1 ? "s" : ""}
+            {members.length} {statusLabel} member{members.length !== 1 ? "s" : ""}
+            {hasFilters ? " (filtered)" : ""}
           </p>
         </div>
         <div className="flex gap-2">
@@ -47,17 +61,26 @@ export default async function MembersPage() {
         <CSVImport />
       </div>
 
+      {/* Filters */}
+      <MemberFilters />
+
       {members.length === 0 ? (
         <EmptyState
-          title="No members yet"
-          description="Add your first student or invite an instructor to get started."
+          title={hasFilters ? "No members match your filters" : "No members yet"}
+          description={
+            hasFilters
+              ? "Try adjusting your search or filter criteria."
+              : "Add your first student or invite an instructor to get started."
+          }
           action={
-            <Link
-              href="/app/members/new"
-              className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
-            >
-              Add Member
-            </Link>
+            !hasFilters ? (
+              <Link
+                href="/app/members/new"
+                className="rounded-md bg-brand-500 px-3 py-1.5 text-sm font-medium text-white hover:bg-brand-400"
+              >
+                Add Member
+              </Link>
+            ) : undefined
           }
         />
       ) : (

@@ -80,6 +80,14 @@ const enforceAdmin = middleware(({ ctx, next }) => {
 export const publicProcedure = procedure
 
 /**
+ * Requires a valid session only (no academy membership needed).
+ *
+ * Use for: invite acceptance, academy switcher, onboarding flows
+ * where the user is authenticated but may not belong to any academy yet.
+ */
+export const authenticatedProcedure = procedure.use(enforceAuthenticated)
+
+/**
  * Requires a valid session + active academy membership.
  *
  * This is the base procedure for all dashboard operations.

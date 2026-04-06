@@ -10,7 +10,7 @@ import { createMiddlewareSupabase } from "@/server/supabase/middleware"
  * Public marketing routes — no session required.
  * "/" is the landing page and is always public.
  */
-const PUBLIC_PREFIXES = ["/", "/pricing", "/features", "/contact"]
+const PUBLIC_PREFIXES = ["/", "/pricing", "/features", "/contact", "/invite"]
 
 /** Auth routes — redirect to /app if already signed in. */
 const AUTH_ROUTES = ["/login", "/signup", "/forgot-password", "/reset-password", "/verify-email", "/callback"]

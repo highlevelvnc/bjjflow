@@ -2,10 +2,14 @@
 
 import { trpc } from "@/lib/trpc/client"
 import { CheckCircle2, Clock, Loader2 } from "lucide-react"
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/navigation"
 
-export function CheckInClient() {
+interface CheckInClientProps {
+  autoSessionId?: string
+}
+
+export function CheckInClient({ autoSessionId }: CheckInClientProps) {
   const router = useRouter()
   const { data: sessions, isLoading } = trpc.checkin.todaySessions.useQuery()
   const checkin = trpc.checkin.selfCheckin.useMutation({
@@ -13,6 +17,24 @@ export function CheckInClient() {
   })
 
   const [checkedIn, setCheckedIn] = useState<Set<string>>(new Set())
+  const autoTriggered = useRef(false)
+
+  // Auto check-in when autoSessionId is provided
+  useEffect(() => {
+    if (
+      autoSessionId &&
+      sessions &&
+      sessions.length > 0 &&
+      !autoTriggered.current
+    ) {
+      const target = sessions.find((s) => s.id === autoSessionId)
+      if (target && !target.alreadyCheckedIn && !checkedIn.has(target.id)) {
+        autoTriggered.current = true
+        handleCheckin(target.id)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoSessionId, sessions])
 
   if (isLoading) {
     return (
@@ -44,17 +66,22 @@ export function CheckInClient() {
     <div className="space-y-3">
       {sessions.map((s) => {
         const done = s.alreadyCheckedIn || checkedIn.has(s.id)
+        const isAutoTarget = autoSessionId === s.id
         return (
           <div
             key={s.id}
-            className="flex items-center gap-4 rounded-xl border border-white/8 bg-gray-900 p-4"
+            className={`flex items-center gap-4 rounded-xl border p-4 ${
+              isAutoTarget && !done
+                ? "border-brand-500/30 bg-brand-500/5"
+                : "border-white/8 bg-gray-900"
+            }`}
           >
             <div className="flex-1">
               <p className="text-sm font-medium text-gray-100">
                 {s.class?.name ?? "Session"}
               </p>
               <p className="text-xs text-gray-500">
-                {s.start_time} – {s.end_time}
+                {s.start_time} &ndash; {s.end_time}
                 {s.class?.gi_type && (
                   <span className="ml-2 capitalize">{s.class.gi_type}</span>
                 )}
