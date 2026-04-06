@@ -9,12 +9,16 @@ export const metadata: Metadata = {
 export default async function FinancePage() {
   const trpc = await createServerCaller()
 
-  const [overview, memberRevenue, revenueChart, delinquency] = await Promise.all([
-    trpc.finance.overview(),
-    trpc.finance.memberRevenue(),
-    trpc.finance.revenueChart(),
-    trpc.finance.delinquency(),
-  ])
+  const [overview, memberRevenue, revenueChart, delinquency, studentRevenue, cashFlowForecast, paymentMethodBreakdown] =
+    await Promise.all([
+      trpc.finance.overview(),
+      trpc.finance.memberRevenue(),
+      trpc.finance.revenueChart(),
+      trpc.finance.delinquency(),
+      trpc.finance.studentRevenueOverview().catch(() => null),
+      trpc.finance.cashFlowForecast().catch(() => null),
+      trpc.finance.paymentMethodBreakdown().catch(() => null),
+    ])
 
   return (
     <FinanceClient
@@ -22,6 +26,9 @@ export default async function FinancePage() {
       memberRevenue={memberRevenue}
       revenueChart={revenueChart}
       delinquency={delinquency}
+      studentRevenue={studentRevenue}
+      cashFlowForecast={cashFlowForecast}
+      paymentMethodBreakdown={paymentMethodBreakdown}
     />
   )
 }

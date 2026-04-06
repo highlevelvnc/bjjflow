@@ -43,11 +43,38 @@ interface DelinquentMember {
   amountDue: number
 }
 
+interface StudentRevenueOverview {
+  monthlyRevenue: number
+  previousMonth: number
+  growthRate: number
+  overdueAmount: number
+  overdueCount: number
+  projectedRevenue: number
+  currency: string
+}
+
+interface CashFlowMonth {
+  month: string
+  expected: number
+  estimated_churn: number
+  net_forecast: number
+  active_plans: number
+}
+
+interface PaymentMethodItem {
+  method: "cash" | "pix" | "stripe" | "other"
+  count: number
+  total: number
+}
+
 interface FinanceClientProps {
   overview: Overview
   memberRevenue: MemberRevItem[]
   revenueChart: ChartMonth[]
   delinquency: DelinquentMember[]
+  studentRevenue: StudentRevenueOverview | null
+  cashFlowForecast: CashFlowMonth[] | null
+  paymentMethodBreakdown: PaymentMethodItem[] | null
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -75,6 +102,13 @@ const BELT_COLORS: Record<string, string> = {
   purple: "bg-purple-500",
   brown: "bg-amber-700",
   black: "bg-gray-900 ring-1 ring-white/20",
+}
+
+const METHOD_COLORS: Record<string, { bg: string; text: string; label: string }> = {
+  cash: { bg: "bg-emerald-500", text: "text-emerald-400", label: "Cash" },
+  pix: { bg: "bg-purple-500", text: "text-purple-400", label: "PIX" },
+  stripe: { bg: "bg-blue-500", text: "text-blue-400", label: "Stripe" },
+  other: { bg: "bg-gray-500", text: "text-gray-400", label: "Other" },
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -277,6 +311,202 @@ function DelinquencyAlerts({
   )
 }
 
+// ─── New: Student Revenue Overview ───────────────────────────────────────────
+
+function StudentRevenueCards({ data }: { data: StudentRevenueOverview }) {
+  const currency = data.currency
+  const growthPositive = data.growthRate >= 0
+
+  return (
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-white">Student Revenue</h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Monthly Revenue */}
+        <div className="rounded-xl border border-emerald-500/20 bg-emerald-950/20 p-5">
+          <p className="text-sm text-emerald-300/70">Monthly Revenue</p>
+          <p className="mt-1 text-2xl font-bold text-emerald-400">
+            {formatCurrency(data.monthlyRevenue, currency)}
+          </p>
+          <p className="mt-0.5 text-xs text-gray-500">
+            vs {formatCurrency(data.previousMonth, currency)} last month
+          </p>
+        </div>
+
+        {/* Growth Rate */}
+        <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
+          <p className="text-sm text-gray-400">Growth Rate</p>
+          <p className={`mt-1 text-2xl font-bold ${growthPositive ? "text-emerald-400" : "text-red-400"}`}>
+            <span className="mr-1">{growthPositive ? "\u2191" : "\u2193"}</span>
+            {Math.abs(data.growthRate)}%
+          </p>
+          <p className="mt-0.5 text-xs text-gray-500">Month-over-month</p>
+        </div>
+
+        {/* Overdue Amount */}
+        <div className={`rounded-xl p-5 ${
+          data.overdueAmount > 0
+            ? "border border-red-500/20 bg-red-950/20"
+            : "border border-white/8 bg-gray-900"
+        }`}>
+          <p className={`text-sm ${data.overdueAmount > 0 ? "text-red-300/70" : "text-gray-400"}`}>
+            Overdue
+          </p>
+          <p className={`mt-1 text-2xl font-bold ${data.overdueAmount > 0 ? "text-red-400" : "text-gray-300"}`}>
+            {formatCurrency(data.overdueAmount, currency)}
+          </p>
+          <p className="mt-0.5 text-xs text-gray-500">
+            {data.overdueCount} payment{data.overdueCount !== 1 ? "s" : ""} overdue
+          </p>
+        </div>
+
+        {/* Projected Revenue */}
+        <div className="rounded-xl border border-blue-500/20 bg-blue-950/20 p-5">
+          <p className="text-sm text-blue-300/70">Projected Next Month</p>
+          <p className="mt-1 text-2xl font-bold text-blue-400">
+            {formatCurrency(data.projectedRevenue, currency)}
+          </p>
+          <p className="mt-0.5 text-xs text-gray-500">From active plans</p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+// ─── New: Cash Flow Forecast ─────────────────────────────────────────────────
+
+function CashFlowForecastSection({
+  data,
+  currency,
+}: {
+  data: CashFlowMonth[]
+  currency: string
+}) {
+  return (
+    <div className="space-y-4">
+      <h2 className="text-lg font-semibold text-white">Cash Flow Forecast</h2>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {data.map((m) => {
+          const maxVal = Math.max(...data.map((d) => d.expected), 1)
+          const barPct = Math.round((m.net_forecast / maxVal) * 100)
+
+          return (
+            <div
+              key={m.month}
+              className="rounded-xl border border-blue-500/15 bg-gray-900 p-5"
+            >
+              <p className="text-sm font-medium text-blue-300">{m.month}</p>
+
+              <div className="mt-3 space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-400">Expected</span>
+                  <span className="font-medium text-white">
+                    {formatCurrency(m.expected, currency)}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-gray-400">Est. Churn</span>
+                  <span className="font-medium text-red-400">
+                    -{formatCurrency(m.estimated_churn, currency)}
+                  </span>
+                </div>
+                <div className="border-t border-white/8 pt-2">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-400">Net Forecast</span>
+                    <span className="font-semibold text-blue-400">
+                      {formatCurrency(m.net_forecast, currency)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trend bar */}
+              <div className="mt-3 h-1.5 w-full overflow-hidden rounded-full bg-white/8">
+                <div
+                  className="h-full rounded-full bg-blue-500/60 transition-all"
+                  style={{ width: `${Math.max(barPct, 3)}%` }}
+                />
+              </div>
+              <p className="mt-1.5 text-xs text-gray-500">
+                {m.active_plans} active plan{m.active_plans !== 1 ? "s" : ""}
+              </p>
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+// ─── New: Payment Method Breakdown ───────────────────────────────────────────
+
+function PaymentMethodBreakdownSection({
+  data,
+  currency,
+}: {
+  data: PaymentMethodItem[]
+  currency: string
+}) {
+  const grandTotal = data.reduce((s, d) => s + d.total, 0)
+  const grandCount = data.reduce((s, d) => s + d.count, 0)
+
+  // Filter to only methods with data, but always show all for structure
+  const fallback = { bg: "bg-gray-500", text: "text-gray-400", label: "Other" }
+  const segments = data.map((d) => {
+    const cfg = METHOD_COLORS[d.method]
+    return {
+      ...d,
+      pct: grandTotal > 0 ? Math.round((d.total / grandTotal) * 1000) / 10 : 0,
+      config: cfg ?? fallback!,
+    }
+  })
+
+  return (
+    <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
+      <h2 className="mb-4 text-lg font-semibold text-white">Payment Methods</h2>
+
+      {grandCount === 0 ? (
+        <p className="text-sm text-gray-500">
+          No student payments recorded yet. Payment method data will appear here.
+        </p>
+      ) : (
+        <div className="space-y-5">
+          {/* Stacked bar */}
+          <div className="flex h-6 w-full overflow-hidden rounded-full bg-white/8">
+            {segments
+              .filter((s) => s.pct > 0)
+              .map((s) => (
+                <div
+                  key={s.method}
+                  className={`${s.config.bg} h-full transition-all`}
+                  style={{ width: `${s.pct}%` }}
+                  title={`${s.config.label}: ${s.pct}%`}
+                />
+              ))}
+          </div>
+
+          {/* Legend + details */}
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+            {segments.map((s) => (
+              <div key={s.method} className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className={`inline-block h-3 w-3 rounded-full ${s.config.bg}`} />
+                  <span className="text-sm font-medium text-gray-300">{s.config.label}</span>
+                </div>
+                <p className={`text-lg font-bold ${s.config.text}`}>
+                  {formatCurrency(s.total, currency)}
+                </p>
+                <p className="text-xs text-gray-500">
+                  {s.count} payment{s.count !== 1 ? "s" : ""} ({s.pct}%)
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
 // ─────────────────────────────────────────────────────────────────────────────
@@ -286,6 +516,9 @@ export function FinanceClient({
   memberRevenue,
   revenueChart,
   delinquency,
+  studentRevenue,
+  cashFlowForecast,
+  paymentMethodBreakdown,
 }: FinanceClientProps) {
   const currency = overview.currency
 
@@ -300,7 +533,10 @@ export function FinanceClient({
         </p>
       </div>
 
-      {/* Section 1: Overview Cards */}
+      {/* Section: Student Revenue Overview */}
+      {studentRevenue && <StudentRevenueCards data={studentRevenue} />}
+
+      {/* Section: Overview Cards */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard
           label="Monthly Recurring Revenue"
@@ -326,13 +562,23 @@ export function FinanceClient({
         />
       </div>
 
-      {/* Section 2: Revenue Chart */}
+      {/* Section: Cash Flow Forecast */}
+      {cashFlowForecast && cashFlowForecast.length > 0 && (
+        <CashFlowForecastSection data={cashFlowForecast} currency={currency} />
+      )}
+
+      {/* Section: Revenue Chart */}
       <RevenueChart data={revenueChart} currency={currency} />
 
-      {/* Section 3: Member LTV Table */}
+      {/* Section: Payment Method Breakdown */}
+      {paymentMethodBreakdown && (
+        <PaymentMethodBreakdownSection data={paymentMethodBreakdown} currency={currency} />
+      )}
+
+      {/* Section: Member LTV Table */}
       <MemberLTVTable members={memberRevenue} currency={currency} />
 
-      {/* Section 4: Delinquency Alerts */}
+      {/* Section: Delinquency Alerts */}
       <DelinquencyAlerts members={delinquency} currency={currency} />
     </div>
   )

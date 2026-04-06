@@ -3,6 +3,20 @@ import { router } from "../init"
 import { adminProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
 
+// ─── Helpers ──────────────────────────────────────────────────────────────────
+
+function startOfMonth(date: Date): string {
+  return new Date(date.getFullYear(), date.getMonth(), 1).toISOString().slice(0, 10)
+}
+
+function endOfMonth(date: Date): string {
+  return new Date(date.getFullYear(), date.getMonth() + 1, 0).toISOString().slice(0, 10)
+}
+
+function monthLabel(date: Date): string {
+  return date.toLocaleString("en-US", { month: "short", year: "numeric" })
+}
+
 export const financeRouter = router({
   /**
    * Financial overview for the academy.
@@ -356,5 +370,241 @@ export const financeRouter = router({
     // Sort by most overdue first
     delinquent.sort((a, b) => b.daysSincePayment - a.daysSincePayment)
     return delinquent.slice(0, 20)
+  }),
+
+  /**
+   * Student revenue overview using the student_payments table.
+   * Calculates monthly revenue, growth rate, overdue totals, and projections.
+   */
+  studentRevenueOverview: adminProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const now = new Date()
+
+    const thisMonthStart = startOfMonth(now)
+    const thisMonthEnd = endOfMonth(now)
+    const lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1)
+    const lastMonthStart = startOfMonth(lastMonth)
+    const lastMonthEnd = endOfMonth(lastMonth)
+    const today = now.toISOString().slice(0, 10)
+
+    const [thisMonthRes, lastMonthRes, overdueRes, activePlansRes, academyRes] =
+      await Promise.all([
+        // This month's paid payments
+        supabase
+          .from("student_payments")
+          .select("amount")
+          .eq("academy_id", ctx.academyId!)
+          .eq("status", "paid")
+          .gte("paid_at", thisMonthStart)
+          .lte("paid_at", thisMonthEnd + "T23:59:59"),
+        // Last month's paid payments
+        supabase
+          .from("student_payments")
+          .select("amount")
+          .eq("academy_id", ctx.academyId!)
+          .eq("status", "paid")
+          .gte("paid_at", lastMonthStart)
+          .lte("paid_at", lastMonthEnd + "T23:59:59"),
+        // Overdue: status=overdue OR (status=pending AND due_date < today)
+        supabase
+          .from("student_payments")
+          .select("amount, status, due_date")
+          .eq("academy_id", ctx.academyId!)
+          .in("status", ["overdue", "pending"]),
+        // Active plans for projected revenue
+        supabase
+          .from("student_plans")
+          .select("price, billing_cycle")
+          .eq("academy_id", ctx.academyId!)
+          .eq("status", "active"),
+        // Currency
+        supabase
+          .from("academies")
+          .select("currency")
+          .eq("id", ctx.academyId!)
+          .single(),
+      ])
+
+    const thisMonthPayments = thisMonthRes.data ?? []
+    const lastMonthPayments = lastMonthRes.data ?? []
+    const overduePayments = overdueRes.data ?? []
+    const activePlans = activePlansRes.data ?? []
+    const currency = academyRes.data?.currency ?? "BRL"
+
+    const monthlyRevenue = thisMonthPayments.reduce((s, p) => s + p.amount, 0)
+    const previousMonth = lastMonthPayments.reduce((s, p) => s + p.amount, 0)
+    const growthRate =
+      previousMonth > 0
+        ? Math.round(((monthlyRevenue - previousMonth) / previousMonth) * 10000) / 100
+        : monthlyRevenue > 0
+          ? 100
+          : 0
+
+    // Overdue = explicitly overdue OR pending with past due_date
+    const overdueAmount = overduePayments
+      .filter((p) => p.status === "overdue" || (p.status === "pending" && p.due_date < today))
+      .reduce((s, p) => s + p.amount, 0)
+
+    const overdueCount = overduePayments.filter(
+      (p) => p.status === "overdue" || (p.status === "pending" && p.due_date < today),
+    ).length
+
+    // Projected revenue: sum of monthly-equivalent active plan prices
+    let projectedRevenue = 0
+    for (const plan of activePlans) {
+      switch (plan.billing_cycle) {
+        case "monthly":
+          projectedRevenue += plan.price
+          break
+        case "quarterly":
+          projectedRevenue += plan.price / 3
+          break
+        case "annual":
+          projectedRevenue += plan.price / 12
+          break
+      }
+    }
+
+    return {
+      monthlyRevenue: Math.round(monthlyRevenue * 100) / 100,
+      previousMonth: Math.round(previousMonth * 100) / 100,
+      growthRate,
+      overdueAmount: Math.round(overdueAmount * 100) / 100,
+      overdueCount,
+      projectedRevenue: Math.round(projectedRevenue * 100) / 100,
+      currency,
+    }
+  }),
+
+  /**
+   * Cash flow forecast for the next 3 months.
+   * Based on active plans, with estimated churn from current overdue rate.
+   */
+  cashFlowForecast: adminProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const now = new Date()
+
+    const [activePlansRes, allPaymentsRes] = await Promise.all([
+      supabase
+        .from("student_plans")
+        .select("price, billing_cycle")
+        .eq("academy_id", ctx.academyId!)
+        .eq("status", "active"),
+      // Get recent payment statuses to estimate churn rate
+      supabase
+        .from("student_payments")
+        .select("status")
+        .eq("academy_id", ctx.academyId!)
+        .gte("due_date", startOfMonth(new Date(now.getFullYear(), now.getMonth() - 2, 1))),
+    ])
+
+    const activePlans = activePlansRes.data ?? []
+    const recentPayments = allPaymentsRes.data ?? []
+
+    // Calculate monthly expected revenue from active plans
+    let monthlyExpected = 0
+    for (const plan of activePlans) {
+      switch (plan.billing_cycle) {
+        case "monthly":
+          monthlyExpected += plan.price
+          break
+        case "quarterly":
+          monthlyExpected += plan.price / 3
+          break
+        case "annual":
+          monthlyExpected += plan.price / 12
+          break
+      }
+    }
+
+    // Estimate churn rate from overdue payments in recent history
+    const totalRecent = recentPayments.length
+    const overdueRecent = recentPayments.filter(
+      (p) => p.status === "overdue" || p.status === "cancelled",
+    ).length
+    const churnRate = totalRecent > 0 ? overdueRecent / totalRecent : 0
+
+    const forecast: {
+      month: string
+      expected: number
+      estimated_churn: number
+      net_forecast: number
+      active_plans: number
+    }[] = []
+
+    for (let i = 1; i <= 3; i++) {
+      const futureDate = new Date(now.getFullYear(), now.getMonth() + i, 1)
+      const expected = Math.round(monthlyExpected * 100) / 100
+      const churnLoss = Math.round(monthlyExpected * churnRate * 100) / 100
+      const net = Math.round((monthlyExpected - monthlyExpected * churnRate) * 100) / 100
+
+      forecast.push({
+        month: monthLabel(futureDate),
+        expected,
+        estimated_churn: churnLoss,
+        net_forecast: net,
+        active_plans: activePlans.length,
+      })
+    }
+
+    return forecast
+  }),
+
+  /**
+   * Lightweight overdue summary for dashboard alerts.
+   * Returns count and total of overdue payments.
+   */
+  overdueSummary: adminProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const today = new Date().toISOString().slice(0, 10)
+
+    const { data: payments } = await supabase
+      .from("student_payments")
+      .select("amount, status, due_date")
+      .eq("academy_id", ctx.academyId!)
+      .in("status", ["overdue", "pending"])
+
+    const overdue = (payments ?? []).filter(
+      (p) => p.status === "overdue" || (p.status === "pending" && p.due_date < today),
+    )
+
+    return {
+      count: overdue.length,
+      totalAmount: Math.round(overdue.reduce((s, p) => s + p.amount, 0) * 100) / 100,
+    }
+  }),
+
+  /**
+   * Payment method breakdown from student_payments.
+   * Groups paid payments by payment method with counts and totals.
+   */
+  paymentMethodBreakdown: adminProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+
+    const { data: payments } = await supabase
+      .from("student_payments")
+      .select("payment_method, amount")
+      .eq("academy_id", ctx.academyId!)
+      .eq("status", "paid")
+
+    const methods: Record<string, { count: number; total: number }> = {
+      cash: { count: 0, total: 0 },
+      pix: { count: 0, total: 0 },
+      stripe: { count: 0, total: 0 },
+      other: { count: 0, total: 0 },
+    }
+
+    for (const p of payments ?? []) {
+      const method = p.payment_method ?? "other"
+      const bucket = methods[method]!
+      bucket.count += 1
+      bucket.total += p.amount
+    }
+
+    return Object.entries(methods).map(([method, data]) => ({
+      method: method as "cash" | "pix" | "stripe" | "other",
+      count: data.count,
+      total: Math.round(data.total * 100) / 100,
+    }))
   }),
 })

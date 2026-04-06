@@ -10,6 +10,9 @@ interface SettingsFormProps {
     timezone: string
     allow_student_self_checkin: boolean
     allow_student_portal: boolean
+    pix_key?: string
+    pix_key_type?: "cpf" | "cnpj" | "email" | "phone" | "random"
+    merchant_city?: string
   }
 }
 
@@ -36,6 +39,9 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
   const [timezone, setTimezone] = useState(initialData.timezone)
   const [selfCheckin, setSelfCheckin] = useState(initialData.allow_student_self_checkin)
   const [studentPortal, setStudentPortal] = useState(initialData.allow_student_portal)
+  const [pixKey, setPixKey] = useState(initialData.pix_key ?? "")
+  const [pixKeyType, setPixKeyType] = useState<"cpf" | "cnpj" | "email" | "phone" | "random">(initialData.pix_key_type ?? "cpf")
+  const [merchantCity, setMerchantCity] = useState(initialData.merchant_city ?? "")
   const [saved, setSaved] = useState(false)
 
   const updateSettings = trpc.academy.updateSettings.useMutation({
@@ -52,6 +58,9 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
       timezone,
       allow_student_self_checkin: selfCheckin,
       allow_student_portal: studentPortal,
+      pix_key: pixKey || undefined,
+      pix_key_type: pixKey ? pixKeyType : undefined,
+      merchant_city: merchantCity || undefined,
     })
   }
 
@@ -151,6 +160,68 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
               />
             </button>
           </label>
+        </div>
+      </div>
+
+      {/* PIX Configuration */}
+      <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
+        <h2 className="mb-1 text-base font-semibold text-gray-100">PIX Payment Settings</h2>
+        <p className="mb-4 text-xs text-gray-500">
+          Configure PIX to accept student payments via QR code. Used for student billing.
+        </p>
+
+        <div className="space-y-4">
+          {/* PIX Key */}
+          <div>
+            <label htmlFor="pix_key" className="mb-1.5 block text-sm font-medium text-gray-300">
+              PIX Key
+            </label>
+            <input
+              id="pix_key"
+              type="text"
+              value={pixKey}
+              onChange={(e) => setPixKey(e.target.value)}
+              className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
+              placeholder="CPF, CNPJ, email, phone, or random key"
+              maxLength={100}
+            />
+          </div>
+
+          {/* PIX Key Type */}
+          <div>
+            <label htmlFor="pix_key_type" className="mb-1.5 block text-sm font-medium text-gray-300">
+              PIX Key Type
+            </label>
+            <select
+              id="pix_key_type"
+              value={pixKeyType}
+              onChange={(e) => setPixKeyType(e.target.value as typeof pixKeyType)}
+              className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none transition-colors focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
+            >
+              <option value="cpf">CPF</option>
+              <option value="cnpj">CNPJ</option>
+              <option value="email">Email</option>
+              <option value="phone">Phone</option>
+              <option value="random">Random Key</option>
+            </select>
+          </div>
+
+          {/* Merchant City */}
+          <div>
+            <label htmlFor="merchant_city" className="mb-1.5 block text-sm font-medium text-gray-300">
+              Merchant City
+            </label>
+            <input
+              id="merchant_city"
+              type="text"
+              value={merchantCity}
+              onChange={(e) => setMerchantCity(e.target.value)}
+              className="w-full rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 placeholder-gray-600 outline-none transition-colors focus:border-purple-500/50 focus:ring-1 focus:ring-purple-500/30"
+              placeholder="Sao Paulo"
+              maxLength={15}
+            />
+            <p className="mt-1 text-xs text-gray-600">City name for the PIX QR code (max 15 characters).</p>
+          </div>
         </div>
       </div>
 

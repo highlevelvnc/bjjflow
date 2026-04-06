@@ -118,6 +118,182 @@ export async function sendInviteEmail(
   })
 }
 
+// ─── Payment Email Templates ─────────────────────────────────────────────────
+
+/**
+ * Payment reminder — sent 3 days before due date.
+ */
+export async function sendPaymentReminderEmail(opts: {
+  to: string
+  memberName: string
+  planName: string
+  amount: number
+  currency: string
+  dueDate: string
+  academyName: string
+}) {
+  const formattedDate = new Date(opts.dueDate + "T00:00:00").toLocaleDateString("en-US", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+
+  return sendEmail({
+    to: opts.to,
+    subject: `Payment reminder — ${opts.planName} due on ${formattedDate}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
+        <h2 style="color: #3b82f6;">Payment Reminder</h2>
+        <p>Hi <strong>${opts.memberName}</strong>,</p>
+        <p>This is a friendly reminder that your upcoming payment is due soon:</p>
+        <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+          <tr>
+            <td style="padding: 8px 0; color: #888;">Plan</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">${opts.planName}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #888;">Amount</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">${opts.currency} ${opts.amount.toFixed(2)}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #888;">Due Date</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">${formattedDate}</td>
+          </tr>
+          <tr>
+            <td style="padding: 8px 0; color: #888;">Academy</td>
+            <td style="padding: 8px 0; text-align: right; font-weight: 600;">${opts.academyName}</td>
+          </tr>
+        </table>
+        <p>
+          <a href="${APP_URL}/app/portal" style="display:inline-block;padding:10px 20px;background:#3b82f6;color:#fff;text-decoration:none;border-radius:8px;">
+            View My Account
+          </a>
+        </p>
+        <p style="color:#888;font-size:13px;">Please ensure payment is made by the due date to keep your plan active.</p>
+        <p style="color:#888;font-size:13px;">— ${opts.academyName} via GrapplingFlow</p>
+      </div>
+    `,
+  })
+}
+
+/**
+ * Overdue notification — sent when a payment becomes overdue.
+ */
+export async function sendOverdueNotificationEmail(opts: {
+  to: string
+  memberName: string
+  planName: string
+  amount: number
+  currency: string
+  daysOverdue: number
+  academyName: string
+}) {
+  return sendEmail({
+    to: opts.to,
+    subject: `Payment overdue — ${opts.planName}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
+        <h2 style="color: #ef4444;">Payment Overdue</h2>
+        <p>Hi <strong>${opts.memberName}</strong>,</p>
+        <p>Your payment for <strong>${opts.planName}</strong> is now <strong>${opts.daysOverdue} day${opts.daysOverdue !== 1 ? "s" : ""}</strong> overdue.</p>
+        <div style="background: #fef2f2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 16px 0;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 6px 0; color: #888;">Amount Due</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 700; color: #ef4444;">${opts.currency} ${opts.amount.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #888;">Days Overdue</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 600;">${opts.daysOverdue}</td>
+            </tr>
+          </table>
+        </div>
+        <p>Please make your payment as soon as possible to avoid any disruption to your training.</p>
+        <p>If you have questions about your payment, please contact <strong>${opts.academyName}</strong> directly.</p>
+        <p>
+          <a href="${APP_URL}/app/portal" style="display:inline-block;padding:10px 20px;background:#ef4444;color:#fff;text-decoration:none;border-radius:8px;">
+            View My Account
+          </a>
+        </p>
+        <p style="color:#888;font-size:13px;">— ${opts.academyName} via GrapplingFlow</p>
+      </div>
+    `,
+  })
+}
+
+/**
+ * Payment confirmation — sent when a payment is successfully recorded.
+ */
+export async function sendPaymentConfirmationEmail(opts: {
+  to: string
+  memberName: string
+  planName: string
+  amount: number
+  currency: string
+  paidDate: string
+  nextDueDate: string | null
+  academyName: string
+}) {
+  const formattedPaid = new Date(opts.paidDate).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  })
+  const formattedNext = opts.nextDueDate
+    ? new Date(opts.nextDueDate + "T00:00:00").toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    : null
+
+  return sendEmail({
+    to: opts.to,
+    subject: `Payment received — ${opts.currency} ${opts.amount.toFixed(2)}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 560px; margin: 0 auto;">
+        <h2 style="color: #22c55e;">Payment Received</h2>
+        <p>Hi <strong>${opts.memberName}</strong>,</p>
+        <p>We have received your payment. Thank you!</p>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; margin: 16px 0;">
+          <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 6px 0; color: #888;">Plan</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 600;">${opts.planName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #888;">Amount Paid</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 700; color: #22c55e;">${opts.currency} ${opts.amount.toFixed(2)}</td>
+            </tr>
+            <tr>
+              <td style="padding: 6px 0; color: #888;">Date</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 600;">${formattedPaid}</td>
+            </tr>
+            ${
+              formattedNext
+                ? `<tr>
+              <td style="padding: 6px 0; color: #888;">Next Payment</td>
+              <td style="padding: 6px 0; text-align: right; font-weight: 600;">${formattedNext}</td>
+            </tr>`
+                : ""
+            }
+          </table>
+        </div>
+        <p>Keep training hard!</p>
+        <p>
+          <a href="${APP_URL}/app/portal" style="display:inline-block;padding:10px 20px;background:#22c55e;color:#fff;text-decoration:none;border-radius:8px;">
+            View My Account
+          </a>
+        </p>
+        <p style="color:#888;font-size:13px;">— ${opts.academyName} via GrapplingFlow</p>
+      </div>
+    `,
+  })
+}
+
+// ─── Other Templates ─────────────────────────────────────────────────────────
+
 export async function sendBeltPromotionEmail(
   to: string,
   memberName: string,

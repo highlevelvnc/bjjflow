@@ -684,6 +684,63 @@ export type Database = {
           updated_at?: string
         }
       }
+      student_payments: {
+        Row: {
+          id: string
+          academy_id: string
+          plan_id: string
+          member_id: string
+          amount: number
+          currency: string
+          payment_method: "cash" | "pix" | "stripe" | "other"
+          status: "pending" | "paid" | "overdue" | "cancelled"
+          due_date: string
+          paid_at: string | null
+          pix_code: string | null
+          pix_qr_data: string | null
+          notes: string | null
+          recorded_by: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          plan_id: string
+          member_id: string
+          amount: number
+          currency: string
+          payment_method?: "cash" | "pix" | "stripe" | "other"
+          status?: "pending" | "paid" | "overdue" | "cancelled"
+          due_date: string
+          paid_at?: string | null
+          pix_code?: string | null
+          pix_qr_data?: string | null
+          notes?: string | null
+          recorded_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          plan_id?: string
+          member_id?: string
+          amount?: number
+          currency?: string
+          payment_method?: "cash" | "pix" | "stripe" | "other"
+          status?: "pending" | "paid" | "overdue" | "cancelled"
+          due_date?: string
+          paid_at?: string | null
+          pix_code?: string | null
+          pix_qr_data?: string | null
+          notes?: string | null
+          recorded_by?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       notifications: {
         Row: {
           id: string

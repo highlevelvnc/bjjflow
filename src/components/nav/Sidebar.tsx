@@ -6,7 +6,7 @@ import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
   BookOpen, FileSignature, CalendarHeart, MessageSquare, ShoppingBag,
-  QrCode, BarChart3, BarChart2, CreditCard, Settings,
+  QrCode, BarChart3, BarChart2, Receipt, CreditCard, Settings,
   LogOut, Menu, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
@@ -32,6 +32,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Inventory",    href: "/app/inventory",      icon: ShoppingBag },
   { label: "Check In",     href: "/app/checkin",        icon: QrCode },
   { label: "My Progress",  href: "/app/portal",         icon: BarChart3 },
+  { label: "Student Billing",href: "/app/student-billing",icon: Receipt },
   { label: "Analytics",    href: "/app/analytics",      icon: BarChart2 },
   { label: "Billing",      href: "/app/billing",        icon: CreditCard },
   { label: "Settings",     href: "/app/settings",       icon: Settings },

@@ -18,6 +18,7 @@ import { analyticsRouter } from "./routers/analytics"
 import { financeRouter } from "./routers/finance"
 import { benchmarkRouter } from "./routers/benchmark"
 import { webhookRouter } from "./routers/webhook"
+import { studentPlanRouter } from "./routers/studentPlan"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -38,6 +39,7 @@ export const appRouter = router({
   finance: financeRouter,
   benchmark: benchmarkRouter,
   webhook: webhookRouter,
+  studentPlan: studentPlanRouter,
 })
 
 export type AppRouter = typeof appRouter
