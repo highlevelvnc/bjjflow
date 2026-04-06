@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
-  QrCode, BarChart3, Settings, CreditCard,
+  QrCode, BarChart3, BookOpen, Settings, CreditCard,
   LogOut, Menu, X,
 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
@@ -24,6 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Members",     href: "/app/members",  icon: Users },
   { label: "Classes",     href: "/app/classes",  icon: Dumbbell },
   { label: "Sessions",    href: "/app/sessions", icon: CalendarDays },
+  { label: "Techniques",  href: "/app/techniques",icon: BookOpen },
   { label: "Check In",    href: "/app/checkin",  icon: QrCode },
   { label: "My Progress", href: "/app/portal",   icon: BarChart3 },
   { label: "Billing",     href: "/app/billing",  icon: CreditCard },

@@ -2,6 +2,9 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { createServerCaller } from "@/lib/trpc/server"
 import { EditMemberForm } from "@/components/members/EditMemberForm"
+import { BELT_LABELS } from "@/lib/constants/belts"
+import type { Belt } from "@/lib/constants/belts"
+import { Award } from "lucide-react"
 
 export const metadata = { title: "Edit Member" }
 
@@ -16,11 +19,13 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
     notFound()
   }
 
+  const beltLabel = BELT_LABELS[member.belt_rank as Belt] ?? member.belt_rank
+
   return (
     <div className="mx-auto max-w-2xl">
       <div className="mb-6">
         <Link href="/app/members" className="text-sm text-gray-500 hover:text-gray-300">
-          ← Back to members
+          &larr; Back to members
         </Link>
         <h1 className="mt-2 text-2xl font-bold text-gray-100">Edit Member</h1>
         <p className="mt-1 text-sm text-gray-500">Update {member.full_name}&apos;s profile</p>
@@ -28,6 +33,23 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
 
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
         <EditMemberForm member={member} />
+      </div>
+
+      {/* Generate Certificate */}
+      <div className="mt-4 rounded-xl border border-white/8 bg-gray-900 p-5">
+        <h3 className="mb-3 text-sm font-medium text-gray-300">Certificate</h3>
+        <p className="mb-3 text-xs text-gray-500">
+          Generate a graduation certificate for {member.full_name}&apos;s current rank ({beltLabel} Belt).
+        </p>
+        <a
+          href={`/api/certificate/${member.id}?belt=${encodeURIComponent(member.belt_rank)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 rounded-lg border border-white/8 bg-white/3 px-3.5 py-2 text-sm font-medium text-gray-400 transition-colors hover:bg-white/6 hover:text-gray-200"
+        >
+          <Award className="h-4 w-4" />
+          Generate Certificate
+        </a>
       </div>
     </div>
   )

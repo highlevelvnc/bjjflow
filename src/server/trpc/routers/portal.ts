@@ -144,6 +144,155 @@ export const portalRouter = router({
   }),
 
   /**
+   * Returns weekly training streak stats for the current member.
+   */
+  myStreak: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+
+    // Get all attendance dates for this member, ordered desc
+    const { data } = await supabase
+      .from("attendance")
+      .select("checked_in_at")
+      .eq("academy_id", ctx.academyId!)
+      .eq("member_id", ctx.member!.id)
+      .order("checked_in_at", { ascending: false })
+
+    if (!data || data.length === 0)
+      return { currentStreak: 0, longestStreak: 0, totalDays: 0, lastTraining: null }
+
+    // Get unique training days
+    const trainingDays = [
+      ...new Set(data.map((a) => a.checked_in_at.split("T")[0])),
+    ]
+      .sort()
+      .reverse()
+
+    // Group by ISO week (Sunday start)
+    const weekKeys = [
+      ...new Set(
+        trainingDays.map((day) => {
+          const d = new Date(day + "T00:00:00")
+          const weekStart = new Date(d)
+          weekStart.setDate(d.getDate() - d.getDay())
+          return weekStart.toISOString().split("T")[0]!
+        }),
+      ),
+    ]
+      .sort()
+      .reverse()
+
+    // Current streak: consecutive weeks from this week going back
+    const today = new Date()
+    const thisWeekStart = new Date(today)
+    thisWeekStart.setDate(today.getDate() - today.getDay())
+    thisWeekStart.setHours(0, 0, 0, 0)
+
+    let currentStreak = 0
+    for (let i = 0; i < 52; i++) {
+      const checkWeek = new Date(thisWeekStart)
+      checkWeek.setDate(thisWeekStart.getDate() - i * 7)
+      const checkKey = checkWeek.toISOString().split("T")[0]
+      if (weekKeys.includes(checkKey!)) {
+        currentStreak++
+      } else {
+        if (i === 0) continue // skip this week if no training yet (might be Monday)
+        break
+      }
+    }
+
+    // Longest streak
+    let longestStreak = 0
+    let tempStreak = 0
+    const sortedWeeks = [...weekKeys].sort()
+    for (let i = 0; i < sortedWeeks.length; i++) {
+      if (i === 0) {
+        tempStreak = 1
+        continue
+      }
+      const prev = new Date(sortedWeeks[i - 1]! + "T00:00:00")
+      const curr = new Date(sortedWeeks[i]! + "T00:00:00")
+      const diffDays = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24)
+      if (diffDays <= 7) {
+        tempStreak++
+      } else {
+        longestStreak = Math.max(longestStreak, tempStreak)
+        tempStreak = 1
+      }
+    }
+    longestStreak = Math.max(longestStreak, tempStreak)
+
+    return {
+      currentStreak,
+      longestStreak,
+      totalDays: trainingDays.length,
+      lastTraining: trainingDays[0] ?? null,
+    }
+  }),
+
+  /**
+   * Compares the current member's attendance to the academy average.
+   */
+  myComparison: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    const thirtyDaysAgo = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .split("T")[0]!
+
+    // My attendance in last 30 days
+    const { count: myCount } = await supabase
+      .from("attendance")
+      .select("id", { count: "exact", head: true })
+      .eq("academy_id", ctx.academyId!)
+      .eq("member_id", ctx.member!.id)
+      .gte("checked_in_at", thirtyDaysAgo)
+
+    // All active students
+    const { data: allStudents } = await supabase
+      .from("members")
+      .select("id")
+      .eq("academy_id", ctx.academyId!)
+      .eq("role", "student")
+      .eq("status", "active")
+
+    const studentIds = (allStudents ?? []).map((s) => s.id)
+
+    if (studentIds.length === 0)
+      return { myCount: 0, avgCount: 0, percentile: 0, totalStudents: 0 }
+
+    const { data: allAttendance } = await supabase
+      .from("attendance")
+      .select("member_id")
+      .eq("academy_id", ctx.academyId!)
+      .in("member_id", studentIds)
+      .gte("checked_in_at", thirtyDaysAgo)
+
+    // Count per student
+    const counts = new Map<string, number>()
+    for (const a of allAttendance ?? []) {
+      counts.set(a.member_id, (counts.get(a.member_id) ?? 0) + 1)
+    }
+
+    const allCounts = studentIds.map((id) => counts.get(id) ?? 0)
+    const avgCount =
+      allCounts.length > 0
+        ? Math.round(allCounts.reduce((a, b) => a + b, 0) / allCounts.length)
+        : 0
+
+    // Percentile: what % of students did I outperform?
+    const myActual = myCount ?? 0
+    const belowMe = allCounts.filter((c) => c < myActual).length
+    const percentile =
+      allCounts.length > 0 ? Math.round((belowMe / allCounts.length) * 100) : 0
+
+    return {
+      myCount: myActual,
+      avgCount,
+      percentile,
+      totalStudents: studentIds.length,
+    }
+  }),
+
+  /**
    * Returns belt promotion history for the current member.
    */
   myBeltHistory: protectedProcedure.query(async ({ ctx }) => {

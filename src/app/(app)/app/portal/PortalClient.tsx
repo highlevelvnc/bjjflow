@@ -2,6 +2,11 @@
 
 import { trpc } from "@/lib/trpc/client"
 import { BeltBadge } from "@/components/ui/BeltBadge"
+import { BeltJourney } from "@/components/portal/BeltJourney"
+import { ShareButton } from "@/components/portal/ShareButton"
+import { TechniqueOfDay } from "@/components/portal/TechniqueOfDay"
+import { StreakCard } from "@/components/portal/StreakCard"
+import { ComparisonCard } from "@/components/portal/ComparisonCard"
 import { Loader2, TrendingUp, Calendar, Award, Clock } from "lucide-react"
 
 export function PortalClient() {
@@ -22,19 +27,33 @@ export function PortalClient() {
     <div className="space-y-6">
       {/* Profile card */}
       {profile && (
-        <div className="flex items-center gap-4 rounded-xl border border-white/8 bg-gray-900 p-5">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-500/15 text-lg font-bold text-brand-400">
-            {profile.full_name.charAt(0).toUpperCase()}
-          </div>
-          <div>
-            <h2 className="text-lg font-semibold text-gray-100">{profile.full_name}</h2>
-            <div className="mt-1 flex items-center gap-2">
-              <BeltBadge belt={profile.belt_rank} stripes={profile.stripes} />
-              <span className="text-xs capitalize text-gray-500">{profile.role}</span>
+        <div className="flex items-center justify-between rounded-xl border border-white/8 bg-gray-900 p-5">
+          <div className="flex items-center gap-4">
+            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-500/15 text-lg font-bold text-brand-400">
+              {profile.full_name.charAt(0).toUpperCase()}
+            </div>
+            <div>
+              <h2 className="text-lg font-semibold text-gray-100">{profile.full_name}</h2>
+              <div className="mt-1 flex items-center gap-2">
+                <BeltBadge belt={profile.belt_rank} stripes={profile.stripes} />
+                <span className="text-xs capitalize text-gray-500">{profile.role}</span>
+              </div>
             </div>
           </div>
+
+          {/* Share button */}
+          {stats && (
+            <ShareButton
+              name={profile.full_name}
+              belt={profile.belt_rank}
+              totalSessions={stats.totalAttendance}
+            />
+          )}
         </div>
       )}
+
+      {/* Technique of the Day */}
+      <TechniqueOfDay />
 
       {/* Stats grid */}
       {stats && (
@@ -62,26 +81,21 @@ export function PortalClient() {
         </div>
       )}
 
-      {/* Belt history */}
-      {beltHistory && beltHistory.length > 0 && (
-        <div className="rounded-xl border border-white/8 bg-gray-900 p-5">
-          <h3 className="mb-4 text-sm font-medium text-gray-300">Belt Journey</h3>
-          <div className="space-y-3">
-            {beltHistory.map((b) => (
-              <div key={b.id} className="flex items-center gap-3">
-                <BeltBadge belt={b.belt_rank} stripes={b.stripes} />
-                <span className="text-xs text-gray-500">
-                  {new Date(b.promoted_at).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-                {b.notes && <span className="text-xs text-gray-600">{b.notes}</span>}
-              </div>
-            ))}
-          </div>
-        </div>
+      {/* Streak & Comparison */}
+      <div className="grid gap-4 sm:grid-cols-2">
+        <StreakCard />
+        <ComparisonCard />
+      </div>
+
+      {/* Belt Journey timeline */}
+      {profile && stats && (
+        <BeltJourney
+          currentBelt={profile.belt_rank}
+          currentStripes={profile.stripes}
+          memberSince={stats.memberSince}
+          memberId={profile.id}
+          beltHistory={beltHistory ?? []}
+        />
       )}
 
       {/* Recent attendance */}
@@ -110,9 +124,9 @@ export function PortalClient() {
                           day: "numeric",
                         })
                       : "Unknown date"}
-                    {a.session?.start_time && ` · ${a.session.start_time}`}
+                    {a.session?.start_time && ` \u00b7 ${a.session.start_time}`}
                     {a.session?.gi_type && (
-                      <span className="ml-1 capitalize">· {a.session.gi_type}</span>
+                      <span className="ml-1 capitalize">\u00b7 {a.session.gi_type}</span>
                     )}
                   </p>
                 </div>

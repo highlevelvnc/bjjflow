@@ -429,11 +429,17 @@ export type Database = {
           academy_id: string
           name: string
           description: string | null
-          position: string | null
-          category: string | null
-          belt_level: string | null
+          position: string
+          category: string
+          sub_category: string | null
+          belt_level: string
+          difficulty: number
+          instructions: string | null
+          key_points: string[] | null
+          tags: string[]
           is_published: boolean
-          created_by: string
+          sort_order: number
+          created_by: string | null
           created_at: string
           updated_at: string
         }
@@ -442,11 +448,17 @@ export type Database = {
           academy_id: string
           name: string
           description?: string | null
-          position?: string | null
-          category?: string | null
-          belt_level?: string | null
+          position: string
+          category: string
+          sub_category?: string | null
+          belt_level?: string
+          difficulty?: number
+          instructions?: string | null
+          key_points?: string[] | null
+          tags?: string[]
           is_published?: boolean
-          created_by: string
+          sort_order?: number
+          created_by?: string | null
           created_at?: string
           updated_at?: string
         }
@@ -456,11 +468,17 @@ export type Database = {
           academy_id?: string
           name?: string
           description?: string | null
-          position?: string | null
-          category?: string | null
-          belt_level?: string | null
+          position?: string
+          category?: string
+          sub_category?: string | null
+          belt_level?: string
+          difficulty?: number
+          instructions?: string | null
+          key_points?: string[] | null
+          tags?: string[]
           is_published?: boolean
-          created_by?: string
+          sort_order?: number
+          created_by?: string | null
           created_at?: string
           updated_at?: string
         }
