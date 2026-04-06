@@ -80,8 +80,8 @@ export async function createAcademy(input: SetupInput) {
     .single()
 
   if (academyError || !academy) {
-    console.error("Failed to create academy:", academyError)
-    return { error: "Failed to create academy. Please try again." }
+    console.error("Failed to create academy:", JSON.stringify(academyError, null, 2))
+    return { error: `Failed to create academy: ${academyError?.message ?? "Unknown error"}. Please check your Supabase connection and ensure migrations have been run.` }
   }
 
   // 3. Insert owner as first member (admin)
@@ -97,7 +97,7 @@ export async function createAcademy(input: SetupInput) {
   })
 
   if (memberError) {
-    console.error("Failed to create member:", memberError)
+    console.error("Failed to create member:", JSON.stringify(memberError, null, 2))
     // Clean up the academy we just created
     await supabaseAdmin.from("academies").delete().eq("id", academy.id)
     return { error: "Failed to set up your profile. Please try again." }

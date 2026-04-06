@@ -53,7 +53,7 @@ export function SetupForm() {
     startTransition(async () => {
       const result = await createAcademy({
         academyName: academyName.trim(),
-        countryCode: countryCode === "OTHER" ? "XX" : countryCode,
+        countryCode: countryCode === "OTHER" ? "US" : countryCode,
         timezone,
       })
 

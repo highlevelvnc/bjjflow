@@ -57,8 +57,8 @@ async function handleSubscriptionChange(subscription: Stripe.Subscription) {
   await getAdmin()
     .from("academies")
     .update({
-      status: academyStatus as "active" | "suspended" | "cancelled" | "deleted",
-      plan: plan as "starter" | "growth" | "pro",
+      status: academyStatus as "trialing" | "active" | "past_due" | "suspended" | "cancelled" | "deleted",
+      plan: plan as "starter" | "growth" | "pro" | "enterprise",
       stripe_subscription_id: subscription.id,
     })
     .eq("stripe_customer_id", customerId)

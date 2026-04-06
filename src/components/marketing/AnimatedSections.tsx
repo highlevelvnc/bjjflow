@@ -229,7 +229,7 @@ function Hero({ t }: { t: LandingMessages }) {
           </motion.p>
         </motion.div>
 
-        {/* SaaS video mockup */}
+        {/* Dashboard preview mockup */}
         <motion.div
           className="relative mx-auto mt-16 max-w-5xl px-4"
           initial={{ opacity: 0, y: 40 }}
@@ -237,11 +237,9 @@ function Hero({ t }: { t: LandingMessages }) {
           transition={{ delay: 0.5, duration: 0.8, ease: [0, 0, 0.2, 1] }}
         >
           <div className="relative mx-auto max-w-4xl">
-            {/* Glow behind */}
             <div aria-hidden className="pointer-events-none absolute -inset-4 rounded-3xl bg-brand-500/10 blur-2xl" />
-
             <div className="relative overflow-hidden rounded-2xl border border-white/10 bg-gray-900 shadow-2xl shadow-black/50">
-              {/* Browser chrome */}
+              {/* Browser bar */}
               <div className="flex items-center gap-2 border-b border-white/8 bg-gray-950 px-4 py-3">
                 <div className="flex gap-1.5">
                   <div className="h-3 w-3 rounded-full bg-red-500/60" />
@@ -254,13 +252,62 @@ function Hero({ t }: { t: LandingMessages }) {
                   </div>
                 </div>
               </div>
-              {/* Video content */}
-              <video autoPlay muted loop playsInline preload="metadata" className="w-full">
-                <source src="/videos/saas.mp4" type="video/mp4" />
-              </video>
+              {/* App shell */}
+              <div className="flex h-80">
+                <div className="w-44 shrink-0 border-r border-white/8 bg-gray-950 p-3 flex flex-col gap-1">
+                  <div className="mb-3 px-2 pt-1">
+                    <div className="text-xs font-semibold text-white">Alliance SP</div>
+                    <div className="text-[10px] text-gray-500">pro plan</div>
+                  </div>
+                  {["Dashboard", "Members", "Classes", "Sessions"].map((item, i) => (
+                    <div key={item} className={`flex items-center gap-2 rounded-lg px-2 py-1.5 text-xs ${i === 0 ? "bg-brand-500/15 text-brand-400 font-medium" : "text-gray-400"}`}>
+                      <div className={`h-1.5 w-1.5 rounded-full ${i === 0 ? "bg-brand-400" : "bg-gray-600"}`} />
+                      {item}
+                    </div>
+                  ))}
+                </div>
+                <div className="flex-1 overflow-hidden bg-gray-900/50 p-4">
+                  <div className="mb-4">
+                    <div className="text-sm font-semibold text-white">Dashboard</div>
+                    <div className="text-xs text-gray-500">Alliance SP · Pro plan</div>
+                  </div>
+                  <div className="mb-4 grid grid-cols-4 gap-2">
+                    {[["48", "Members"], ["32", "Students"], ["12", "Instructors"], ["4", "Admins"]].map(([n, l]) => (
+                      <div key={l} className="rounded-lg border border-white/8 bg-gray-800/60 p-2">
+                        <div className="text-[10px] text-gray-500">{l}</div>
+                        <div className="text-lg font-bold text-white">{n}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="rounded-lg border border-white/8 bg-gray-800/60 p-3">
+                      <div className="mb-2 text-[10px] font-medium uppercase tracking-wide text-gray-400">Upcoming Sessions</div>
+                      {[["Mon", "Fundamentals", "18:00"], ["Wed", "Advanced", "19:30"], ["Fri", "Open Mat", "20:00"]].map(([d, c, ti]) => (
+                        <div key={c} className="flex items-center gap-2 border-b border-white/5 py-1 last:border-0">
+                          <div className="flex h-6 w-6 items-center justify-center rounded bg-brand-500/20 text-[9px] font-bold text-brand-400">{d}</div>
+                          <div className="flex-1">
+                            <div className="text-[10px] font-medium text-gray-300">{c}</div>
+                            <div className="text-[9px] text-gray-600">{ti}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="rounded-lg border border-white/8 bg-gray-800/60 p-3">
+                      <div className="mb-2 text-[10px] font-medium uppercase tracking-wide text-gray-400">At-Risk Students</div>
+                      {[["João S.", "Purple", "28%"], ["Ana L.", "Blue", "31%"], ["Carlos M.", "White", "18%"]].map(([n, b, r]) => (
+                        <div key={n} className="flex items-center gap-2 border-b border-white/5 py-1 last:border-0">
+                          <div className="flex h-5 w-5 items-center justify-center rounded-full bg-red-500/20 text-[8px] font-bold text-red-400">{r}</div>
+                          <div className="flex-1">
+                            <div className="text-[10px] font-medium text-gray-300">{n}</div>
+                            <div className="text-[9px] text-gray-600">{b} Belt</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            {/* Bottom fade */}
             <div aria-hidden className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-gray-950 to-transparent" />
           </div>
         </motion.div>

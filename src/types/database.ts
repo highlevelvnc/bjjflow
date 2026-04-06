@@ -26,11 +26,11 @@ export type Database = {
           name: string
           slug: string
           owner_id: string
-          status: "active" | "suspended" | "cancelled" | "deleted"
-          plan: "starter" | "growth" | "pro"
+          status: "trialing" | "active" | "past_due" | "suspended" | "cancelled" | "deleted"
+          plan: "starter" | "growth" | "pro" | "enterprise"
           timezone: string
           country_code: string
-          currency: "BRL" | "EUR"
+          currency: "BRL" | "EUR" | "USD" | "GBP"
           logo_url: string | null
           stripe_customer_id: string | null
           stripe_subscription_id: string | null
@@ -45,11 +45,11 @@ export type Database = {
           name: string
           slug: string
           owner_id: string
-          status?: "active" | "suspended" | "cancelled" | "deleted"
-          plan?: "starter" | "growth" | "pro"
+          status?: "trialing" | "active" | "past_due" | "suspended" | "cancelled" | "deleted"
+          plan?: "starter" | "growth" | "pro" | "enterprise"
           timezone?: string
           country_code: string
-          currency?: "BRL" | "EUR"
+          currency?: "BRL" | "EUR" | "USD" | "GBP"
           logo_url?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
@@ -64,11 +64,11 @@ export type Database = {
           name?: string
           slug?: string
           owner_id?: string
-          status?: "active" | "suspended" | "cancelled" | "deleted"
-          plan?: "starter" | "growth" | "pro"
+          status?: "trialing" | "active" | "past_due" | "suspended" | "cancelled" | "deleted"
+          plan?: "starter" | "growth" | "pro" | "enterprise"
           timezone?: string
           country_code?: string
-          currency?: "BRL" | "EUR"
+          currency?: "BRL" | "EUR" | "USD" | "GBP"
           logo_url?: string | null
           stripe_customer_id?: string | null
           stripe_subscription_id?: string | null
