@@ -15,7 +15,7 @@ export const academyRouter = router({
     const { data, error } = await supabase
       .from("academies")
       .select(
-        "id, name, slug, logo_url, status, plan, timezone, currency, allow_student_self_checkin, allow_student_portal",
+        "id, name, slug, logo_url, status, plan, timezone, currency, allow_student_self_checkin, allow_student_portal, block_after_days_overdue",
       )
       // enforceAcademyMember guarantees ctx.academyId is non-null
       .eq("id", ctx.academyId!)
@@ -62,6 +62,7 @@ export const academyRouter = router({
         logo_url: z.string().url().nullable().optional(),
         allow_student_self_checkin: z.boolean().optional(),
         allow_student_portal: z.boolean().optional(),
+        block_after_days_overdue: z.number().int().min(0).max(365).optional(),
         pix_key: z.string().max(100).optional(),
         pix_key_type: z.enum(["cpf", "cnpj", "email", "phone", "random"]).optional(),
         merchant_city: z.string().max(15).optional(),

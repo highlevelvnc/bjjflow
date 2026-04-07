@@ -26,6 +26,7 @@ export default async function SettingsPage() {
           timezone: academy.timezone,
           allow_student_self_checkin: academy.allow_student_self_checkin,
           allow_student_portal: academy.allow_student_portal,
+          block_after_days_overdue: academy.block_after_days_overdue,
         }}
       />
 

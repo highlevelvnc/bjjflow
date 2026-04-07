@@ -206,7 +206,7 @@ export const memberRouter = router({
         .from("members")
         .insert({
           academy_id: ctx.academyId!,
-          created_by: ctx.userId!,
+          created_by: ctx.member?.id ?? null,
           full_name: input.full_name,
           email: input.email || null,
           role: input.role,
@@ -222,8 +222,9 @@ export const memberRouter = router({
         .single()
 
       if (error) {
-        if (error.code === "23505") throw new Error("A member with this email already exists")
-        throw new Error("Failed to create member")
+        console.error("[createManaged] supabase error:", error)
+        if (error.code === "23505") throw new Error("Já existe um aluno com esse email")
+        throw new Error(`Falha ao criar aluno: ${error.message}`)
       }
 
       return data

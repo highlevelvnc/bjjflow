@@ -10,6 +10,7 @@ interface SettingsFormProps {
     timezone: string
     allow_student_self_checkin: boolean
     allow_student_portal: boolean
+    block_after_days_overdue: number
     pix_key?: string
     pix_key_type?: "cpf" | "cnpj" | "email" | "phone" | "random"
     merchant_city?: string
@@ -39,6 +40,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
   const [timezone, setTimezone] = useState(initialData.timezone)
   const [selfCheckin, setSelfCheckin] = useState(initialData.allow_student_self_checkin)
   const [studentPortal, setStudentPortal] = useState(initialData.allow_student_portal)
+  const [blockDays, setBlockDays] = useState(initialData.block_after_days_overdue)
   const [pixKey, setPixKey] = useState(initialData.pix_key ?? "")
   const [pixKeyType, setPixKeyType] = useState<"cpf" | "cnpj" | "email" | "phone" | "random">(initialData.pix_key_type ?? "cpf")
   const [merchantCity, setMerchantCity] = useState(initialData.merchant_city ?? "")
@@ -58,6 +60,7 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
       timezone,
       allow_student_self_checkin: selfCheckin,
       allow_student_portal: studentPortal,
+      block_after_days_overdue: blockDays,
       pix_key: pixKey || undefined,
       pix_key_type: pixKey ? pixKeyType : undefined,
       merchant_city: merchantCity || undefined,
@@ -161,6 +164,31 @@ export function SettingsForm({ initialData }: SettingsFormProps) {
             </button>
           </label>
         </div>
+      </div>
+
+      {/* Bloqueio por inadimplência */}
+      <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
+        <h2 className="mb-1 text-base font-semibold text-gray-100">Bloqueio por Inadimplência</h2>
+        <p className="mb-4 text-xs text-gray-500">
+          Bloqueia automaticamente o check-in (catraca/QR) e o portal do aluno quando houver pagamento em atraso.
+        </p>
+        <label htmlFor="block_days" className="mb-1.5 block text-sm font-medium text-gray-300">
+          Bloquear após (dias de atraso)
+        </label>
+        <input
+          id="block_days"
+          type="number"
+          min={0}
+          max={365}
+          value={blockDays}
+          onChange={(e) => setBlockDays(Math.max(0, Math.min(365, Number(e.target.value) || 0)))}
+          className="w-32 rounded-lg border border-white/12 bg-white/6 px-3 py-2 text-sm text-gray-100 outline-none transition-colors focus:border-brand-500/50 focus:ring-1 focus:ring-brand-500/30"
+        />
+        <p className="mt-2 text-xs text-gray-600">
+          {blockDays === 0
+            ? "Bloqueio desativado — alunos podem treinar mesmo em atraso."
+            : `Alunos com qualquer cobrança em atraso há ${blockDays} dia(s) ou mais não conseguirão fazer check-in.`}
+        </p>
       </div>
 
       {/* PIX Configuration */}

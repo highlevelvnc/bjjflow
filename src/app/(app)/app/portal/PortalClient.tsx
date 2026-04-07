@@ -7,6 +7,7 @@ import { ShareButton } from "@/components/portal/ShareButton"
 import { TechniqueOfDay } from "@/components/portal/TechniqueOfDay"
 import { StreakCard } from "@/components/portal/StreakCard"
 import { ComparisonCard } from "@/components/portal/ComparisonCard"
+import { BillingBlockBanner } from "@/components/portal/BillingBlockBanner"
 import { Loader2, TrendingUp, Calendar, Award, Clock } from "lucide-react"
 
 export function PortalClient() {
@@ -25,6 +26,9 @@ export function PortalClient() {
 
   return (
     <div className="space-y-6">
+      {/* Billing block banner */}
+      <BillingBlockBanner />
+
       {/* Profile card */}
       {profile && (
         <div className="flex items-center justify-between rounded-xl border border-white/8 bg-gray-900 p-5">

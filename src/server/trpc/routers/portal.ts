@@ -3,6 +3,7 @@ import { z } from "zod"
 import { router } from "../init"
 import { protectedProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
+import { getMemberBillingStatus } from "@/lib/billing/block"
 
 export const portalRouter = router({
   /**
@@ -290,6 +291,15 @@ export const portalRouter = router({
       percentile,
       totalStudents: studentIds.length,
     }
+  }),
+
+  /**
+   * Returns the current member's billing status (overdue payments + block flag).
+   * Used by the portal to show a payment-blocked banner.
+   */
+  myBillingStatus: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+    return getMemberBillingStatus(supabase, ctx.academyId!, ctx.member!.id)
   }),
 
   /**

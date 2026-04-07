@@ -3,6 +3,7 @@ import { z } from "zod"
 import { router } from "../init"
 import { protectedProcedure, instructorProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
+import { getMemberBillingStatus } from "@/lib/billing/block"
 
 export const checkinRouter = router({
   /**
@@ -24,6 +25,18 @@ export const checkinRouter = router({
 
       if (!academy?.allow_student_self_checkin) {
         throw new Error("Self check-in is not enabled for this academy")
+      }
+
+      // Block check-in if member has overdue payments past the academy threshold
+      const billing = await getMemberBillingStatus(
+        supabase,
+        ctx.academyId!,
+        ctx.member!.id,
+      )
+      if (billing.blocked) {
+        throw new Error(
+          `Check-in bloqueado: você tem ${billing.overdueCount} cobrança(s) em atraso (${billing.daysOverdue} dias). Regularize seu pagamento para voltar a treinar.`,
+        )
       }
 
       // Verify session exists and is not cancelled
