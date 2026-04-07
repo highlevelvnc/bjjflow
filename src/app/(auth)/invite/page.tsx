@@ -20,6 +20,12 @@ export const metadata: Metadata = {
   title: "Aceitar Convite — Kumo",
 }
 
+const ROLE_LABEL: Record<string, string> = {
+  student: "aluno",
+  instructor: "instrutor",
+  admin: "administrador",
+}
+
 interface InvitePageProps {
   searchParams: Promise<{ token?: string }>
 }
@@ -112,6 +118,9 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
     .single()
   const academyName = academy?.name ?? "an academy"
 
+  const roleLabel = ROLE_LABEL[invite.role] ?? invite.role
+  const isStudentInvite = invite.role === "student"
+
   // Not logged in — show sign up / log in prompt
   if (!user) {
     return (
@@ -121,28 +130,40 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
             <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
               <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
             </div>
-            <h1 className="text-xl font-bold text-white">You&apos;re Invited!</h1>
+            <h1 className="text-xl font-bold text-white">
+              {isStudentInvite ? "Bem-vindo ao tatame!" : "Você foi convidado!"}
+            </h1>
             <p className="mt-2 text-sm text-gray-400">
-              You&apos;ve been invited to join <span className="font-medium text-gray-200">{academyName}</span> as{" "}
-              <span className="font-medium text-brand-300">{invite.role}</span>.
+              {isStudentInvite ? (
+                <>
+                  A academia <span className="font-medium text-gray-200">{academyName}</span> liberou seu acesso ao app de aluno.
+                </>
+              ) : (
+                <>
+                  Você foi convidado para entrar em <span className="font-medium text-gray-200">{academyName}</span> como{" "}
+                  <span className="font-medium text-brand-300">{roleLabel}</span>.
+                </>
+              )}
             </p>
           </div>
 
           <div className="mt-6 space-y-3">
             <p className="text-center text-sm text-gray-500">
-              Create an account or log in to accept this invite.
+              {isStudentInvite
+                ? "Crie uma conta para começar a treinar."
+                : "Crie uma conta ou faça login para aceitar o convite."}
             </p>
             <Link
-              href={`/signup?redirectTo=${encodeURIComponent(`/invite?token=${token}`)}`}
+              href={`/signup?redirectTo=${encodeURIComponent(`/invite?token=${token}`)}&email=${encodeURIComponent(invite.email)}`}
               className="block w-full rounded-lg bg-brand-500 px-4 py-2.5 text-center text-sm font-medium text-white transition-colors hover:bg-brand-400"
             >
-              Create Account
+              Criar conta
             </Link>
             <Link
               href={`/login?redirectTo=${encodeURIComponent(`/invite?token=${token}`)}`}
               className="block w-full rounded-lg border border-white/12 px-4 py-2.5 text-center text-sm font-medium text-gray-300 transition-colors hover:bg-white/6"
             >
-              Log In
+              Já tenho conta
             </Link>
           </div>
         </div>
@@ -160,10 +181,12 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
           <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-500 shadow-xl shadow-brand-500/30">
             <Image src="/kumologo.png" alt="Kumo" width={32} height={32} className="rounded-lg" />
           </div>
-          <h1 className="text-xl font-bold text-white">Accept Invite</h1>
+          <h1 className="text-xl font-bold text-white">
+            {isStudentInvite ? "Confirmar acesso" : "Aceitar convite"}
+          </h1>
           <p className="mt-2 text-sm text-gray-400">
-            Join <span className="font-medium text-gray-200">{academyName}</span> as{" "}
-            <span className="font-medium text-brand-300">{invite.role}</span>.
+            Entrar em <span className="font-medium text-gray-200">{academyName}</span> como{" "}
+            <span className="font-medium text-brand-300">{roleLabel}</span>.
           </p>
         </div>
 
@@ -171,18 +194,19 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
           <div className="mt-6">
             <div className="rounded-lg border border-amber-500/20 bg-amber-500/10 p-3">
               <p className="text-sm text-amber-300">
-                This invite was sent to <span className="font-medium">{invite.email}</span>, but you
-                are logged in as <span className="font-medium">{user.email}</span>.
+                Esse convite foi enviado para{" "}
+                <span className="font-medium">{invite.email}</span>, mas você está
+                logado como <span className="font-medium">{user.email}</span>.
               </p>
               <p className="mt-1 text-xs text-amber-400/70">
-                Please log in with the correct email to accept this invite.
+                Saia da conta atual e entre com o email correto.
               </p>
             </div>
             <Link
               href={`/login?redirectTo=${encodeURIComponent(`/invite?token=${token}`)}`}
               className="mt-4 block w-full rounded-lg border border-white/12 px-4 py-2.5 text-center text-sm font-medium text-gray-300 transition-colors hover:bg-white/6"
             >
-              Switch Account
+              Trocar conta
             </Link>
           </div>
         ) : (
@@ -194,7 +218,7 @@ export default async function InvitePage({ searchParams }: InvitePageProps) {
                 </div>
                 <div className="min-w-0">
                   <p className="truncate text-sm font-medium text-gray-200">{user.email}</p>
-                  <p className="text-xs text-gray-500">Logged in</p>
+                  <p className="text-xs text-gray-500">Logado</p>
                 </div>
               </div>
             </div>

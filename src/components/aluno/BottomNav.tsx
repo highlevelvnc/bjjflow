@@ -36,7 +36,10 @@ const ITEMS: NavItem[] = [
     href: "/aluno/mural",
     label: "Mural",
     icon: Megaphone,
-    match: (p) => p.startsWith("/aluno/mural") || p.startsWith("/aluno/conquistas"),
+    match: (p) =>
+      p.startsWith("/aluno/mural") ||
+      p.startsWith("/aluno/conquistas") ||
+      p.startsWith("/aluno/badges"),
   },
   {
     href: "/aluno/perfil",

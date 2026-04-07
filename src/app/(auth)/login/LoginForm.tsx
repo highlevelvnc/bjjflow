@@ -29,7 +29,7 @@ export function LoginForm({
 }: LoginFormProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get("redirectTo") ?? "/app"
+  const explicitRedirect = searchParams.get("redirectTo")
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -42,7 +42,7 @@ export function LoginForm({
     setPending(true)
 
     const supabase = createBrowserSupabase()
-    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
 
     if (authError) {
       setError(errorInvalid)
@@ -50,7 +50,17 @@ export function LoginForm({
       return
     }
 
-    router.push(redirectTo)
+    // Resolve where to send the user:
+    // 1. Honor explicit ?redirectTo if present (used by invite flow)
+    // 2. Otherwise look at the role hint baked into JWT app_metadata
+    //    by invite.accept — students go to /aluno, everyone else to /app
+    let dest = explicitRedirect ?? "/app"
+    if (!explicitRedirect) {
+      const role = data.user?.app_metadata?.member_role as string | undefined
+      if (role === "student") dest = "/aluno"
+    }
+
+    router.push(dest)
     router.refresh()
   }
 

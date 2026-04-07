@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { createServerCaller } from "@/lib/trpc/server"
 import { EditMemberForm } from "@/components/members/EditMemberForm"
+import { StudentAccessCard } from "@/components/members/StudentAccessCard"
 import { BELT_LABELS } from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 import { Award } from "lucide-react"
@@ -34,6 +35,21 @@ export default async function EditMemberPage({ params }: { params: Promise<{ id:
       <div className="rounded-xl border border-white/8 bg-gray-900 p-6">
         <EditMemberForm member={member} />
       </div>
+
+      {/* Acesso ao app do aluno */}
+      {member.role === "student" && (
+        <div className="mt-4">
+          <StudentAccessCard
+            member={{
+              id: member.id,
+              full_name: member.full_name,
+              email: member.email,
+              role: member.role,
+              has_portal_access: member.has_portal_access ?? false,
+            }}
+          />
+        </div>
+      )}
 
       {/* Gerar Certificado */}
       <div className="mt-4 rounded-xl border border-white/8 bg-gray-900 p-5">

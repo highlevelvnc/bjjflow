@@ -53,6 +53,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
     // Non-fatal — sidebar falls back to defaults above
   }
 
+  // Students never see the admin dashboard — they live in /aluno
+  if (memberRole === "student") {
+    redirect("/aluno")
+  }
+
   return (
     <div className="relative flex min-h-screen bg-gray-950">
       {/* Ambient background orbs */}

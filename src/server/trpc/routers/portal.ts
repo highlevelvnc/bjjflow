@@ -4,6 +4,124 @@ import { router } from "../init"
 import { protectedProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
 import { getMemberBillingStatus } from "@/lib/billing/block"
+import {
+  computeXp,
+  levelFromXp,
+  tierForLevel,
+} from "@/lib/gamification/levels"
+import {
+  computeAchievements,
+  bonusXpFromAchievements,
+} from "@/lib/gamification/achievements"
+import { BJJ_TECHNIQUES } from "@/lib/bjj/techniques"
+import type { AchievementStats } from "@/lib/gamification/achievements"
+
+// ─── Helpers ──────────────────────────────────────────────────────────────
+
+/**
+ * Aggregates everything `computeXp` and `computeAchievements` need from the
+ * data we already store. Used by `myProgress` and `myAchievements` so the
+ * pure functions stay decoupled from Supabase.
+ *
+ * Computes longest weekly streak inline (instead of relying on `myStreak`)
+ * because we need it without an extra HTTP hop.
+ */
+async function loadGamificationStats(
+  academyId: string,
+  memberId: string,
+  meta: { memberSince: string; currentBelt: string },
+): Promise<AchievementStats> {
+  const supabase = await createServerSupabase()
+
+  // Run independent queries in parallel
+  const [attendanceRes, beltHistoryRes, titlesRes, matchesRes] =
+    await Promise.all([
+      supabase
+        .from("attendance")
+        .select("checked_in_at")
+        .eq("academy_id", academyId)
+        .eq("member_id", memberId),
+      supabase
+        .from("member_belt_history")
+        .select("belt_rank, promoted_at")
+        .eq("academy_id", academyId)
+        .eq("member_id", memberId)
+        .order("promoted_at", { ascending: true }),
+      supabase
+        .from("member_titles")
+        .select("placement, date, created_at")
+        .eq("academy_id", academyId)
+        .eq("member_id", memberId),
+      supabase
+        .from("competition_matches")
+        .select("result, method")
+        .eq("academy_id", academyId)
+        .eq("member_id", memberId),
+    ])
+
+  const attendanceRows = attendanceRes.data ?? []
+  const totalAttendance = attendanceRows.length
+
+  // Longest weekly streak (consecutive ISO weeks with at least one training)
+  const weekKeys = [
+    ...new Set(
+      attendanceRows
+        .map((a) => {
+          const day = a.checked_in_at?.split("T")[0]
+          if (!day) return null
+          const d = new Date(day + "T00:00:00")
+          const weekStart = new Date(d)
+          weekStart.setDate(d.getDate() - d.getDay())
+          return weekStart.toISOString().split("T")[0]!
+        })
+        .filter((w): w is string => !!w),
+    ),
+  ].sort()
+
+  let longestStreak = 0
+  let temp = 0
+  for (let i = 0; i < weekKeys.length; i++) {
+    if (i === 0) {
+      temp = 1
+      continue
+    }
+    const prev = new Date(weekKeys[i - 1]! + "T00:00:00")
+    const curr = new Date(weekKeys[i]! + "T00:00:00")
+    const diffDays = (curr.getTime() - prev.getTime()) / (1000 * 60 * 60 * 24)
+    if (diffDays <= 7) {
+      temp++
+    } else {
+      longestStreak = Math.max(longestStreak, temp)
+      temp = 1
+    }
+  }
+  longestStreak = Math.max(longestStreak, temp)
+
+  return {
+    totalAttendance,
+    longestStreak,
+    currentBelt: meta.currentBelt,
+    beltHistory: (beltHistoryRes.data ?? []).map((b) => ({
+      belt_rank: b.belt_rank,
+      promoted_at: b.promoted_at,
+    })),
+    titles: (titlesRes.data ?? []).map((t) => ({
+      placement: t.placement ?? "",
+      date: t.date ?? null,
+      created_at: t.created_at ?? new Date().toISOString(),
+    })),
+    matches: (matchesRes.data ?? []).map((m) => ({
+      result: m.result ?? "",
+      method: m.method ?? "",
+    })),
+    memberSince: meta.memberSince,
+    // Tracked client-side via localStorage; server defaults to 0 so the
+    // achievements still appear with 0/N progress until the student opens
+    // techniques (the page increments locally).
+    techniquesStudied: 0,
+    techniquesLibrarySize: BJJ_TECHNIQUES.length,
+  }
+}
 
 export const portalRouter = router({
   /**
@@ -413,6 +531,64 @@ export const portalRouter = router({
         }
       })
     }),
+
+  /**
+   * Aggregated XP / level / progress card.
+   *
+   * Pure derivation: pulls attendance count + streak + titles + matches + belt
+   * history + member start date, then runs `computeXp` and `levelFromXp` from
+   * the gamification lib. Achievement bonuses (one-time XP for unlocking each
+   * badge) are added on top.
+   *
+   * No new tables, no writes — totally backfilled. The student earns XP
+   * retroactively the moment we ship this.
+   */
+  myProgress: protectedProcedure.query(async ({ ctx }) => {
+    const stats = await loadGamificationStats(ctx.academyId!, ctx.member!.id, {
+      memberSince: ctx.member!.created_at,
+      currentBelt: ctx.member!.belt_rank,
+    })
+
+    const xp = computeXp({
+      totalAttendance: stats.totalAttendance,
+      longestStreak: stats.longestStreak,
+      titles: stats.titles,
+      matches: stats.matches,
+    })
+
+    const unlocked = computeAchievements(stats)
+    const bonusXp = bonusXpFromAchievements(unlocked)
+    const totalXp = xp.total + bonusXp
+
+    const level = levelFromXp(totalXp)
+    const tier = tierForLevel(level.level)
+
+    return {
+      totalXp,
+      baseXp: xp.total,
+      bonusXp,
+      level: level.level,
+      currentXp: level.currentXp,
+      nextLevelXp: level.nextLevelXp,
+      progress: level.progress,
+      breakdown: xp.breakdown,
+      tier,
+      achievementsUnlocked: unlocked.filter((a) => a.unlocked).length,
+      achievementsTotal: unlocked.length,
+    }
+  }),
+
+  /**
+   * Returns the full achievement catalog with `unlocked` + `progress` for the
+   * current student. Backfilled — students unlock retroactively.
+   */
+  myAchievements: protectedProcedure.query(async ({ ctx }) => {
+    const stats = await loadGamificationStats(ctx.academyId!, ctx.member!.id, {
+      memberSince: ctx.member!.created_at,
+      currentBelt: ctx.member!.belt_rank,
+    })
+    return computeAchievements(stats)
+  }),
 
   /**
    * Mural / informativos visíveis para o aluno (não expirados).

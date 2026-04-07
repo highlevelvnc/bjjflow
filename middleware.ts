@@ -85,7 +85,13 @@ export async function middleware(request: NextRequest) {
   if (isAuthRoute(pathname)) {
     if (session) {
       const academyId = session.user.app_metadata?.academy_id as string | undefined
-      return NextResponse.redirect(new URL(academyId ? "/app" : "/setup", request.url))
+      const role = session.user.app_metadata?.member_role as string | undefined
+      if (!academyId) {
+        return NextResponse.redirect(new URL("/setup", request.url))
+      }
+      // Students go straight to the mobile portal. Other roles to the dashboard.
+      const dest = role === "student" ? "/aluno" : "/app"
+      return NextResponse.redirect(new URL(dest, request.url))
     }
     return response
   }

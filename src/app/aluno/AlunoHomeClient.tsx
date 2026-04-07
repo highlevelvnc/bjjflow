@@ -19,6 +19,8 @@ import {
 import { trpc } from "@/lib/trpc/client"
 import { BillingBlockBanner } from "@/components/portal/BillingBlockBanner"
 import { LeaderboardCard } from "@/components/aluno/LeaderboardCard"
+import { XpHero } from "@/components/aluno/XpHero"
+import { DailyMission } from "@/components/aluno/DailyMission"
 
 const PLACEMENT_LABEL: Record<string, string> = {
   gold: "Ouro",
@@ -61,6 +63,16 @@ export function AlunoHomeClient() {
     >
       {/* ── Billing alert (top) ─────────────────────────────────────────── */}
       <BillingBlockBanner />
+
+      {/* ── Animated XP / level hero ────────────────────────────────────── */}
+      <motion.div variants={fadeUp}>
+        <XpHero />
+      </motion.div>
+
+      {/* ── Missão do dia (gamified daily challenge) ────────────────────── */}
+      <motion.div variants={fadeUp}>
+        <DailyMission />
+      </motion.div>
 
       {/* ── Hero / welcome card ─────────────────────────────────────────── */}
       <motion.section
@@ -159,18 +171,18 @@ export function AlunoHomeClient() {
           tone="brand"
         />
         <QuickAction
+          href="/aluno/badges"
+          icon={Sparkles}
+          title="Coleção"
+          subtitle="Badges + nível"
+          tone="violet"
+        />
+        <QuickAction
           href="/aluno/ranking"
           icon={Crown}
           title="Ranking"
           subtitle="Top da academia"
           tone="amber"
-        />
-        <QuickAction
-          href="/aluno/performance"
-          icon={Activity}
-          title="Meu radar"
-          subtitle="Técnicas + estatísticas"
-          tone="cyan"
         />
         <QuickAction
           href="/aluno/conquistas"

@@ -48,12 +48,24 @@ export async function GET(request: NextRequest) {
       const academyId = data.session.user.app_metadata?.academy_id as
         | string
         | undefined
+      const role = data.session.user.app_metadata?.member_role as
+        | string
+        | undefined
 
-      const redirectUrl = new URL(
-        academyId ? "/app" : "/setup",
-        request.url,
-      )
-      return NextResponse.redirect(redirectUrl)
+      // Honor explicit ?redirectTo from email verification → invite acceptance
+      const explicitRedirect = searchParams.get("redirectTo")
+      let dest: string
+      if (explicitRedirect && explicitRedirect.startsWith("/")) {
+        dest = explicitRedirect
+      } else if (!academyId) {
+        dest = "/setup"
+      } else if (role === "student") {
+        dest = "/aluno"
+      } else {
+        dest = "/app"
+      }
+
+      return NextResponse.redirect(new URL(dest, request.url))
     }
   }
 

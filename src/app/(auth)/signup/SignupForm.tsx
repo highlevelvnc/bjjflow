@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import { Loader2, User, Mail, Lock, CheckCircle } from "lucide-react"
 import { createBrowserSupabase } from "@/server/supabase/browser"
 
@@ -10,9 +10,11 @@ const inputClass =
 
 export function SignupForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const prefillEmail = searchParams.get("email") ?? ""
 
   const [fullName, setFullName] = useState("")
-  const [email, setEmail] = useState("")
+  const [email, setEmail] = useState(prefillEmail)
   const [password, setSenha] = useState("")
   const [error, setError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
