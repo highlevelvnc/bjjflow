@@ -11,6 +11,7 @@ const en: AppMessages = {
     inventory: "Inventory", checkin: "Check In", portal: "My Progress", billing: "Billing",
     settings: "Settings", analytics: "Analytics", titles: "Titles", leaderboard: "Leaderboard",
     studentBilling: "Student Billing", auditLog: "Audit Log",
+    myPerformance: "My Performance",
   },
   common: {
     save: "Save", cancel: "Cancel", delete: "Delete", edit: "Edit", create: "Create",
@@ -34,6 +35,7 @@ const ptBR: AppMessages = {
     inventory: "Estoque", checkin: "Check-in", portal: "Meu Progresso", billing: "Planos",
     settings: "Config.", analytics: "Analytics", titles: "Títulos", leaderboard: "Ranking",
     studentBilling: "Mensalidades", auditLog: "Auditoria",
+    myPerformance: "Meu Desempenho",
   },
   common: {
     save: "Salvar", cancel: "Cancelar", delete: "Excluir", edit: "Editar", create: "Criar",

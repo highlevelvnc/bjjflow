@@ -7,7 +7,7 @@ import {
   LayoutDashboard, Users, Dumbbell, CalendarDays,
   BookOpen, FileSignature, CalendarHeart, MessageSquare, ShoppingBag,
   QrCode, BarChart3, BarChart2, Receipt, Trophy, Medal, ScrollText, CreditCard, Settings,
-  LogOut, Menu, X,
+  LogOut, Menu, X, Activity,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 import { cn } from "@/lib/utils/cn"
@@ -36,6 +36,7 @@ const NAV_DEFS: NavDef[] = [
   { key: "feed",           href: "/app/announcements",  icon: MessageSquare,    group: "academy" },
   { key: "inventory",      href: "/app/inventory",      icon: ShoppingBag,      group: "academy" },
   { key: "portal",         href: "/app/portal",         icon: BarChart3,        group: "student" },
+  { key: "myPerformance",  href: "/aluno/performance",  icon: Activity,         group: "student" },
   { key: "titles",         href: "/app/titles",         icon: Medal,            group: "student" },
   { key: "leaderboard",    href: "/app/leaderboard",    icon: Trophy,           group: "student" },
   { key: "studentBilling", href: "/app/student-billing",icon: Receipt,          group: "finance" },
