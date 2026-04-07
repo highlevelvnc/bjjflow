@@ -1308,6 +1308,36 @@ export type Database = {
           created_at?: string
         }
       }
+      technique_events: {
+        Row: {
+          id: string
+          academy_id: string
+          member_id: string
+          technique_slug: string
+          event_type: "attempt" | "success" | "submission"
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          member_id: string
+          technique_slug: string
+          event_type: "attempt" | "success" | "submission"
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          member_id?: string
+          technique_slug?: string
+          event_type?: "attempt" | "success" | "submission"
+          notes?: string | null
+          created_at?: string
+        }
+      }
       member_titles: {
         Row: {
           id: string
