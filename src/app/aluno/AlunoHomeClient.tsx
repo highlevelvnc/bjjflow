@@ -6,6 +6,7 @@ import {
   ArrowRight,
   CalendarDays,
   ChevronRight,
+  Crown,
   Flame,
   Megaphone,
   Sparkles,
@@ -17,6 +18,7 @@ import {
 } from "lucide-react"
 import { trpc } from "@/lib/trpc/client"
 import { BillingBlockBanner } from "@/components/portal/BillingBlockBanner"
+import { LeaderboardCard } from "@/components/aluno/LeaderboardCard"
 
 const PLACEMENT_LABEL: Record<string, string> = {
   gold: "Ouro",
@@ -157,6 +159,13 @@ export function AlunoHomeClient() {
           tone="brand"
         />
         <QuickAction
+          href="/aluno/ranking"
+          icon={Crown}
+          title="Ranking"
+          subtitle="Top da academia"
+          tone="amber"
+        />
+        <QuickAction
           href="/aluno/performance"
           icon={Activity}
           title="Meu radar"
@@ -169,13 +178,6 @@ export function AlunoHomeClient() {
           title="Meus títulos"
           subtitle="Conquistas no campeonato"
           tone="amber"
-        />
-        <QuickAction
-          href="/aluno/mural"
-          icon={Megaphone}
-          title="Mural"
-          subtitle="Avisos da academia"
-          tone="violet"
         />
       </motion.section>
 
@@ -231,6 +233,11 @@ export function AlunoHomeClient() {
           </ul>
         )}
       </SectionCard>
+      </motion.div>
+
+      {/* ── Ranking da academia (top 5 + minha posição) ─────────────────── */}
+      <motion.div variants={fadeUp}>
+        <LeaderboardCard />
       </motion.div>
 
       {/* ── Mural recente ───────────────────────────────────────────────── */}

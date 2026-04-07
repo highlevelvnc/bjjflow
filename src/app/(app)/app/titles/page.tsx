@@ -48,23 +48,33 @@ export default async function TitlesPage() {
               {items.map((t) => {
                 const medal = t.placement === "gold" ? "🥇" : t.placement === "silver" ? "🥈" : t.placement === "bronze" ? "🥉" : "🏅"
                 return (
-                  <tr key={t.id} className="hover:bg-white/4">
+                  <tr key={t.id} className="cursor-pointer transition-colors hover:bg-white/4">
                     <td className="px-5 py-3">
-                      <div className="flex items-center gap-2">
+                      <Link href={`/app/titles/${t.id}`} className="flex items-center gap-2">
                         <BeltBadge belt={t.member_belt} stripes={t.member_stripes} />
                         <span className="text-gray-100">{t.member_name}</span>
-                      </div>
+                      </Link>
                     </td>
-                    <td className="px-5 py-3 text-gray-100">{t.title}</td>
-                    <td className="px-5 py-3 text-gray-400">{t.competition}</td>
+                    <td className="px-5 py-3 text-gray-100">
+                      <Link href={`/app/titles/${t.id}`} className="block">
+                        {t.title}
+                      </Link>
+                    </td>
+                    <td className="px-5 py-3 text-gray-400">
+                      <Link href={`/app/titles/${t.id}`} className="block">
+                        {t.competition}
+                      </Link>
+                    </td>
                     <td className="px-5 py-3">
-                      <span className="flex items-center gap-1">
+                      <Link href={`/app/titles/${t.id}`} className="flex items-center gap-1">
                         {medal}
                         <span className="capitalize text-gray-300">{t.placement === "gold" ? "Ouro" : t.placement === "silver" ? "Prata" : t.placement === "bronze" ? "Bronze" : "Outro"}</span>
-                      </span>
+                      </Link>
                     </td>
                     <td className="px-5 py-3 text-gray-500">
-                      {new Date(t.date + "T00:00:00").toLocaleDateString("pt-BR")}
+                      <Link href={`/app/titles/${t.id}`} className="block">
+                        {new Date(t.date + "T00:00:00").toLocaleDateString("pt-BR")}
+                      </Link>
                     </td>
                   </tr>
                 )

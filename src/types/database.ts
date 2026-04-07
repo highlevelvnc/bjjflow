@@ -1380,6 +1380,87 @@ export type Database = {
           created_at?: string
         }
       }
+      competition_matches: {
+        Row: {
+          id: string
+          academy_id: string
+          title_id: string
+          member_id: string
+          match_order: number
+          result: "win" | "loss" | "draw"
+          method:
+            | "submission"
+            | "points"
+            | "advantage"
+            | "penalty"
+            | "decision"
+            | "dq"
+            | "wo"
+          submission_type: string | null
+          points_for: number | null
+          points_against: number | null
+          advantages_for: number | null
+          advantages_against: number | null
+          finish_time: string | null
+          opponent_name: string | null
+          opponent_team: string | null
+          notes: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          academy_id: string
+          title_id: string
+          member_id: string
+          match_order?: number
+          result: "win" | "loss" | "draw"
+          method:
+            | "submission"
+            | "points"
+            | "advantage"
+            | "penalty"
+            | "decision"
+            | "dq"
+            | "wo"
+          submission_type?: string | null
+          points_for?: number | null
+          points_against?: number | null
+          advantages_for?: number | null
+          advantages_against?: number | null
+          finish_time?: string | null
+          opponent_name?: string | null
+          opponent_team?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+        Relationships: []
+        Update: {
+          id?: string
+          academy_id?: string
+          title_id?: string
+          member_id?: string
+          match_order?: number
+          result?: "win" | "loss" | "draw"
+          method?:
+            | "submission"
+            | "points"
+            | "advantage"
+            | "penalty"
+            | "decision"
+            | "dq"
+            | "wo"
+          submission_type?: string | null
+          points_for?: number | null
+          points_against?: number | null
+          advantages_for?: number | null
+          advantages_against?: number | null
+          finish_time?: string | null
+          opponent_name?: string | null
+          opponent_team?: string | null
+          notes?: string | null
+          created_at?: string
+        }
+      }
     }
     Views: {
       academy_public: {

@@ -2,6 +2,12 @@
 
 import { Loader2, Medal, Trophy } from "lucide-react"
 import { trpc } from "@/lib/trpc/client"
+import {
+  MatchTimeline,
+  type CompetitionMatch,
+  type MatchMethod,
+  type MatchResult,
+} from "@/components/aluno/MatchTimeline"
 
 const PLACEMENT_META: Record<
   string,
@@ -31,6 +37,7 @@ const PLACEMENT_META: Record<
 
 export function TitlesList() {
   const { data, isLoading, isError } = trpc.portal.myTitles.useQuery()
+  const matchesByTitle = trpc.portal.myTitleMatches.useQuery()
 
   if (isLoading) {
     return (
@@ -165,6 +172,13 @@ export function TitlesList() {
                         )}
                       </div>
                     </div>
+
+                    {/* ── Súmula de lutas (estilo Abu Dhabi/IBJJF) ── */}
+                    <MatchTimeline
+                      matches={normalizeMatches(
+                        matchesByTitle.data?.[t.id] ?? [],
+                      )}
+                    />
                   </li>
                 )
               })}
@@ -214,4 +228,43 @@ function formatDate(iso: string): string {
     day: "2-digit",
     month: "short",
   })
+}
+
+/**
+ * Adapta as linhas cruas do supabase para o tipo `CompetitionMatch`
+ * consumido pelo `<MatchTimeline />`. Necessário porque o tRPC retorna
+ * `result` e `method` como `string`, e precisamos estreitar para o union.
+ */
+type RawMatch = {
+  id: string
+  match_order: number
+  result: string
+  method: string
+  submission_type?: string | null
+  points_for?: number | null
+  points_against?: number | null
+  advantages_for?: number | null
+  advantages_against?: number | null
+  finish_time?: string | null
+  opponent_name?: string | null
+  opponent_team?: string | null
+  notes?: string | null
+}
+
+function normalizeMatches(rows: RawMatch[]): CompetitionMatch[] {
+  return rows.map((r) => ({
+    id: r.id,
+    match_order: r.match_order,
+    result: r.result as MatchResult,
+    method: r.method as MatchMethod,
+    submission_type: r.submission_type,
+    points_for: r.points_for,
+    points_against: r.points_against,
+    advantages_for: r.advantages_for,
+    advantages_against: r.advantages_against,
+    finish_time: r.finish_time,
+    opponent_name: r.opponent_name,
+    opponent_team: r.opponent_team,
+    notes: r.notes,
+  }))
 }

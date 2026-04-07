@@ -1,5 +1,6 @@
 import "server-only"
 import { z } from "zod"
+import { TRPCError } from "@trpc/server"
 import { router } from "../init"
 import { protectedProcedure, instructorProcedure } from "../procedures"
 import { createServerSupabase } from "@/server/supabase/server"
@@ -13,6 +14,32 @@ const CreateTitleInput = z.object({
   placement: z.enum(["gold", "silver", "bronze", "other"]).default("gold"),
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
   notes: z.string().max(500).optional(),
+})
+
+const MATCH_METHODS = [
+  "submission",
+  "points",
+  "advantage",
+  "penalty",
+  "decision",
+  "dq",
+  "wo",
+] as const
+
+const CreateMatchInput = z.object({
+  title_id: z.string().uuid(),
+  match_order: z.number().int().min(1).max(20).default(1),
+  result: z.enum(["win", "loss", "draw"]),
+  method: z.enum(MATCH_METHODS),
+  submission_type: z.string().max(60).optional(),
+  points_for: z.number().int().min(0).max(99).optional(),
+  points_against: z.number().int().min(0).max(99).optional(),
+  advantages_for: z.number().int().min(0).max(99).optional(),
+  advantages_against: z.number().int().min(0).max(99).optional(),
+  finish_time: z.string().max(10).optional(),
+  opponent_name: z.string().max(120).optional(),
+  opponent_team: z.string().max(120).optional(),
+  notes: z.string().max(300).optional(),
 })
 
 export const titleRouter = router({
@@ -53,6 +80,50 @@ export const titleRouter = router({
           }
         }),
         total: count ?? 0,
+      }
+    }),
+
+  /**
+   * Detalhe de um título único, com a faixa do aluno na época do registro.
+   */
+  byId: protectedProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+
+      const { data, error } = await supabase
+        .from("member_titles")
+        .select("*, members!inner(full_name, belt_rank, stripes)")
+        .eq("academy_id", ctx.academyId!)
+        .eq("id", input.id)
+        .single()
+
+      if (error || !data) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Título não encontrado",
+        })
+      }
+
+      const member = data.members as unknown as {
+        full_name: string
+        belt_rank: string
+        stripes: number
+      }
+      return {
+        id: data.id,
+        member_id: data.member_id,
+        member_name: member.full_name,
+        member_belt: member.belt_rank,
+        member_stripes: member.stripes,
+        title: data.title,
+        competition: data.competition,
+        category: data.category,
+        weight_class: data.weight_class,
+        placement: data.placement,
+        date: data.date,
+        notes: data.notes,
+        created_at: data.created_at,
       }
     }),
 
@@ -145,6 +216,107 @@ export const titleRouter = router({
         .eq("id", input.id)
 
       if (error) throw new Error("Falha ao excluir título")
+      return { success: true }
+    }),
+
+  // ─── Competition matches (ADCC-style fight cards) ──────────────────────
+
+  /**
+   * Lista todas as lutas vinculadas a um título, em ordem.
+   */
+  matchesFor: protectedProcedure
+    .input(z.object({ titleId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+      const { data, error } = await supabase
+        .from("competition_matches")
+        .select("*")
+        .eq("academy_id", ctx.academyId!)
+        .eq("title_id", input.titleId)
+        .order("match_order", { ascending: true })
+
+      if (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Falha ao carregar lutas",
+        })
+      }
+      return data ?? []
+    }),
+
+  /**
+   * Cria uma luta nova vinculada a um título.
+   * Apenas instrutor/admin pode registrar.
+   */
+  createMatch: instructorProcedure
+    .input(CreateMatchInput)
+    .mutation(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+
+      // Look up the title to grab member_id and confirm tenant
+      const { data: title, error: titleErr } = await supabase
+        .from("member_titles")
+        .select("id, member_id, academy_id")
+        .eq("id", input.title_id)
+        .eq("academy_id", ctx.academyId!)
+        .single()
+
+      if (titleErr || !title) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Título não encontrado",
+        })
+      }
+
+      const { data, error } = await supabase
+        .from("competition_matches")
+        .insert({
+          academy_id: ctx.academyId!,
+          title_id: title.id,
+          member_id: title.member_id,
+          match_order: input.match_order,
+          result: input.result,
+          method: input.method,
+          submission_type: input.submission_type ?? null,
+          points_for: input.points_for ?? null,
+          points_against: input.points_against ?? null,
+          advantages_for: input.advantages_for ?? null,
+          advantages_against: input.advantages_against ?? null,
+          finish_time: input.finish_time ?? null,
+          opponent_name: input.opponent_name ?? null,
+          opponent_team: input.opponent_team ?? null,
+          notes: input.notes ?? null,
+        })
+        .select("id")
+        .single()
+
+      if (error) {
+        console.error("[title.createMatch]", error)
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Falha ao registrar luta",
+        })
+      }
+      return data
+    }),
+
+  /** Excluir uma luta. */
+  deleteMatch: instructorProcedure
+    .input(z.object({ id: z.string().uuid() }))
+    .mutation(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+      const { error } = await supabase
+        .from("competition_matches")
+        .delete()
+        .eq("academy_id", ctx.academyId!)
+        .eq("id", input.id)
+
+      if (error) {
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "Falha ao excluir luta",
+        })
+      }
       return { success: true }
     }),
 })

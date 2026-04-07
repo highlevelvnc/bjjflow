@@ -337,6 +337,36 @@ export const portalRouter = router({
   }),
 
   /**
+   * Lutas individuais (estilo Abu Dhabi/IBJJF) de TODOS os títulos do aluno logado,
+   * agrupadas por title_id. Permite renderizar o "card de luta" debaixo de cada
+   * conquista sem precisar fazer N queries no cliente.
+   */
+  myTitleMatches: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+
+    const { data, error } = await supabase
+      .from("competition_matches")
+      .select(
+        "id, title_id, match_order, result, method, submission_type, points_for, points_against, advantages_for, advantages_against, finish_time, opponent_name, opponent_team, notes",
+      )
+      .eq("academy_id", ctx.academyId!)
+      .eq("member_id", ctx.member!.id)
+      .order("title_id", { ascending: true })
+      .order("match_order", { ascending: true })
+
+    type MatchRow = NonNullable<typeof data>[number]
+    const grouped: Record<string, MatchRow[]> = {}
+    if (error || !data) return grouped
+
+    for (const m of data) {
+      const key = m.title_id
+      if (!grouped[key]) grouped[key] = []
+      grouped[key]!.push(m)
+    }
+    return grouped
+  }),
+
+  /**
    * Próximas aulas (sessions) das próximas 7 dias.
    * Usado no card "Próxima aula" do home do aluno.
    */
