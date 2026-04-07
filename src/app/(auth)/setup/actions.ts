@@ -116,6 +116,15 @@ export async function createAcademy(input: SetupInput) {
     return { error: "Account setup failed. Please try again." }
   }
 
-  // 5. Redirect to app — middleware will refresh session & pick up new JWT
+  // 5. Force a session refresh so the current JWT picks up the new academy_id.
+  //    Without this, the existing access token is stale and the middleware
+  //    won't necessarily rotate it, causing /app to redirect back to setup.
+  const { error: refreshError } = await supabase.auth.refreshSession()
+  if (refreshError) {
+    console.error("Failed to refresh session after setup:", refreshError)
+    // Non-fatal: middleware will retry on next request
+  }
+
+  // 6. Redirect to app — new JWT now carries academy_id
   redirect("/app")
 }
