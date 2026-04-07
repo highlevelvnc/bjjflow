@@ -23,6 +23,7 @@ import { auditRouter } from "./routers/audit"
 import { gamificationRouter } from "./routers/gamification"
 import { titleRouter } from "./routers/title"
 import { studentPerformanceRouter } from "./routers/studentPerformance"
+import { aiRouter } from "./routers/ai"
 
 export const appRouter = router({
   academy: academyRouter,
@@ -48,6 +49,7 @@ export const appRouter = router({
   gamification: gamificationRouter,
   title: titleRouter,
   studentPerformance: studentPerformanceRouter,
+  ai: aiRouter,
 })
 
 export type AppRouter = typeof appRouter

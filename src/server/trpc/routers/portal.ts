@@ -317,4 +317,115 @@ export const portalRouter = router({
 
     return data ?? []
   }),
+
+  /**
+   * Títulos / conquistas em campeonatos do aluno logado.
+   * Junta com a tabela `members` para mostrar a faixa do dia.
+   */
+  myTitles: protectedProcedure.query(async ({ ctx }) => {
+    const supabase = await createServerSupabase()
+
+    const { data, error } = await supabase
+      .from("member_titles")
+      .select("id, title, competition, category, weight_class, placement, date, notes")
+      .eq("academy_id", ctx.academyId!)
+      .eq("member_id", ctx.member!.id)
+      .order("date", { ascending: false })
+
+    if (error) return []
+    return data ?? []
+  }),
+
+  /**
+   * Próximas aulas (sessions) das próximas 7 dias.
+   * Usado no card "Próxima aula" do home do aluno.
+   */
+  myNextSessions: protectedProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(20).default(5) }).optional())
+    .query(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+      const today = new Date().toISOString().split("T")[0]!
+      const in7Days = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .split("T")[0]!
+
+      const { data: sessions } = await supabase
+        .from("class_sessions")
+        .select("id, class_id, date, start_time, end_time, status")
+        .eq("academy_id", ctx.academyId!)
+        .gte("date", today)
+        .lte("date", in7Days)
+        .order("date", { ascending: true })
+        .order("start_time", { ascending: true })
+        .limit(input?.limit ?? 5)
+
+      if (!sessions || sessions.length === 0) return []
+
+      const classIds = [...new Set(sessions.map((s) => s.class_id))]
+      const { data: classes } = await supabase
+        .from("classes")
+        .select("id, name, gi_type")
+        .eq("academy_id", ctx.academyId!)
+        .in("id", classIds)
+
+      const classMap = new Map((classes ?? []).map((c) => [c.id, c]))
+
+      return sessions.map((s) => {
+        const cls = classMap.get(s.class_id)
+        return {
+          id: s.id,
+          date: s.date,
+          startTime: s.start_time,
+          endTime: s.end_time,
+          status: s.status,
+          className: cls?.name ?? "Aula",
+          giType: cls?.gi_type ?? null,
+        }
+      })
+    }),
+
+  /**
+   * Mural / informativos visíveis para o aluno (não expirados).
+   * Versão enxuta da `announcement.list` que retorna direto o que o portal precisa.
+   */
+  myAnnouncements: protectedProcedure
+    .input(z.object({ limit: z.number().int().min(1).max(50).default(10) }).optional())
+    .query(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+      const now = new Date().toISOString()
+
+      const { data, error } = await supabase
+        .from("announcements")
+        .select("id, title, content, priority, pinned, published_at, expires_at, author_id")
+        .eq("academy_id", ctx.academyId!)
+        .or(`expires_at.is.null,expires_at.gt.${now}`)
+        .order("pinned", { ascending: false })
+        .order("published_at", { ascending: false, nullsFirst: false })
+        .limit(input?.limit ?? 10)
+
+      if (error || !data) return []
+
+      const authorIds = [
+        ...new Set(data.map((a) => a.author_id).filter((id): id is string => !!id)),
+      ]
+
+      let authorMap: Record<string, string> = {}
+      if (authorIds.length > 0) {
+        const { data: members } = await supabase
+          .from("members")
+          .select("id, full_name")
+          .in("id", authorIds)
+        authorMap = Object.fromEntries((members ?? []).map((m) => [m.id, m.full_name]))
+      }
+
+      return data.map((a) => ({
+        id: a.id,
+        title: a.title,
+        content: a.content,
+        priority: a.priority,
+        pinned: a.pinned,
+        publishedAt: a.published_at,
+        authorName: a.author_id ? authorMap[a.author_id] ?? "Academia" : "Academia",
+      }))
+    }),
 })
