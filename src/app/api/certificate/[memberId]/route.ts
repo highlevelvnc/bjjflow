@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createServerSupabase } from "@/server/supabase/server"
-import { BELT_LABELS } from "@/lib/constants/belts"
+import { BELT_LABELS, BELT_HEX } from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 import QRCode from "qrcode"
 import crypto from "crypto"
-
-/** Belt hex colors for the certificate (inline styles) */
-const BELT_HEX: Record<string, string> = {
-  white: "#e5e7eb",
-  blue: "#2563eb",
-  purple: "#7e22ce",
-  brown: "#92400e",
-  black: "#374151",
-  coral: "#f97316",
-  red_black: "#b91c1c",
-  red_white: "#ef4444",
-  red: "#dc2626",
-}
 
 export async function GET(
   request: NextRequest,

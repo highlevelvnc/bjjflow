@@ -11,6 +11,8 @@
  *   - skill: technique exploration & study
  */
 
+import { ADULT_BELT_ORDER } from "@/lib/constants/belts"
+
 export type AchievementCategory =
   | "presence"
   | "competition"
@@ -283,19 +285,24 @@ export interface AchievementStats {
   techniquesLibrarySize: number
 }
 
-const BELT_ORDER: Record<string, number> = {
-  white: 0,
-  blue: 1,
-  purple: 2,
-  brown: 3,
-  black: 4,
-}
+/**
+ * Adult-belt tier index. Built from `ADULT_BELT_ORDER` so adding/removing
+ * adult belts from the constants file automatically updates the gamification
+ * thresholds. Kids belts intentionally do NOT appear here — adult-tier
+ * achievements ("reach blue", "reach purple", etc.) must not fire on a
+ * kids-belt promotion.
+ */
+const ADULT_BELT_TIER: Record<string, number> = Object.fromEntries(
+  ADULT_BELT_ORDER.map((b, i) => [b, i]),
+)
 
 function hasReachedBelt(stats: AchievementStats, belt: string): boolean {
-  const target = BELT_ORDER[belt] ?? 0
-  const current = BELT_ORDER[stats.currentBelt] ?? 0
+  const target = ADULT_BELT_TIER[belt] ?? 0
+  const current = ADULT_BELT_TIER[stats.currentBelt] ?? 0
   if (current >= target) return true
-  return stats.beltHistory.some((b) => (BELT_ORDER[b.belt_rank] ?? 0) >= target)
+  return stats.beltHistory.some(
+    (b) => (ADULT_BELT_TIER[b.belt_rank] ?? 0) >= target,
+  )
 }
 
 function beltUnlockDate(stats: AchievementStats, belt: string): string | null {

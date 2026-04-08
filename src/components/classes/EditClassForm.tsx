@@ -3,7 +3,11 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { trpc } from "@/lib/trpc/client"
-import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
+import {
+  BELT_LABELS,
+  KIDS_BELT_ORDER,
+  ADULT_PROMOTION_BELTS,
+} from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 
 const DAY_OPTIONS = [
@@ -95,6 +99,24 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  /**
+   * Belt-range filter options follow the class type, same logic as the
+   * create form: kids classes show kids belts, everything else shows the
+   * 5 adult promotion belts (white→black).
+   */
+  const beltRangeOptions: readonly Belt[] =
+    form.class_type === "kids" ? KIDS_BELT_ORDER : ADULT_PROMOTION_BELTS
+
+  /** Reset belt range when switching class type so a stale value never
+   *  persists across the adult/kids boundary. */
+  function handleClassTypeChange(next: string) {
+    setForm((prev) =>
+      prev.class_type === next
+        ? prev
+        : { ...prev, class_type: next, belt_level_min: "", belt_level_max: "" },
+    )
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -165,7 +187,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
         <Field label="Tipo de Turma" required>
           <select
             value={form.class_type}
-            onChange={(e) => set("class_type", e.target.value)}
+            onChange={(e) => handleClassTypeChange(e.target.value)}
             className={inputClass}
           >
             {CLASS_TYPE_OPTIONS.map((o) => (
@@ -283,7 +305,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             <option value="" className="bg-gray-900 text-gray-100">
               — Qualquer —
             </option>
-            {BELT_ORDER.slice(0, 5).map((b) => (
+            {beltRangeOptions.map((b) => (
               <option
                 key={b}
                 value={b}
@@ -303,7 +325,7 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             <option value="" className="bg-gray-900 text-gray-100">
               — Qualquer —
             </option>
-            {BELT_ORDER.slice(0, 5).map((b) => (
+            {beltRangeOptions.map((b) => (
               <option
                 key={b}
                 value={b}

@@ -1,6 +1,6 @@
 "use client"
 
-import { BELT_COLORS, BELT_LABELS } from "@/lib/constants/belts"
+import { BELT_COLORS, BELT_LABELS, BELT_HEX } from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 import { Award, Download } from "lucide-react"
 
@@ -16,19 +16,6 @@ interface BeltJourneyProps {
     promoted_at: string
     notes: string | null
   }>
-}
-
-/** Raw hex colors for inline styles (timeline line, glow, etc.) */
-const BELT_HEX: Record<string, string> = {
-  white: "#e5e7eb",
-  blue: "#2563eb",
-  purple: "#7e22ce",
-  brown: "#92400e",
-  black: "#1f2937",
-  coral: "#f97316",
-  red_black: "#b91c1c",
-  red_white: "#ef4444",
-  red: "#dc2626",
 }
 
 function formatDuration(from: string, to: string): string {
@@ -61,7 +48,7 @@ export function BeltJourney({
 }: BeltJourneyProps) {
   const beltKey = currentBelt as Belt
   const currentColor = BELT_COLORS[beltKey] ?? "bg-gray-500"
-  const currentHex = BELT_HEX[currentBelt] ?? "#6b7280"
+  const currentHex = BELT_HEX[beltKey] ?? "#6b7280"
   const currentLabel = BELT_LABELS[beltKey] ?? currentBelt
 
   // Sort ascending (oldest first) for timeline
@@ -104,7 +91,7 @@ export function BeltJourney({
           <div
             className="absolute left-4 top-0 bottom-0 w-0.5"
             style={{
-              background: `linear-gradient(to bottom, ${currentHex}, ${BELT_HEX[sorted[0]!.belt_rank] ?? "#6b7280"})`,
+              background: `linear-gradient(to bottom, ${currentHex}, ${BELT_HEX[sorted[0]!.belt_rank as Belt] ?? "#6b7280"})`,
               opacity: 0.3,
             }}
           />
@@ -180,7 +167,7 @@ function TimelineMilestone({
 }) {
   const bk = beltRank as Belt
   const color = BELT_COLORS[bk] ?? "bg-gray-500"
-  const hex = BELT_HEX[beltRank] ?? "#6b7280"
+  const hex = BELT_HEX[bk] ?? "#6b7280"
   const label = BELT_LABELS[bk] ?? beltRank
 
   const certUrl = `/api/certificate/${memberId}?belt=${encodeURIComponent(beltRank)}&date=${encodeURIComponent(date)}`

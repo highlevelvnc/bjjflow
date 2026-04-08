@@ -26,7 +26,12 @@ import {
   UserPlus,
 } from "lucide-react"
 import { trpc } from "@/lib/trpc/client"
-import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
+import {
+  BELT_LABELS,
+  beltsForTrack,
+  type Belt,
+  type BeltTrack,
+} from "@/lib/constants/belts"
 
 const ROLE_OPTIONS = [
   { value: "student", label: "Aluno" },
@@ -43,16 +48,32 @@ export function CreateManagedMemberForm() {
   } | null>(null)
   const [copied, setCopied] = useState(false)
 
+  // The belt track toggle is local state — it does NOT round-trip to the
+  // server. It's purely a UX filter on which belts the dropdown shows.
+  const [beltTrack, setBeltTrack] = useState<BeltTrack>("adult")
+
   const [form, setForm] = useState({
     full_name: "",
     email: "",
     role: "student" as "student" | "instructor",
-    belt_rank: "white" as (typeof BELT_ORDER)[number],
+    belt_rank: "white" as Belt,
     stripes: 0,
     phone: "",
     birth_date: "",
     notes: "",
   })
+
+  /**
+   * Switching tracks must reset the belt selection if it isn't valid in
+   * the new track. White is in both, so it's always a safe fallback.
+   */
+  function handleBeltTrackChange(next: BeltTrack) {
+    setBeltTrack(next)
+    const allowed = beltsForTrack(next)
+    if (!allowed.includes(form.belt_rank)) {
+      setForm((prev) => ({ ...prev, belt_rank: "white" }))
+    }
+  }
 
   const generateLink = trpc.invite.createForStudent.useMutation()
 
@@ -222,6 +243,7 @@ export function CreateManagedMemberForm() {
             onClick={() => {
               // Reset and allow adding another student immediately
               setSuccessLink(null)
+              setBeltTrack("adult")
               setForm({
                 full_name: "",
                 email: "",
@@ -311,14 +333,34 @@ export function CreateManagedMemberForm() {
         </Field>
 
         <Field label="Faixa" required>
+          {/* Adulto / Infantil segmented control. Filters which belts the
+              dropdown below shows. Default = Adulto (most common case). */}
+          <div className="mb-2 inline-flex w-full rounded-lg border border-white/10 bg-white/[0.03] p-0.5">
+            {(["adult", "kids"] as const).map((track) => {
+              const active = beltTrack === track
+              const label = track === "adult" ? "Adulto" : "Infantil"
+              return (
+                <button
+                  key={track}
+                  type="button"
+                  onClick={() => handleBeltTrackChange(track)}
+                  className={`flex-1 rounded-md px-3 py-1.5 text-xs font-semibold transition-all ${
+                    active
+                      ? "bg-brand-500 text-white shadow-sm shadow-brand-500/25"
+                      : "text-gray-400 hover:text-gray-100"
+                  }`}
+                >
+                  {label}
+                </button>
+              )
+            })}
+          </div>
           <select
             value={form.belt_rank}
-            onChange={(e) =>
-              set("belt_rank", e.target.value as (typeof BELT_ORDER)[number])
-            }
+            onChange={(e) => set("belt_rank", e.target.value as Belt)}
             className={inputClass}
           >
-            {BELT_ORDER.map((b) => (
+            {beltsForTrack(beltTrack).map((b) => (
               <option
                 key={b}
                 value={b}

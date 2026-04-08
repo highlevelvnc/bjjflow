@@ -35,7 +35,11 @@ import {
   Users,
 } from "lucide-react"
 import { trpc } from "@/lib/trpc/client"
-import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
+import {
+  BELT_LABELS,
+  KIDS_BELT_ORDER,
+  ADULT_PROMOTION_BELTS,
+} from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 
 const DAY_OPTIONS = [
@@ -104,6 +108,35 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
+  /**
+   * Belt-range filter options track the class type:
+   *   • Kids classes show the 13 IBJJF kids belts
+   *   • Everything else shows white→black (the 5 adult promotion belts)
+   *
+   * This is computed each render rather than stored in state so the
+   * dropdown always reflects the current class_type without an effect.
+   */
+  const beltRangeOptions: readonly Belt[] =
+    form.class_type === "kids" ? KIDS_BELT_ORDER : ADULT_PROMOTION_BELTS
+
+  /**
+   * Switching class type can leave a previously-selected belt in the
+   * filter that no longer exists in the new track (e.g. picked "purple"
+   * for a regular class, then switched to "kids"). Clear both bounds
+   * whenever the type changes — instructors rarely keep belt limits
+   * when switching anyway.
+   */
+  function handleClassTypeChange(
+    next: (typeof CLASS_TYPE_OPTIONS)[number]["value"],
+  ) {
+    setForm((prev) => ({
+      ...prev,
+      class_type: next,
+      belt_level_min: prev.class_type === next ? prev.belt_level_min : "",
+      belt_level_max: prev.class_type === next ? prev.belt_level_max : "",
+    }))
+  }
+
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError(null)
@@ -167,7 +200,7 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
               <button
                 key={o.value}
                 type="button"
-                onClick={() => set("class_type", o.value)}
+                onClick={() => handleClassTypeChange(o.value)}
                 className={`flex flex-col items-center justify-center gap-1 rounded-xl border px-2 py-3 text-xs font-medium transition-all ${
                   active
                     ? "border-brand-400/50 bg-brand-500/15 text-brand-100 shadow-md shadow-brand-500/15"
@@ -339,13 +372,10 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
                   onChange={(e) => set("belt_level_min", e.target.value)}
                   className={inputClass}
                 >
-                  <option
-                    value=""
-                    className="bg-gray-900 text-gray-100"
-                  >
+                  <option value="" className="bg-gray-900 text-gray-100">
                     — Qualquer —
                   </option>
-                  {BELT_ORDER.slice(0, 5).map((b) => (
+                  {beltRangeOptions.map((b) => (
                     <option
                       key={b}
                       value={b}
@@ -363,13 +393,10 @@ export function CreateClassForm({ instructors }: CreateClassFormProps) {
                   onChange={(e) => set("belt_level_max", e.target.value)}
                   className={inputClass}
                 >
-                  <option
-                    value=""
-                    className="bg-gray-900 text-gray-100"
-                  >
+                  <option value="" className="bg-gray-900 text-gray-100">
                     — Qualquer —
                   </option>
-                  {BELT_ORDER.slice(0, 5).map((b) => (
+                  {beltRangeOptions.map((b) => (
                     <option
                       key={b}
                       value={b}
