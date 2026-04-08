@@ -121,6 +121,126 @@ export const memberRouter = router({
     }),
 
   /**
+   * Returns the classes a member has actually attended, aggregated from
+   * the attendance log.
+   *
+   * Why this exists: there is NO explicit `class_enrollments` table in the
+   * schema. The only signal that "student X belongs to class Y" is that
+   * student X has an attendance row pointing at a session of class Y. This
+   * procedure walks attendance → class_sessions → classes and returns one
+   * row per distinct class with the attendance count and the most recent
+   * date the student showed up.
+   *
+   * Used by the member edit page so instructors can see at a glance which
+   * classes a given student is part of.
+   */
+  getClassesAttended: instructorProcedure
+    .input(z.object({ memberId: z.string().uuid() }))
+    .query(async ({ ctx, input }) => {
+      const supabase = await createServerSupabase()
+
+      // 1. Pull every attendance row for this member, joining the session
+      //    so we get the date and the parent class. We rely on Supabase's
+      //    nested-select shorthand instead of two round trips.
+      const { data, error } = await supabase
+        .from("attendance")
+        .select(
+          `
+          checked_in_at,
+          class_sessions:session_id (
+            date,
+            classes:class_id (
+              id,
+              name,
+              class_type,
+              gi_type,
+              day_of_week,
+              start_time,
+              end_time,
+              room,
+              is_active
+            )
+          )
+        `,
+        )
+        .eq("academy_id", ctx.academyId!)
+        .eq("member_id", input.memberId)
+
+      if (error) {
+        console.error("[member.getClassesAttended] supabase error:", error)
+        throw new Error("Falha ao buscar turmas do aluno")
+      }
+
+      // 2. Group by class_id, counting visits and tracking the most recent
+      //    attendance date. Skip rows where the join didn't yield a class
+      //    (orphaned sessions / deleted classes).
+      type ClassRow = {
+        id: string
+        name: string
+        class_type: string
+        gi_type: string
+        day_of_week: number | null
+        start_time: string
+        end_time: string
+        room: string | null
+        is_active: boolean
+      }
+
+      type Aggregated = ClassRow & {
+        attendance_count: number
+        last_attended_at: string | null
+      }
+
+      const byClassId = new Map<string, Aggregated>()
+
+      for (const row of data ?? []) {
+        // Supabase returns nested rows as either a single object or an
+        // array depending on the relationship cardinality — normalize.
+        const session = Array.isArray(row.class_sessions)
+          ? row.class_sessions[0]
+          : row.class_sessions
+        const klass = session?.classes
+          ? Array.isArray(session.classes)
+            ? session.classes[0]
+            : session.classes
+          : null
+        if (!klass) continue
+
+        const existing = byClassId.get(klass.id)
+        // Prefer the session date when present, otherwise the check-in
+        // timestamp. The session date represents when the class actually
+        // happened, which is what instructors care about.
+        const attendedAt = session?.date ?? row.checked_in_at ?? null
+
+        if (existing) {
+          existing.attendance_count += 1
+          if (
+            attendedAt &&
+            (!existing.last_attended_at || attendedAt > existing.last_attended_at)
+          ) {
+            existing.last_attended_at = attendedAt
+          }
+        } else {
+          byClassId.set(klass.id, {
+            ...(klass as ClassRow),
+            attendance_count: 1,
+            last_attended_at: attendedAt,
+          })
+        }
+      }
+
+      // 3. Sort: most-attended first, then most-recent. Inactive classes
+      //    sink to the bottom so the active-roster view stays clean.
+      return Array.from(byClassId.values()).sort((a, b) => {
+        if (a.is_active !== b.is_active) return a.is_active ? -1 : 1
+        if (b.attendance_count !== a.attendance_count) {
+          return b.attendance_count - a.attendance_count
+        }
+        return (b.last_attended_at ?? "").localeCompare(a.last_attended_at ?? "")
+      })
+    }),
+
+  /**
    * Returns students at risk of churning.
    *
    * Criteria (all must hold):

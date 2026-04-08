@@ -81,7 +81,13 @@ export const inventoryRouter = router({
           .enum(["kimono", "belt", "rashguard", "shorts", "accessory", "other"])
           .default("other"),
         price_cents: z.number().int().min(0),
-        currency: z.string().max(3).default("USD"),
+        // BRL is the only currency this product supports right now — the
+        // app is PT-BR first and the inventory form's price label is
+        // hardcoded "Preço (R$)". The schema column already defaults to
+        // 'BRL' at the database level; this default just keeps server
+        // and DB in sync. (Was `'USD'` before, which is why every item
+        // created so far ended up flagged as dollars in the list view.)
+        currency: z.string().max(3).default("BRL"),
         stock_quantity: z.number().int().min(0).default(0),
         low_stock_threshold: z.number().int().min(0).default(5),
         sku: z.string().max(100).nullable().optional(),

@@ -73,8 +73,13 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
     class_type: classData.class_type,
     gi_type: classData.gi_type,
     day_of_week: classData.day_of_week !== null ? String(classData.day_of_week) : "",
-    start_time: classData.start_time,
-    end_time: classData.end_time,
+    // Postgres returns `time` as `HH:MM:SS` ("18:00:00"), but `<input
+    // type="time">` only displays the `HH:MM` portion. Strip seconds at
+    // load time so the form state matches what the user actually sees;
+    // otherwise the round-trip would silently re-submit "18:00:00" and
+    // the server-side regex would reject it.
+    start_time: toHHMM(classData.start_time),
+    end_time: toHHMM(classData.end_time),
     max_students: classData.max_students !== null ? String(classData.max_students) : "",
     default_instructor_id: classData.default_instructor_id ?? "",
     belt_level_min: classData.belt_level_min ?? "",
@@ -363,6 +368,16 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
       </div>
     </form>
   )
+}
+
+/**
+ * Strip seconds from a Postgres `time` value so the form's
+ * `<input type="time">` displays cleanly. Accepts both `HH:MM` (already
+ * normalized) and `HH:MM:SS`.
+ */
+function toHHMM(time: string): string {
+  if (!time) return time
+  return time.length >= 5 ? time.slice(0, 5) : time
 }
 
 const inputClass =

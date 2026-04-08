@@ -8,6 +8,24 @@ import { BELT_ORDER } from "@/lib/constants/belts"
 const CLASS_TYPES = ["regular", "open_mat", "competition_prep", "private", "seminar", "kids"] as const
 const GI_TYPES = ["gi", "nogi", "both"] as const
 
+/**
+ * Time-of-day validator.
+ *
+ * Postgres `time` columns serialize back as `HH:MM:SS` (e.g. `"18:00:00"`),
+ * but `<input type="time">` and the create form both produce `HH:MM`. The
+ * old regex (`^\d{2}:\d{2}$`) only matched the latter, so the *update*
+ * mutation broke any time the form re-submitted a value pre-populated from
+ * the DB — even when the user only changed the class name.
+ *
+ * `.transform()` strips any seconds before the value reaches Postgres so
+ * we always store a clean `HH:MM` (Postgres still pads it with `:00` on
+ * read). This fixes the bug at the boundary instead of in every consumer.
+ */
+const timeOfDay = z
+  .string()
+  .regex(/^\d{2}:\d{2}(:\d{2})?$/, "Horário deve estar no formato HH:MM")
+  .transform((v) => v.slice(0, 5))
+
 const UpdateClassInput = z.object({
   id: z.string().uuid(),
   name: z.string().min(2).max(100).optional(),
@@ -15,8 +33,8 @@ const UpdateClassInput = z.object({
   class_type: z.enum(CLASS_TYPES).optional(),
   gi_type: z.enum(GI_TYPES).optional(),
   day_of_week: z.number().int().min(0).max(6).nullable().optional(),
-  start_time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
-  end_time: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+  start_time: timeOfDay.optional(),
+  end_time: timeOfDay.optional(),
   max_students: z.number().int().min(1).max(500).nullable().optional(),
   default_instructor_id: z.string().uuid().nullable().optional(),
   belt_level_min: z.enum(BELT_ORDER).nullable().optional(),
@@ -30,8 +48,8 @@ const CreateClassInput = z.object({
   class_type: z.enum(CLASS_TYPES).default("regular"),
   gi_type: z.enum(GI_TYPES).default("gi"),
   day_of_week: z.number().int().min(0).max(6).nullable(),
-  start_time: z.string().regex(/^\d{2}:\d{2}$/),
-  end_time: z.string().regex(/^\d{2}:\d{2}$/),
+  start_time: timeOfDay,
+  end_time: timeOfDay,
   is_recurring: z.boolean().default(true),
   max_students: z.number().int().min(1).max(500).nullable().optional(),
   default_instructor_id: z.string().uuid().nullable().optional(),
