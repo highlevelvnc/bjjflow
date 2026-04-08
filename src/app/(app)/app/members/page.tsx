@@ -116,9 +116,16 @@ export default async function MembersPage({
                       <span className="inline-flex items-center rounded-full bg-emerald-500/15 px-2 py-0.5 text-xs font-medium text-emerald-400">
                         Ativo
                       </span>
+                    ) : member.role === "student" && member.email ? (
+                      <Link
+                        href={`/app/members/${member.id}/edit`}
+                        className="inline-flex items-center gap-1 rounded-full border border-brand-400/30 bg-brand-500/10 px-2 py-0.5 text-xs font-medium text-brand-300 hover:bg-brand-500/20"
+                      >
+                        Gerar acesso
+                      </Link>
                     ) : (
                       <span className="inline-flex items-center rounded-full bg-white/8 px-2 py-0.5 text-xs font-medium text-gray-500">
-                        Gerenciado
+                        Sem acesso
                       </span>
                     )}
                   </td>

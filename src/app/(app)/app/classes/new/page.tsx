@@ -28,7 +28,8 @@ export default async function NewClassPage() {
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-100">Nova Turma</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Crie um modelo de turma. Gere aulas a partir dele para agendar treinos.
+          Em ~15 segundos: nome, dia, horário e pronto. Use as opções
+          avançadas só se precisar.
         </p>
       </div>
 

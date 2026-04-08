@@ -162,3 +162,21 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ─── Native <select> option fix ─────────────────────────────────────────────
+ * The shared input styling uses text-gray-100, which cascades into the
+ * native <option> dropdown. On macOS / Chrome the native option menu paints
+ * on a white background, producing invisible white-on-white text.
+ * Force a dark background + light text on every option so the menu is
+ * always legible regardless of the parent <select>'s styling.
+ * ──────────────────────────────────────────────────────────────────────────── */
+select option,
+select optgroup {
+  background-color: #030712; /* gray-950 */
+  color: #f3f4f6;           /* gray-100 */
+}
+select option:checked,
+select option:hover {
+  background-color: #111827; /* gray-900 */
+  color: #ffffff;
+}

@@ -15,7 +15,8 @@ export default function NewMemberPage() {
         </Link>
         <h1 className="mt-2 text-xl font-semibold text-gray-100">Adicionar Aluno</h1>
         <p className="mt-0.5 text-sm text-gray-500">
-          Cria um perfil gerenciado sem conta no portal. Você pode enviar um convite depois.
+          Cadastre o aluno e compartilhe o link de acesso ao app —
+          ele mesmo cria a senha e entra direto no painel do aluno.
         </p>
       </div>
 

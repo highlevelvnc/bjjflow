@@ -7,28 +7,28 @@ import { BELT_ORDER, BELT_LABELS } from "@/lib/constants/belts"
 import type { Belt } from "@/lib/constants/belts"
 
 const DAY_OPTIONS = [
-  { value: 0, label: "Sunday" },
-  { value: 1, label: "Monday" },
-  { value: 2, label: "Tuesday" },
-  { value: 3, label: "Wednesday" },
-  { value: 4, label: "Thursday" },
-  { value: 5, label: "Friday" },
-  { value: 6, label: "Saturday" },
+  { value: 0, label: "Domingo" },
+  { value: 1, label: "Segunda" },
+  { value: 2, label: "Terça" },
+  { value: 3, label: "Quarta" },
+  { value: 4, label: "Quinta" },
+  { value: 5, label: "Sexta" },
+  { value: 6, label: "Sábado" },
 ]
 
 const CLASS_TYPE_OPTIONS = [
   { value: "regular", label: "Regular" },
   { value: "open_mat", label: "Open Mat" },
-  { value: "competition_prep", label: "Competition Prep" },
-  { value: "private", label: "Private" },
-  { value: "seminar", label: "Seminar" },
+  { value: "competition_prep", label: "Preparação para Competição" },
+  { value: "private", label: "Particular" },
+  { value: "seminar", label: "Seminário" },
   { value: "kids", label: "Kids" },
 ]
 
 const GI_TYPE_OPTIONS = [
-  { value: "gi", label: "Gi" },
-  { value: "nogi", label: "No-Gi" },
-  { value: "both", label: "Gi + No-Gi" },
+  { value: "gi", label: "Kimono" },
+  { value: "nogi", label: "Sem Kimono" },
+  { value: "both", label: "Ambos" },
 ]
 
 interface Instructor {
@@ -169,7 +169,13 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             className={inputClass}
           >
             {CLASS_TYPE_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+              <option
+                key={o.value}
+                value={o.value}
+                className="bg-gray-900 text-gray-100"
+              >
+                {o.label}
+              </option>
             ))}
           </select>
         </Field>
@@ -180,22 +186,36 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
             className={inputClass}
           >
             {GI_TYPE_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+              <option
+                key={o.value}
+                value={o.value}
+                className="bg-gray-900 text-gray-100"
+              >
+                {o.label}
+              </option>
             ))}
           </select>
         </Field>
       </div>
 
       <div className="grid grid-cols-3 gap-4">
-        <Field label="Day of Week">
+        <Field label="Dia da Semana">
           <select
             value={form.day_of_week}
             onChange={(e) => set("day_of_week", e.target.value)}
             className={inputClass}
           >
-            <option value="">-- No schedule --</option>
+            <option value="" className="bg-gray-900 text-gray-100">
+              — Sem agenda —
+            </option>
             {DAY_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>{o.label}</option>
+              <option
+                key={o.value}
+                value={o.value}
+                className="bg-gray-900 text-gray-100"
+              >
+                {o.label}
+              </option>
             ))}
           </select>
         </Field>
@@ -220,64 +240,88 @@ export function EditClassForm({ classData, instructors }: EditClassFormProps) {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Default Instructor">
+        <Field label="Instrutor Padrão">
           <select
             value={form.default_instructor_id}
             onChange={(e) => set("default_instructor_id", e.target.value)}
             className={inputClass}
           >
-            <option value="">-- None --</option>
+            <option value="" className="bg-gray-900 text-gray-100">
+              — Nenhum —
+            </option>
             {instructors.map((i) => (
-              <option key={i.id} value={i.id}>{i.full_name}</option>
+              <option
+                key={i.id}
+                value={i.id}
+                className="bg-gray-900 text-gray-100"
+              >
+                {i.full_name}
+              </option>
             ))}
           </select>
         </Field>
-        <Field label="Max Students">
+        <Field label="Máx. de Alunos">
           <input
             type="number"
             value={form.max_students}
             onChange={(e) => set("max_students", e.target.value)}
             min={1}
             max={500}
-            placeholder="Unlimited"
+            placeholder="Sem limite"
             className={inputClass}
           />
         </Field>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Min Belt Level">
+        <Field label="Faixa Mínima">
           <select
             value={form.belt_level_min}
             onChange={(e) => set("belt_level_min", e.target.value)}
             className={inputClass}
           >
-            <option value="">-- Any --</option>
+            <option value="" className="bg-gray-900 text-gray-100">
+              — Qualquer —
+            </option>
             {BELT_ORDER.slice(0, 5).map((b) => (
-              <option key={b} value={b}>{BELT_LABELS[b]}</option>
+              <option
+                key={b}
+                value={b}
+                className="bg-gray-900 text-gray-100"
+              >
+                {BELT_LABELS[b]}
+              </option>
             ))}
           </select>
         </Field>
-        <Field label="Max Belt Level">
+        <Field label="Faixa Máxima">
           <select
             value={form.belt_level_max}
             onChange={(e) => set("belt_level_max", e.target.value)}
             className={inputClass}
           >
-            <option value="">-- Any --</option>
+            <option value="" className="bg-gray-900 text-gray-100">
+              — Qualquer —
+            </option>
             {BELT_ORDER.slice(0, 5).map((b) => (
-              <option key={b} value={b}>{BELT_LABELS[b]}</option>
+              <option
+                key={b}
+                value={b}
+                className="bg-gray-900 text-gray-100"
+              >
+                {BELT_LABELS[b]}
+              </option>
             ))}
           </select>
         </Field>
       </div>
 
-      <Field label="Room / Mat">
+      <Field label="Sala / Tatame">
         <input
           type="text"
           value={form.room}
           onChange={(e) => set("room", e.target.value)}
-          placeholder="Mat 1, Main Floor..."
+          placeholder="Tatame 1, Sala Principal..."
           maxLength={100}
           className={inputClass}
         />
