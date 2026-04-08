@@ -27,10 +27,23 @@ export default async function AlunoLayout({ children }: { children: React.ReactN
     data: { session },
   } = await supabase.auth.getSession()
 
-  if (!session) redirect("/login?next=/aluno")
+  // NOTE: param key MUST match LoginForm/middleware (`redirectTo`, not `next`).
+  // Using the wrong key silently dropped the post-login destination and made
+  // the user bounce around after authenticating.
+  if (!session) redirect("/login?redirectTo=/aluno")
 
   const academyId = session.user.app_metadata?.academy_id as string | undefined
-  if (!academyId) redirect("/setup")
+  // A logged-in user with no academy_id is in one of two states:
+  //   1. Academy owner mid-onboarding → /setup is correct
+  //   2. Student who just accepted an invite but whose JWT cookie is stale
+  //      → bounce them through the auth callback to force a token refresh
+  // The second case is handled by the AcceptInviteButton client-side refresh,
+  // but we route to /login here as a safety net (login picks the right
+  // destination from the freshly-issued JWT).
+  if (!academyId) {
+    const role = session.user.app_metadata?.member_role as string | undefined
+    redirect(role === "student" ? "/login?redirectTo=/aluno" : "/setup")
+  }
 
   const trpc = await createServerCaller()
 

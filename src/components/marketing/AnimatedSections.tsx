@@ -7,7 +7,7 @@ import { motion } from "framer-motion"
 import {
   Users, CalendarDays, CheckSquare,
   ArrowRight, Shield, Zap, BarChart3, ChevronRight,
-  Star, Clock, Globe, Check,
+  Star, Clock, Globe, Check, GraduationCap,
 } from "lucide-react"
 import { LocaleSwitcher } from "@/components/i18n/LocaleSwitcher"
 import type { CurrencyInfo, PlanPricing, Locale } from "@/lib/i18n/config"
@@ -64,6 +64,13 @@ export interface LandingMessages {
     trial: string
   }
   footer: { tagline: string; signIn: string }
+  studentPortal: {
+    navLabel: string
+    title: string
+    subtitle: string
+    cta: string
+    footnote: string
+  }
 }
 
 // ─── Feature icon map ───────────────────────────────────────────────────────
@@ -133,12 +140,22 @@ function Nav({ t, locale }: { t: LandingMessages; locale: Locale }) {
           <div className="mx-1 hidden h-4 w-px bg-white/10 sm:block" />
           <LocaleSwitcher current={locale} />
           <div className="mx-1 hidden h-4 w-px bg-white/10 sm:block" />
-          <Link href="/login" className="rounded-md px-3 py-1.5 text-sm text-gray-400 transition-colors hover:text-white">
+          {/* Student portal pill — visible on every breakpoint, including mobile,
+              so a student arriving on the marketing page can hop straight into
+              their app without scrolling through pricing/features. */}
+          <Link
+            href="/login?role=student"
+            className="inline-flex items-center gap-1.5 rounded-md border border-cyan-brand/30 bg-cyan-brand/10 px-3 py-1.5 text-xs font-semibold text-cyan-300 transition-all hover:border-cyan-brand/50 hover:bg-cyan-brand/15 hover:text-cyan-200 sm:text-sm"
+          >
+            <GraduationCap className="h-3.5 w-3.5" />
+            {t.studentPortal.navLabel}
+          </Link>
+          <Link href="/login" className="hidden rounded-md px-3 py-1.5 text-sm text-gray-400 transition-colors hover:text-white sm:inline-block">
             {t.nav.signIn}
           </Link>
           <Link
             href="/login"
-            className="ml-1 inline-flex items-center gap-1.5 rounded-lg bg-brand-500 px-3.5 py-1.5 text-sm font-medium text-white shadow-md shadow-brand-500/25 transition-all hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-brand-500/40"
+            className="ml-1 hidden items-center gap-1.5 rounded-lg bg-brand-500 px-3.5 py-1.5 text-sm font-medium text-white shadow-md shadow-brand-500/25 transition-all hover:-translate-y-0.5 hover:bg-brand-400 hover:shadow-brand-500/40 sm:inline-flex"
           >
             {t.nav.getStarted} <ArrowRight className="h-3.5 w-3.5" />
           </Link>
@@ -311,6 +328,51 @@ function Hero({ t }: { t: LandingMessages }) {
           </div>
         </motion.div>
       </div>
+    </section>
+  )
+}
+
+// ─── Student Portal CTA ─────────────────────────────────────────────────────
+// Dedicated entry-point for STUDENTS (not academy owners). Sits right under
+// the hero so students arriving from a WhatsApp link or word-of-mouth can
+// hop into /aluno without scrolling through marketing copy.
+
+function StudentPortal({ t }: { t: LandingMessages }) {
+  return (
+    <section className="relative overflow-hidden border-y border-white/8 bg-gradient-to-br from-cyan-brand/10 via-gray-950 to-brand-500/10 px-6 py-14">
+      {/* Subtle glow accents */}
+      <div aria-hidden className="pointer-events-none absolute -left-10 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-cyan-brand/20 blur-[100px]" />
+      <div aria-hidden className="pointer-events-none absolute -right-10 top-1/2 h-64 w-64 -translate-y-1/2 rounded-full bg-brand-500/15 blur-[100px]" />
+
+      <motion.div
+        className="relative mx-auto flex max-w-5xl flex-col items-center gap-6 rounded-2xl border border-white/10 bg-gray-900/60 p-8 backdrop-blur-xl sm:flex-row sm:gap-8 sm:p-10"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, margin: "-80px" }}
+        variants={fadeUp}
+      >
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-cyan-brand/15 text-cyan-300 shadow-lg shadow-cyan-brand/10 ring-1 ring-cyan-brand/30">
+          <GraduationCap className="h-7 w-7" />
+        </div>
+
+        <div className="flex-1 text-center sm:text-left">
+          <h2 className="text-xl font-bold text-white sm:text-2xl">
+            {t.studentPortal.title}
+          </h2>
+          <p className="mt-2 text-sm leading-relaxed text-gray-400 sm:text-base">
+            {t.studentPortal.subtitle}
+          </p>
+          <p className="mt-3 text-xs text-gray-600">{t.studentPortal.footnote}</p>
+        </div>
+
+        <Link
+          href="/login?role=student"
+          className="inline-flex shrink-0 items-center justify-center gap-2 rounded-xl bg-cyan-brand px-6 py-3 text-sm font-semibold text-gray-950 shadow-lg shadow-cyan-brand/30 transition-all hover:-translate-y-0.5 hover:bg-cyan-300 hover:shadow-cyan-brand/40"
+        >
+          {t.studentPortal.cta}
+          <ArrowRight className="h-4 w-4" />
+        </Link>
+      </motion.div>
     </section>
   )
 }
@@ -680,6 +742,7 @@ export function AnimatedSections({
       <Nav t={t} locale={locale} />
       <main>
         <Hero t={t} />
+        <StudentPortal t={t} />
         <Stats t={t} />
         <Features t={t} />
         <HowItWorks t={t} />

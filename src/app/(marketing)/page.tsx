@@ -57,6 +57,7 @@ export default async function LandingPage() {
     },
     cta: t.cta,
     footer: t.footer,
+    studentPortal: t.studentPortal,
   }
 
   return <AnimatedSections t={landing} locale={locale} currency={currency} />

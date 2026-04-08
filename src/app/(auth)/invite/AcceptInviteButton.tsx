@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { trpc } from "@/lib/trpc/client"
+import { createBrowserSupabase } from "@/server/supabase/browser"
 
 interface AcceptInviteButtonProps {
   token: string
@@ -11,9 +12,24 @@ export function AcceptInviteButton({ token }: AcceptInviteButtonProps) {
   const [errorMsg, setErrorMsg] = useState<string | null>(null)
 
   const acceptInvite = trpc.invite.accept.useMutation({
-    onSuccess: (data) => {
-      // Force a full page reload to pick up the new JWT with academy_id.
+    onSuccess: async (data) => {
+      // ⚠ Critical: invite.accept updates the user's app_metadata via the
+      // admin API, but the BROWSER's existing JWT cookie still holds the
+      // old payload (no academy_id, no member_role). A plain navigation to
+      // /aluno would bounce off the layout's `academy_id` check and dump
+      // the student on /setup. We MUST force-refresh the session here so
+      // the cookies pick up a new access token with the merged metadata.
+      try {
+        const supabase = createBrowserSupabase()
+        await supabase.auth.refreshSession()
+      } catch {
+        // If refresh fails for any reason, fall through — middleware will
+        // re-issue on next nav. The hard reload below is the safety net.
+      }
+
       // Students go to the mobile /aluno app, instructors/admins to /app.
+      // window.location.href forces a full reload so the SSR layout re-reads
+      // cookies (router.push() would not).
       const dest = data?.role === "student" ? "/aluno" : "/app"
       window.location.href = dest
     },

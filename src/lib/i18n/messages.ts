@@ -49,6 +49,18 @@ export interface Messages {
     trial: string
   }
   footer: { tagline: string; signIn: string }
+  /**
+   * "I'm a student" entry-point shown on the landing page.
+   * Lets students log in to /aluno without going through the academy
+   * marketing/owner CTAs first.
+   */
+  studentPortal: {
+    navLabel: string
+    title: string
+    subtitle: string
+    cta: string
+    footnote: string
+  }
   login: {
     h1: string
     subtitle: string
@@ -214,6 +226,14 @@ const en: Messages = {
     trial: "14-day free trial",
   },
   footer: { tagline: "Built for the jiu-jitsu community", signIn: "Sign in →" },
+  studentPortal: {
+    navLabel: "I'm a student",
+    title: "Train smarter, track everything",
+    subtitle:
+      "Your academy already invited you? Sign in with the email your instructor used and jump straight into your student app.",
+    cta: "Open student portal",
+    footnote: "Don't have a login yet? Ask your instructor to send your access link.",
+  },
   login: {
     h1: "Welcome back",
     subtitle: "Sign in to your Kumo account",
@@ -385,6 +405,14 @@ const ptBR: Messages = {
     trial: "14 dias grátis",
   },
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
+  studentPortal: {
+    navLabel: "Sou aluno",
+    title: "Treine mais inteligente, acompanhe tudo",
+    subtitle:
+      "Sua academia já te convidou? Entre com o email que o seu professor cadastrou e abra direto o app do aluno.",
+    cta: "Abrir painel do aluno",
+    footnote: "Ainda não tem acesso? Peça ao seu professor para enviar o link de ativação.",
+  },
   login: {
     h1: "Bem-vindo de volta",
     subtitle: "Entre na sua conta Kumo",
@@ -556,6 +584,14 @@ const ptPT: Messages = {
     trial: "14 dias de teste",
   },
   footer: { tagline: "Feito para a comunidade de jiu-jitsu", signIn: "Entrar →" },
+  studentPortal: {
+    navLabel: "Sou aluno",
+    title: "Treine de forma mais inteligente, acompanhe tudo",
+    subtitle:
+      "A sua academia já o convidou? Entre com o email que o seu professor registou e abra diretamente a app do aluno.",
+    cta: "Abrir portal do aluno",
+    footnote: "Ainda não tem acesso? Peça ao seu professor para enviar o link de ativação.",
+  },
   login: {
     h1: "Bem-vindo de volta",
     subtitle: "Entre na sua conta Kumo",
@@ -727,6 +763,14 @@ const de: Messages = {
     trial: "14 Tage kostenlos",
   },
   footer: { tagline: "Für die Jiu-Jitsu-Gemeinschaft", signIn: "Anmelden →" },
+  studentPortal: {
+    navLabel: "Ich bin Schüler",
+    title: "Smarter trainieren, alles im Blick",
+    subtitle:
+      "Deine Akademie hat dich bereits eingeladen? Melde dich mit der E-Mail an, die dein Trainer eingetragen hat, und springe direkt in deine Schüler-App.",
+    cta: "Schüler-Portal öffnen",
+    footnote: "Noch keinen Zugang? Bitte deinen Trainer, dir den Aktivierungslink zu senden.",
+  },
   login: {
     h1: "Willkommen zurück",
     subtitle: "Bei Ihrem Kumo-Konto anmelden",
@@ -898,6 +942,14 @@ const fr: Messages = {
     trial: "14 jours gratuits",
   },
   footer: { tagline: "Pour la communauté du jiu-jitsu", signIn: "Connexion →" },
+  studentPortal: {
+    navLabel: "Je suis élève",
+    title: "Entraînez-vous plus intelligemment, suivez tout",
+    subtitle:
+      "Votre académie vous a déjà invité ? Connectez-vous avec l'e-mail enregistré par votre professeur et accédez directement à votre app élève.",
+    cta: "Ouvrir l'espace élève",
+    footnote: "Pas encore d'accès ? Demandez à votre professeur de vous envoyer le lien d'activation.",
+  },
   login: {
     h1: "Bon retour",
     subtitle: "Connectez-vous à votre compte Kumo",
